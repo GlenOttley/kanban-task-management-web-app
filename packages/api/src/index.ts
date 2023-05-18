@@ -1,20 +1,20 @@
-import cors from 'cors'
-import express from 'express'
+import createServer from './utils/server'
+import dotenv from 'dotenv'
+import path from 'path'
+import connectDB from './utils/db'
 
-import { Workspace } from 'types'
+const serverRoot = path.resolve()
 
-const app = express()
-const port = 5000
+console.log(path.resolve(process.cwd(), './tsconfig.json'))
 
-app.use(cors({ origin: 'http://localhost:3000' }))
+// dev
+dotenv.config({ path: path.join(serverRoot, '.env') })
 
-app.get('/workspaces', (_, response) => {
-  const workspaces: Workspace[] = [
-    { name: 'api', version: '1.0.0' },
-    { name: 'types', version: '1.0.0' },
-    { name: 'web', version: '1.0.0' },
-  ]
-  response.json({ data: workspaces })
+export const app = createServer()
+
+const PORT = process.env.PORT || 666
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+  connectDB()
 })
-
-app.listen(port, () => console.log(`Listening on http://localhost:${port}`))
