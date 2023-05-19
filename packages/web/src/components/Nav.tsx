@@ -31,7 +31,7 @@ const Nav = (): JSX.Element => {
   const menuItems = ['Platform Launch', 'Marketing Plan', 'Roadmap']
 
   return (
-    <header className='container py-5 flex justify-between items-center'>
+    <header className='py-5 px-4 flex justify-between items-center z-20 bg-white relative'>
       <div className='flex gap-4'>
         <img src={logo} />
         <Menu menuItems={menuItems} />

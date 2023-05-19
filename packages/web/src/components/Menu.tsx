@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import iconChevronDown from '../images/icon-chevron-down.svg'
 import iconChevronUp from '../images/icon-chevron-up.svg'
+import Modal from './Modal'
 
 interface ComponentProps {
   menuItems: string[]
@@ -13,7 +14,7 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
   const [menuFeedback, setMenuFeedback] = useState<string>('')
 
   const menuButtonRef = useRef<HTMLButtonElement | null>(null)
-  const dialogRef = useRef<HTMLDialogElement | null>(null)
+  const dialogRef = useRef<HTMLDivElement | null>(null)
   const menuRef = useRef<HTMLDivElement | null>(null)
   const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
   const menuFeedbackRef = useRef<HTMLDivElement | null>(null)
@@ -32,15 +33,21 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
     }
   }
 
+  function handleMenuClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    console.log(e)
+    openDialog()
+  }
+
   function openDialog() {
     setDialogOpen(true)
-    dialogRef.current?.show()
+    // dialogRef.current?.show()
     menuItemsRef.current[activeIndex]?.focus()
   }
 
   function closeDialog() {
     setDialogOpen(false)
-    dialogRef?.current?.close()
+    // dialogRef?.current?.close()
   }
 
   function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
@@ -84,25 +91,25 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
     setMenuFeedback(`${selectedItem} selected`)
   }, [selectedItem])
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      if (
-        menuRef.current &&
-        menuButtonRef.current &&
-        !menuRef.current.contains(target) &&
-        target !== menuButtonRef.current
-      ) {
-        closeDialog()
-      }
-    }
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     const target = event.target as HTMLElement
+  //     if (
+  //       menuRef.current &&
+  //       menuButtonRef.current &&
+  //       !menuRef.current.contains(target) &&
+  //       target !== menuButtonRef.current
+  //     ) {
+  //       closeDialog()
+  //     }
+  //   }
 
-    document.addEventListener('click', handleClickOutside)
+  //   document.addEventListener('click', handleClickOutside)
 
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [])
+  //   return () => {
+  //     document.removeEventListener('click', handleClickOutside)
+  //   }
+  // }, [])
 
   return (
     <>
@@ -112,7 +119,7 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
         aria-haspopup='true'
         aria-expanded={dialogOpen}
         onKeyDown={handleMenuKeydown}
-        onClick={openDialog}
+        onClick={handleMenuClick}
       >
         {selectedItem}
         <img
@@ -121,7 +128,12 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
           className='ml-[9px] inline-block'
         />
       </button>
-      <dialog ref={dialogRef}>
+      <Modal
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        triggerElement={menuButtonRef.current}
+      >
+        {/* <div ref={dialogRef}> */}
         <div ref={menuRef} role='menu' className='flex flex-col'>
           {menuItems.map((item, index) => (
             <button
@@ -137,7 +149,8 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
             </button>
           ))}
         </div>
-      </dialog>
+        {/* </div> */}
+      </Modal>
       <div
         role='alert'
         aria-live='assertive'
