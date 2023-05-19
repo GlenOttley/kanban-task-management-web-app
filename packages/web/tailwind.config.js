@@ -25,6 +25,11 @@ module.exports = {
     fontFamily: {
       sans: ['Plus Jakarta Sans', 'sans-serif'],
     },
+    container: {
+      padding: {
+        DEFAULT: '16px',
+      },
+    },
     extend: {},
   },
   plugins: [],
