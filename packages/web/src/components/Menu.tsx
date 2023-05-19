@@ -7,43 +7,63 @@ interface ComponentProps {
 
 const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
-
   const [activeIndex, setActiveIndex] = useState<number>(0)
   const [selectedItem, setSelectedItem] = useState<string>(menuItems[0])
+  const [menuFeedback, setMenuFeedback] = useState<string>('')
+  const menuRef = useRef<HTMLButtonElement | null>(null)
   const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
+  const menuFeedbackRef = useRef<HTMLDivElement | null>(null)
 
-  function openMenu(e: React.MouseEvent | React.KeyboardEvent) {
-    console.log(e)
-    if (e.type === 'click' || (e as React.KeyboardEvent).key === 'Enter') {
+  function handleMenuKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
+    const { key } = e
+    if (key === 'Enter' || key === 'ArrowDown' || key === 'ArrowUp' || key === ' ') {
+      e.preventDefault()
       setOpen(true)
+      if (key === 'Enter' || key === ' ') {
+        setActiveIndex(-1)
+        open && setOpen(false)
+      }
+      if (key === 'ArrowDown') {
+        setActiveIndex(0)
+      }
+      if (key === 'ArrowUp') {
+        setActiveIndex(menuItems.length - 1)
+      }
+    }
+    if (key === 'Tab') {
+      setOpen(false)
     }
   }
 
+  function handleMenuClick() {
+    setOpen(!open)
+  }
+
   function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
-    if (e.key === 'ArrowDown' || 'ArrowUp') {
-      moveFocus(e as React.KeyboardEvent)
+    const { key } = e
+    if (key === 'Enter') {
+      setSelectedItem(e.currentTarget.value)
     }
-    if (e.key === 'Enter' || 'Space') {
-      // setSelectedItem((e.target as HTMLButtonElement).value)
+    if (key === 'ArrowDown' || key === 'ArrowUp') {
+      moveFocus(e)
     }
-    if (e.key === 'Tab') {
+    if (key === 'Tab' || key === 'Escape') {
       setOpen(false)
     }
   }
 
   function handleItemClick(e: React.MouseEvent<HTMLButtonElement>) {
-    setSelectedItem((e.target as HTMLButtonElement).value)
+    setSelectedItem(e.currentTarget.value)
     setOpen(false)
   }
 
-  function moveFocus(e: React.KeyboardEvent) {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      setActiveIndex((prevIndex) => (prevIndex + 1) % menuItems.length)
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      setActiveIndex((prevIndex) => (prevIndex - 1 + menuItems.length) % menuItems.length)
-    }
+  function moveFocus(e: React.KeyboardEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    setActiveIndex((prevIndex) =>
+      e.key === 'ArrowDown'
+        ? (prevIndex + 1) % menuItems.length
+        : (prevIndex - 1 + menuItems.length) % menuItems.length
+    )
   }
 
   useEffect(() => {
@@ -52,14 +72,33 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
     }
   }, [open, activeIndex])
 
+  useEffect(() => {
+    setMenuFeedback(`${selectedItem} selected`)
+  }, [selectedItem])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
+
   return (
     <>
       <button
         className='heading-lg'
+        ref={menuRef}
         aria-haspopup='true'
         aria-expanded={open}
-        onKeyDown={openMenu}
-        onClick={openMenu}
+        onKeyDown={handleMenuKeydown}
+        onClick={handleMenuClick}
       >
         {selectedItem}
         <img src={iconChevronDown} aria-hidden='true' />
@@ -72,13 +111,21 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
             ref={(el) => (menuItemsRef.current[index] = el)}
             role='menuitem'
             tabIndex={index === activeIndex ? 0 : -1}
-            className={index === activeIndex ? 'focus:bg-purple' : ''}
             onKeyDown={handleItemKeydown}
             onClick={handleItemClick}
           >
             {item}
           </button>
         ))}
+      </div>
+      <div
+        role='alert'
+        aria-live='assertive'
+        aria-atomic='true'
+        className='sr-only'
+        ref={menuFeedbackRef}
+      >
+        {menuFeedback}
       </div>
     </>
   )
