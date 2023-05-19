@@ -1,16 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react'
 import iconChevronDown from '../images/icon-chevron-down.svg'
+import iconChevronUp from '../images/icon-chevron-up.svg'
 
 interface ComponentProps {
   menuItems: string[]
 }
 
 const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
-  const [open, setOpen] = useState<boolean>(false)
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false)
   const [activeIndex, setActiveIndex] = useState<number>(0)
-  const [selectedItem, setSelectedItem] = useState<string>(menuItems[0])
+  const [selectedItem, setSelectedItem] = useState<string>(menuItems[activeIndex])
   const [menuFeedback, setMenuFeedback] = useState<string>('')
-  const menuRef = useRef<HTMLButtonElement | null>(null)
+
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null)
+  const dialogRef = useRef<HTMLDialogElement | null>(null)
+  const menuRef = useRef<HTMLDivElement | null>(null)
   const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
   const menuFeedbackRef = useRef<HTMLDivElement | null>(null)
 
@@ -18,11 +22,7 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
     const { key } = e
     if (key === 'Enter' || key === 'ArrowDown' || key === 'ArrowUp' || key === ' ') {
       e.preventDefault()
-      setOpen(true)
-      if (key === 'Enter' || key === ' ') {
-        setActiveIndex(-1)
-        open && setOpen(false)
-      }
+      openDialog()
       if (key === 'ArrowDown') {
         setActiveIndex(0)
       }
@@ -30,47 +30,55 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
         setActiveIndex(menuItems.length - 1)
       }
     }
-    if (key === 'Tab') {
-      setOpen(false)
-    }
   }
 
-  function handleMenuClick() {
-    setOpen(!open)
+  function openDialog() {
+    setDialogOpen(true)
+    dialogRef.current?.show()
+    menuItemsRef.current[activeIndex]?.focus()
+  }
+
+  function closeDialog() {
+    setDialogOpen(false)
+    dialogRef?.current?.close()
   }
 
   function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
     const { key } = e
     if (key === 'Enter') {
+      e.preventDefault()
       setSelectedItem(e.currentTarget.value)
+      closeDialog()
     }
-    if (key === 'ArrowDown' || key === 'ArrowUp') {
+    if (
+      key === 'ArrowDown' ||
+      key === 'ArrowUp' ||
+      key === 'Tab' ||
+      (e.shiftKey && key === 'Tab')
+    ) {
       moveFocus(e)
-    }
-    if (key === 'Tab' || key === 'Escape') {
-      setOpen(false)
     }
   }
 
   function handleItemClick(e: React.MouseEvent<HTMLButtonElement>) {
     setSelectedItem(e.currentTarget.value)
-    setOpen(false)
+    closeDialog()
   }
 
   function moveFocus(e: React.KeyboardEvent<HTMLButtonElement>) {
     e.preventDefault()
     setActiveIndex((prevIndex) =>
-      e.key === 'ArrowDown'
+      e.key === 'ArrowDown' || (!e.shiftKey && e.key === 'Tab')
         ? (prevIndex + 1) % menuItems.length
         : (prevIndex - 1 + menuItems.length) % menuItems.length
     )
   }
 
   useEffect(() => {
-    if (open) {
+    if (dialogOpen) {
       menuItemsRef.current[activeIndex]?.focus()
     }
-  }, [open, activeIndex])
+  }, [dialogOpen, activeIndex])
 
   useEffect(() => {
     setMenuFeedback(`${selectedItem} selected`)
@@ -78,8 +86,14 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpen(false)
+      const target = event.target as HTMLElement
+      if (
+        menuRef.current &&
+        menuButtonRef.current &&
+        !menuRef.current.contains(target) &&
+        target !== menuButtonRef.current
+      ) {
+        closeDialog()
       }
     }
 
@@ -93,31 +107,37 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
   return (
     <>
       <button
+        ref={menuButtonRef}
         className='heading-lg'
-        ref={menuRef}
         aria-haspopup='true'
-        aria-expanded={open}
+        aria-expanded={dialogOpen}
         onKeyDown={handleMenuKeydown}
-        onClick={handleMenuClick}
+        onClick={openDialog}
       >
         {selectedItem}
-        <img src={iconChevronDown} aria-hidden='true' />
+        <img
+          src={dialogOpen ? iconChevronUp : iconChevronDown}
+          aria-hidden='true'
+          className='ml-[9px] inline-block'
+        />
       </button>
-      <div role='menu' hidden={!open}>
-        {menuItems.map((item, index) => (
-          <button
-            key={index}
-            value={item}
-            ref={(el) => (menuItemsRef.current[index] = el)}
-            role='menuitem'
-            tabIndex={index === activeIndex ? 0 : -1}
-            onKeyDown={handleItemKeydown}
-            onClick={handleItemClick}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
+      <dialog ref={dialogRef}>
+        <div ref={menuRef} role='menu' className='flex flex-col'>
+          {menuItems.map((item, index) => (
+            <button
+              key={index}
+              value={item}
+              ref={(el) => (menuItemsRef.current[index] = el)}
+              role='menuitem'
+              tabIndex={index === activeIndex ? 0 : -1}
+              onKeyDown={handleItemKeydown}
+              onClick={handleItemClick}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </dialog>
       <div
         role='alert'
         aria-live='assertive'
