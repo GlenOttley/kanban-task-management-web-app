@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import logo from '../images/logo-mobile.svg'
 import iconPlus from '../images/icon-add-task-mobile.svg'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
@@ -8,10 +8,10 @@ const Nav = (): JSX.Element => {
   const menuItems = ['Platform Launch', 'Marketing Plan', 'Roadmap']
 
   return (
-    <header className='py-4 px-4 flex justify-between items-center z-20 bg-white relative'>
+    <header className='relative z-20 flex items-center justify-between px-4 py-4 bg-white'>
       <div className='flex gap-4'>
         <img src={logo} />
-        <Menu menuItems={menuItems} />
+        <Menu />
       </div>
 
       <div className='flex'>
