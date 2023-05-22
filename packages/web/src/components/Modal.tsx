@@ -12,7 +12,9 @@ interface ComponentProps {
   children: ReactNode
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-  triggerElement: MutableRefObject<any>
+  triggerElement?: MutableRefObject<any>
+  dialogStyles?: React.CSSProperties
+  backdropStyles?: React.CSSProperties
 }
 
 const Modal = ({
@@ -20,15 +22,16 @@ const Modal = ({
   open,
   setOpen,
   triggerElement,
+  dialogStyles,
+  backdropStyles,
 }: ComponentProps): JSX.Element => {
   const dialogRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    console.log(triggerElement.current)
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement
       const isModalContentClicked = dialogRef.current?.contains(target)
-      const isTriggerElementClicked = triggerElement.current?.contains(target)
+      const isTriggerElementClicked = triggerElement?.current?.contains(target)
       const isTargetHigherZIndex =
         target.style.zIndex && parseInt(target.style.zIndex, 10) > 20
 
@@ -46,11 +49,29 @@ const Modal = ({
 
   if (open) {
     return createPortal(
-      <div className='bg-black bg-opacity-50 w-full h-full fixed inset-0 z-10'>
+      <div
+        style={{
+          // TODO add defaults for transition
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          width: '100%',
+          height: '100%',
+          position: 'fixed',
+          inset: '0px',
+          zIndex: '10',
+          ...backdropStyles,
+        }}
+      >
         <div
           role='dialog'
           ref={dialogRef}
-          className='flex flex-col bg-white fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-5 z-20'
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translateX(-50%) translateY(-50%)',
+            zIndex: '20',
+            ...dialogStyles,
+          }}
         >
           {children}
         </div>

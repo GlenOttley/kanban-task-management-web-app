@@ -1,20 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react'
 import iconChevronDown from '../images/icon-chevron-down.svg'
 import iconChevronUp from '../images/icon-chevron-up.svg'
+import iconBoard from '../images/icon-board.svg'
 import Modal from './Modal'
+import useBoards from '../hooks/useBoards'
 
 interface ComponentProps {
   menuItems: string[]
 }
 
 const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
+  const { status, data: boards, error } = useBoards()
+
   const [dialogOpen, setDialogOpen] = useState<boolean>(false)
   const [activeIndex, setActiveIndex] = useState<number>(0)
   const [selectedItem, setSelectedItem] = useState<string>(menuItems[activeIndex])
   const [menuFeedback, setMenuFeedback] = useState<string>('')
 
   const menuButtonRef = useRef<HTMLButtonElement | null>(null)
-  const dialogRef = useRef<HTMLDivElement | null>(null)
   const menuRef = useRef<HTMLDivElement | null>(null)
   const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
   const menuFeedbackRef = useRef<HTMLDivElement | null>(null)
@@ -23,7 +26,7 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
     const { key } = e
     if (key === 'Enter' || key === 'ArrowDown' || key === 'ArrowUp' || key === ' ') {
       e.preventDefault()
-      openDialog()
+      toggleDialog()
       if (key === 'ArrowDown') {
         setActiveIndex(0)
       }
@@ -35,19 +38,16 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
 
   function handleMenuClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
-    console.log(e)
-    openDialog()
+    toggleDialog()
   }
 
-  function openDialog() {
-    setDialogOpen(true)
-    // dialogRef.current?.show()
+  function toggleDialog() {
+    setDialogOpen(!dialogOpen)
     menuItemsRef.current[activeIndex]?.focus()
   }
 
   function closeDialog() {
     setDialogOpen(false)
-    // dialogRef?.current?.close()
   }
 
   function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
@@ -91,26 +91,6 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
     setMenuFeedback(`${selectedItem} selected`)
   }, [selectedItem])
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     const target = event.target as HTMLElement
-  //     if (
-  //       menuRef.current &&
-  //       menuButtonRef.current &&
-  //       !menuRef.current.contains(target) &&
-  //       target !== menuButtonRef.current
-  //     ) {
-  //       closeDialog()
-  //     }
-  //   }
-
-  //   document.addEventListener('click', handleClickOutside)
-
-  //   return () => {
-  //     document.removeEventListener('click', handleClickOutside)
-  //   }
-  // }, [])
-
   return (
     <>
       <button
@@ -131,10 +111,22 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
       <Modal
         open={dialogOpen}
         setOpen={setDialogOpen}
-        triggerElement={menuButtonRef.current}
+        triggerElement={menuButtonRef}
+        dialogStyles={{
+          top: '80px',
+          left: '54px',
+          right: '54px',
+          transform: 'none',
+        }}
       >
-        {/* <div ref={dialogRef}> */}
-        <div ref={menuRef} role='menu' className='flex flex-col'>
+        <div
+          ref={menuRef}
+          role='menu'
+          className='flex flex-col items-start whitespace-nowrap bg-white rounded-lg'
+        >
+          <h2 className='heading-sm text-grey-medium px-6 py-4'>
+            ALL BOARDS ({menuItems.length})
+          </h2>
           {menuItems.map((item, index) => (
             <button
               key={index}
@@ -144,12 +136,15 @@ const Menu = ({ menuItems }: ComponentProps): JSX.Element => {
               tabIndex={index === activeIndex ? 0 : -1}
               onKeyDown={handleItemKeydown}
               onClick={handleItemClick}
+              className={`text-grey-medium py-3 px-6 ${
+                index === activeIndex && 'bg-purple text-white rounded-e-full'
+              }`}
             >
+              <img src={iconBoard} aria-hidden='true' className='inline-block mr-3' />
               {item}
             </button>
           ))}
         </div>
-        {/* </div> */}
       </Modal>
       <div
         role='alert'
