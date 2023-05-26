@@ -1,7 +1,14 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect } from 'react'
 
-const Demo = () => {
-  const [selectedBoardId, setSelectedBoardId] = useState('initialId')
+interface ComponentProps {
+  selectedBoardId: string
+  setSelectedBoardId: Dispatch<SetStateAction<string>>
+}
+
+const Demo = ({ selectedBoardId, setSelectedBoardId }: ComponentProps) => {
+  useEffect(() => {
+    console.log('component rendered')
+  }, [selectedBoardId])
 
   return (
     <>

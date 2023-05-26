@@ -1,5 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { AppContext } from '../App'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+// import { AppContext } from '../App'
 import useBoard from '../hooks/useBoard'
 import useBoards from '../hooks/useBoards'
 import iconBoard from '../images/icon-board.svg'
@@ -10,8 +17,13 @@ import iconChevronUp from '../images/icon-chevron-up.svg'
 import Modal from './Modal'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
-const Menu = (): JSX.Element => {
-  const { selectedBoardId, setSelectedBoardId } = useContext(AppContext)
+interface ComponentProps {
+  selectedBoardId: string
+  setSelectedBoardId: Dispatch<SetStateAction<string>>
+}
+
+const Menu = ({ selectedBoardId, setSelectedBoardId }: ComponentProps): JSX.Element => {
+  // const { selectedBoardId, setSelectedBoardId } = useContext(AppContext)
   const { status: allBoardsStatus, data: allBoards, error: allBoardsError } = useBoards()
   const {
     status: selectedBoardStatus,

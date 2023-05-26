@@ -4,7 +4,7 @@ import { render, screen, waitFor, act } from '@testing-library/react'
 import { vi } from 'vitest'
 import Demo from './Demo'
 import userEvent from '@testing-library/user-event'
-import { AppContext } from '../App'
+// import { AppContext } from '../App'
 
 describe('Demo', () => {
   const mockSetSelectedBoardId = vi.fn()
@@ -17,7 +17,12 @@ describe('Demo', () => {
     //     setSelectedBoardId: mockSetSelectedBoardId,
     //   },
     // })
-    render(<Demo />)
+    render(
+      <Demo
+        selectedBoardId={selectedBoardId}
+        setSelectedBoardId={mockSetSelectedBoardId}
+      />
+    )
 
     const button = screen.getByRole('button')
     const heading = screen.getByRole('heading')
@@ -26,7 +31,8 @@ describe('Demo', () => {
 
     await userEvent.click(button)
 
-    expect(heading).toHaveTextContent('abc123')
-    // expect(mockSetSelectedBoardId).toHaveBeenCalledWith('abc123')
+    expect(mockSetSelectedBoardId).toHaveBeenCalledWith('abc123')
+    screen.debug()
+    // expect(heading).toHaveTextContent('abc123')
   })
 })

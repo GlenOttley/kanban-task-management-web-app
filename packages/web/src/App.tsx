@@ -6,15 +6,15 @@ import Boards from './components/Boards'
 import Board from './components/Board'
 import Demo from './components/Demo'
 
-export interface Context {
-  selectedBoardId: string
-  setSelectedBoardId: Dispatch<SetStateAction<string>>
-}
+// export interface Context {
+//   selectedBoardId: string
+//   setSelectedBoardId: Dispatch<SetStateAction<string>>
+// }
 
-export const AppContext = createContext<Context>({
-  selectedBoardId: '',
-  setSelectedBoardId: () => {},
-})
+// export const AppContext = createContext<Context>({
+//   selectedBoardId: '',
+//   setSelectedBoardId: () => {},
+// })
 
 const queryClient = new QueryClient()
 
@@ -25,16 +25,16 @@ const App = (): JSX.Element => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppContext.Provider
+      {/* <AppContext.Provider
         value={{
           selectedBoardId,
           setSelectedBoardId,
         }}
-      >
-        <Nav />
-        {/* <Demo /> */}
-        <ReactQueryDevtools panelPosition='bottom' position='bottom-right' />
-      </AppContext.Provider>
+      > */}
+      <Nav selectedBoardId={selectedBoardId} setSelectedBoardId={setSelectedBoardId} />
+      <Demo selectedBoardId={selectedBoardId} setSelectedBoardId={setSelectedBoardId} />
+      <ReactQueryDevtools panelPosition='bottom' position='bottom-right' />
+      {/* </AppContext.Provider> */}
     </QueryClientProvider>
   )
 }
