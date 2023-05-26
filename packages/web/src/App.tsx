@@ -4,17 +4,19 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Nav from './components/Nav'
 import Boards from './components/Boards'
 import Board from './components/Board'
+import Demo from './components/Demo'
 
-interface Context {
+export interface Context {
   selectedBoardId: string
   setSelectedBoardId: Dispatch<SetStateAction<string>>
 }
 
-const queryClient = new QueryClient()
 export const AppContext = createContext<Context>({
   selectedBoardId: '',
   setSelectedBoardId: () => {},
 })
+
+const queryClient = new QueryClient()
 
 const App = (): JSX.Element => {
   const [selectedBoardId, setSelectedBoardId] = useState<string>(
@@ -30,7 +32,7 @@ const App = (): JSX.Element => {
         }}
       >
         <Nav />
-        <Board />
+        {/* <Demo /> */}
         <ReactQueryDevtools panelPosition='bottom' position='bottom-right' />
       </AppContext.Provider>
     </QueryClientProvider>

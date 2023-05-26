@@ -1,12 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import logo from '../images/logo-mobile.svg'
 import iconPlus from '../images/icon-add-task-mobile.svg'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
 import Menu from './Menu'
 
 const Nav = (): JSX.Element => {
-  const menuItems = ['Platform Launch', 'Marketing Plan', 'Roadmap']
-
   return (
     <header className='relative z-20 flex items-center justify-between px-4 py-4 bg-white'>
       <div className='flex gap-4'>

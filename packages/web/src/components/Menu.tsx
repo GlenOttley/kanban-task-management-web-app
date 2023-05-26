@@ -3,13 +3,15 @@ import { AppContext } from '../App'
 import useBoard from '../hooks/useBoard'
 import useBoards from '../hooks/useBoards'
 import iconBoard from '../images/icon-board.svg'
+import iconBoardWhite from '../images/icon-board-white.svg'
+import iconBoardPurple from '../images/icon-board-purple.svg'
 import iconChevronDown from '../images/icon-chevron-down.svg'
 import iconChevronUp from '../images/icon-chevron-up.svg'
 import Modal from './Modal'
+import { useForm, SubmitHandler } from 'react-hook-form'
 
 const Menu = (): JSX.Element => {
-  const context = useContext(AppContext)
-  const { selectedBoardId, setSelectedBoardId } = context
+  const { selectedBoardId, setSelectedBoardId } = useContext(AppContext)
   const { status: allBoardsStatus, data: allBoards, error: allBoardsError } = useBoards()
   const {
     status: selectedBoardStatus,
@@ -17,7 +19,8 @@ const Menu = (): JSX.Element => {
     error: selectedBoardError,
   } = useBoard(selectedBoardId)
 
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false)
+  const [menuOpen, setMenuOpen] = useState<boolean>(false)
+  const [newBoard, setNewBoardOpen] = useState<boolean>(false)
   const [activeIndex, setActiveIndex] = useState<number>(0)
   const [menuFeedback, setMenuFeedback] = useState<string>('')
 
@@ -46,12 +49,12 @@ const Menu = (): JSX.Element => {
   }
 
   function toggleDialog() {
-    setDialogOpen(!dialogOpen)
+    setMenuOpen(!menuOpen)
     menuItemsRef.current[activeIndex]?.focus()
   }
 
   function closeDialog() {
-    setDialogOpen(false)
+    setMenuOpen(false)
   }
 
   function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
@@ -85,11 +88,16 @@ const Menu = (): JSX.Element => {
     )
   }
 
+  function openNewBoardModal() {
+    setMenuOpen(false)
+    setNewBoardOpen(true)
+  }
+
   useEffect(() => {
-    if (dialogOpen) {
+    if (menuOpen) {
       menuItemsRef.current[activeIndex]?.focus()
     }
-  }, [dialogOpen, activeIndex])
+  }, [menuOpen, activeIndex])
 
   useEffect(() => {
     setActiveIndex(Number(allBoards?.findIndex((board) => board._id === selectedBoardId)))
@@ -108,20 +116,20 @@ const Menu = (): JSX.Element => {
             ref={menuButtonRef}
             className='heading-lg'
             aria-haspopup='true'
-            aria-expanded={dialogOpen}
+            aria-expanded={menuOpen}
             onKeyDown={handleMenuKeydown}
             onClick={handleMenuClick}
           >
             {selectedBoard.name}
             <img
-              src={dialogOpen ? iconChevronUp : iconChevronDown}
+              src={menuOpen ? iconChevronUp : iconChevronDown}
               aria-hidden='true'
               className='ml-[9px] inline-block'
             />
           </button>
           <Modal
-            open={dialogOpen}
-            setOpen={setDialogOpen}
+            open={menuOpen}
+            setOpen={setMenuOpen}
             triggerElement={menuButtonRef}
             dialogStyles={{
               top: '80px',
@@ -135,7 +143,7 @@ const Menu = (): JSX.Element => {
               role='menu'
               className='flex flex-col items-start bg-white rounded-lg whitespace-nowrap'
             >
-              <h2 className='px-6 py-4 heading-sm text-grey-medium'>
+              <h2 className='px-6 py-4 heading-sm text-grey-medium' aria-hidden='true'>
                 ALL BOARDS ({allBoards?.length})
               </h2>
               {allBoards?.map((board, index) => (
@@ -152,10 +160,23 @@ const Menu = (): JSX.Element => {
                     'bg-purple text-white rounded-e-full'
                   }`}
                 >
-                  <img src={iconBoard} aria-hidden='true' className='inline-block mr-3' />
+                  <img
+                    src={board._id === selectedBoard._id ? iconBoardWhite : iconBoard}
+                    aria-hidden='true'
+                    className='inline-block mr-3'
+                  />
                   {board.name}
                 </button>
               ))}
+              <button className='px-6 py-3 text-purple'>
+                <img
+                  src={iconBoardPurple}
+                  aria-hidden='true'
+                  className='inline-block mr-3 fill-purple'
+                  onClick={openNewBoardModal}
+                />
+                + Create New Board
+              </button>
             </div>
           </Modal>
           <div
