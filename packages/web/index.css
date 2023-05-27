@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  *:focus-visible {
+    @apply !outline-none !ring-1 !ring-purple;
+  }
+}
+
 @layer components {
   .btn {
     @apply rounded-[20px] font-bold px-[18px];
@@ -39,7 +45,7 @@
     @apply font-bold text-xs leading-[15px] tracking-[2.4px];
   }
   .body-lg {
-    @apply font-medium text-2xl leading-[23px];
+    @apply font-medium text-[13px] leading-[23px];
   }
   .body-sm {
     @apply font-bold text-xs leading-[15px];

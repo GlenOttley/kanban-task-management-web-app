@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { AppContext } from '../App'
+import { AppContext } from '../Context'
 import useBoard from '../hooks/useBoard'
 import useBoards from '../hooks/useBoards'
 import iconBoard from '../images/icon-board.svg'
@@ -8,7 +8,7 @@ import iconBoardPurple from '../images/icon-board-purple.svg'
 import iconChevronDown from '../images/icon-chevron-down.svg'
 import iconChevronUp from '../images/icon-chevron-up.svg'
 import Modal from './Modal'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import NewBoardForm from './NewBoardForm'
 
 const Menu = (): JSX.Element => {
   const { selectedBoardId, setSelectedBoardId } = useContext(AppContext)
@@ -20,7 +20,7 @@ const Menu = (): JSX.Element => {
   } = useBoard(selectedBoardId)
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
-  const [newBoard, setNewBoardOpen] = useState<boolean>(false)
+  const [newBoardOpen, setNewBoardOpen] = useState<boolean>(true)
   const [activeIndex, setActiveIndex] = useState<number>(0)
   const [menuFeedback, setMenuFeedback] = useState<string>('')
 
@@ -91,6 +91,7 @@ const Menu = (): JSX.Element => {
   function openNewBoardModal() {
     setMenuOpen(false)
     setNewBoardOpen(true)
+    console.log('new board menu is ', newBoardOpen)
   }
 
   useEffect(() => {
@@ -168,15 +169,22 @@ const Menu = (): JSX.Element => {
                   {board.name}
                 </button>
               ))}
-              <button className='px-6 py-3 text-purple'>
+              <button className='px-6 py-3 text-purple' onClick={openNewBoardModal}>
                 <img
                   src={iconBoardPurple}
                   aria-hidden='true'
                   className='inline-block mr-3 fill-purple'
-                  onClick={openNewBoardModal}
                 />
                 + Create New Board
               </button>
+            </div>
+          </Modal>
+          <Modal open={newBoardOpen} setOpen={setNewBoardOpen} dialogClass='container'>
+            <div
+              role='menu'
+              className='flex flex-col items-start bg-white rounded-lg whitespace-nowrap'
+            >
+              <NewBoardForm />
             </div>
           </Modal>
           <div

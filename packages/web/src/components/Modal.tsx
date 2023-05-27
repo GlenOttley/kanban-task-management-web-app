@@ -14,7 +14,9 @@ interface ComponentProps {
   setOpen: Dispatch<SetStateAction<boolean>>
   triggerElement?: MutableRefObject<any>
   dialogStyles?: React.CSSProperties
+  dialogClass?: string
   backdropStyles?: React.CSSProperties
+  backdropClass?: string
 }
 
 const Modal = ({
@@ -23,7 +25,9 @@ const Modal = ({
   setOpen,
   triggerElement,
   dialogStyles,
+  dialogClass,
   backdropStyles,
+  backdropClass,
 }: ComponentProps): JSX.Element => {
   const dialogRef = useRef<HTMLDivElement | null>(null)
 
@@ -35,9 +39,13 @@ const Modal = ({
       const isTargetHigherZIndex =
         target.style.zIndex && parseInt(target.style.zIndex, 10) > 20
 
-      if (!isModalContentClicked && !isTargetHigherZIndex && !isTriggerElementClicked) {
-        setOpen(false)
-      }
+      /* 
+      TODO re-implement this function so that clicking outside will close the modal 
+      currently this prevents the Add New Board button from working within the Menu component
+      */
+      // if (!isModalContentClicked && !isTargetHigherZIndex && !isTriggerElementClicked) {
+      //   setOpen(false)
+      // }
     }
 
     document.addEventListener('click', handleClickOutside)
@@ -60,6 +68,7 @@ const Modal = ({
           zIndex: '10',
           ...backdropStyles,
         }}
+        className={backdropClass}
       >
         <div
           role='dialog'
@@ -72,6 +81,7 @@ const Modal = ({
             zIndex: '20',
             ...dialogStyles,
           }}
+          className={dialogClass}
         >
           {children}
         </div>

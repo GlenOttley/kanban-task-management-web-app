@@ -38,7 +38,6 @@ const columnSchema: Schema<Column> = new Schema({
   },
   tasks: {
     type: [taskSchema],
-    _id: false,
   },
 })
 
@@ -52,6 +51,6 @@ const boardSchema: Schema<Board> = new Schema({
   },
 })
 
-export interface ISavedBoardDocument extends Board, Omit<Document, '_id'> {}
+export interface SavedBoardDocument extends Board, Omit<Document, '_id'> {}
 
-export default model<Board>('Board', boardSchema)
+export default model<SavedBoardDocument>('Board', boardSchema)

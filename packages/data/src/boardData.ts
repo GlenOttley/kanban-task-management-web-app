@@ -2,6 +2,7 @@ import { Board } from 'types'
 
 export const boardData: Board[] = [
   {
+    _id: '646bed58f3f236e423e58f30',
     name: 'Platform Launch',
     columns: [
       {
@@ -295,6 +296,7 @@ export const boardData: Board[] = [
     ],
   },
   {
+    _id: '646bed58f3f236e423e58f45',
     name: 'Marketing Plan',
     columns: [
       {
@@ -386,6 +388,7 @@ export const boardData: Board[] = [
     ],
   },
   {
+    _id: '646bed58f3f236e423e58f4c',
     name: 'Roadmap',
     columns: [
       {

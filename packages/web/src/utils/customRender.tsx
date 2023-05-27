@@ -1,21 +1,14 @@
 import React, { ReactElement } from 'react'
 import { render } from '@testing-library/react'
-import { AppContext, type Context } from '../App'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-interface ExtendedRenderOptions {
-  providerProps: Context
-}
+import Context from '../Context'
 
 const queryClient = new QueryClient()
 
-const renderWithContext = (
-  ui: ReactElement,
-  { providerProps, ...renderOptions }: ExtendedRenderOptions
-) => {
+const renderWithContext = (ui: ReactElement) => {
   return render(
     <QueryClientProvider client={queryClient}>
-      <AppContext.Provider value={providerProps}>{ui}</AppContext.Provider>
+      <Context>{ui}</Context>
     </QueryClientProvider>
   )
 }
