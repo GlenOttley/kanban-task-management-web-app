@@ -41,15 +41,18 @@ const columnSchema: Schema<Column> = new Schema({
   },
 })
 
-const boardSchema: Schema<Board> = new Schema({
-  name: {
-    type: String,
-    required: true,
+const boardSchema: Schema<Board> = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    columns: {
+      type: [columnSchema],
+    },
   },
-  columns: {
-    type: [columnSchema],
-  },
-})
+  { versionKey: false }
+)
 
 export interface SavedBoardDocument extends Board, Omit<Document, '_id'> {}
 

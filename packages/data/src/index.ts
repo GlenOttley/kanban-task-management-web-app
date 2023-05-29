@@ -1,3 +1,4 @@
 import { boardData } from './boardData'
+import { testBoard } from './testData'
 
-export { boardData }
+export { boardData, testBoard }

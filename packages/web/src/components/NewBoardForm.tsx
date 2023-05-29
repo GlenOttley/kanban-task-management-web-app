@@ -1,18 +1,18 @@
 import React, { useRef, useState } from 'react'
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
-import Input from './Input'
 import IconCross from '../images/icon-cross.svg'
+import useCreateBoard from '../hooks/useCreateBoard'
 
 interface Column {
   name: string
 }
 
 interface Inputs {
-  boardName: string
+  name: string
   columns: Column[]
 }
 
-const NewBoardForm = () => {
+const NewBoardForm = (): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -31,9 +31,11 @@ const NewBoardForm = () => {
       required: "Can't be empty",
     },
   })
+  const { mutate, status } = useCreateBoard()
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
+    mutate(data)
+    console.log(status)
   }
 
   const [formFeedback, setFormFeedback] = useState<string>('')
@@ -49,7 +51,7 @@ const NewBoardForm = () => {
             <label htmlFor='boardName' className='body-sm text-grey-medium'>
               Board Name
             </label>
-            {errors.boardName && (
+            {errors.name && (
               <span
                 className='absolute right-0 pr-4 top-8 body-lg text-red'
                 id='boardNameError'
@@ -63,8 +65,8 @@ const NewBoardForm = () => {
               placeholder='e.g. Web Design'
               aria-describedby='boardNameError'
               className={`px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg placeholder:body-lg placeholder:text-black placeholder:opacity-25 
-              ${errors.boardName && 'error border-red !border-opacity-100'}`}
-              {...register('boardName', { required: true })}
+              ${errors.name && 'error border-red !border-opacity-100'}`}
+              {...register('name', { required: true })}
             />
           </div>
         </fieldset>

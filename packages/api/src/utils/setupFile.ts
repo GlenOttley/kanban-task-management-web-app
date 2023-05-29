@@ -7,9 +7,9 @@ beforeAll(async () => {
   await mongoose.connect(mongoServer.getUri())
 })
 
-// beforeEach(async () => {
-//   await Board.deleteMany()
-// })
+beforeEach(async () => {
+  await Board.deleteMany()
+})
 
 afterAll(async () => {
   await mongoose.disconnect()
