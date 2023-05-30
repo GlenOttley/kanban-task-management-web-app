@@ -6,7 +6,7 @@ import Menu from './Menu'
 
 const Nav = (): JSX.Element => {
   return (
-    <header className='relative z-20 flex items-center justify-between px-4 py-4 bg-white'>
+    <header className='sticky top-0 z-20 flex items-center justify-between px-4 py-4 bg-white'>
       <div className='flex gap-4'>
         <img src={logo} />
         <Menu />

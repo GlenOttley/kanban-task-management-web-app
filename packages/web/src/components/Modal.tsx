@@ -66,6 +66,7 @@ const Modal = ({
           position: 'fixed',
           inset: '0px',
           zIndex: '10',
+          // overflowY: 'scroll',
           ...backdropStyles,
         }}
         className={backdropClass}
@@ -74,7 +75,7 @@ const Modal = ({
           role='dialog'
           ref={dialogRef}
           style={{
-            position: 'fixed',
+            position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translateX(-50%) translateY(-50%)',

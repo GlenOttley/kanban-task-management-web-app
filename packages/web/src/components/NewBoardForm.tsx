@@ -1,8 +1,21 @@
-import React, { useRef, useState } from 'react'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useRef,
+  useState,
+  useContext,
+  useEffect,
+} from 'react'
+import { AppContext } from '../Context'
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
 import IconCross from '../images/icon-cross.svg'
 import useCreateBoard from '../hooks/useCreateBoard'
+import useBoards from '../hooks/useBoards'
+import Toast from './Toast'
 
+interface ComponentProps {
+  setNewBoardOpen: Dispatch<SetStateAction<boolean>>
+}
 interface Column {
   name: string
 }
@@ -12,7 +25,9 @@ interface Inputs {
   columns: Column[]
 }
 
-const NewBoardForm = (): JSX.Element => {
+const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
+  const { setSelectedBoardId, setToastDetails } = useContext(AppContext)
+
   const {
     register,
     handleSubmit,
@@ -31,15 +46,25 @@ const NewBoardForm = (): JSX.Element => {
       required: "Can't be empty",
     },
   })
-  const { mutate, status } = useCreateBoard()
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    mutate(data)
-    console.log(status)
+  const { isLoading, isError, isSuccess, mutate, data: response } = useCreateBoard()
+  const { refetch } = useBoards()
+
+  const onSubmit: SubmitHandler<Inputs> = async (formData) => {
+    mutate(formData)
   }
 
   const [formFeedback, setFormFeedback] = useState<string>('')
   const formFeedbackRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSelectedBoardId(response.data._id)
+      refetch()
+      setToastDetails({ status: 'success', message: 'Board created successfully' })
+      setNewBoardOpen(false)
+    }
+  }, [isSuccess])
 
   return (
     <div className='w-full p-6 rounded-md'>
@@ -114,6 +139,7 @@ const NewBoardForm = (): JSX.Element => {
           ))}
           <button
             type='button'
+            disabled={isLoading}
             className='w-full mb-6 btn btn-sm btn-secondary'
             aria-label='Add new column'
             onClick={() => {
@@ -124,8 +150,12 @@ const NewBoardForm = (): JSX.Element => {
           </button>
         </fieldset>
 
-        <button type='submit' className='w-full mb-6 btn btn-sm btn-primary'>
-          Create New Board
+        <button
+          type='submit'
+          disabled={isLoading}
+          className='w-full mb-6 btn btn-sm btn-primary'
+        >
+          {isLoading ? '...Please Wait' : 'Create New Board'}
         </button>
 
         <div

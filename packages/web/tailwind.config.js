@@ -30,12 +30,14 @@ module.exports = {
         DEFAULT: '16px',
       },
     },
-    borderRadius: {
-      sm: '4px',
-      md: '6px',
-      lg: '8px',
+    extend: {
+      borderRadius: {
+        sm: '4px',
+        md: '6px',
+        lg: '8px',
+      },
     },
-    extend: {},
   },
+
   plugins: [],
 }

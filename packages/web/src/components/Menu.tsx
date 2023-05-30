@@ -12,7 +12,12 @@ import NewBoardForm from './NewBoardForm'
 
 const Menu = (): JSX.Element => {
   const { selectedBoardId, setSelectedBoardId } = useContext(AppContext)
-  const { status: allBoardsStatus, data: allBoards, error: allBoardsError } = useBoards()
+  const {
+    status: allBoardsStatus,
+    data: allBoards,
+    error: allBoardsError,
+    refetch,
+  } = useBoards()
   const {
     status: selectedBoardStatus,
     data: selectedBoard,
@@ -20,7 +25,7 @@ const Menu = (): JSX.Element => {
   } = useBoard(selectedBoardId)
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
-  const [newBoardOpen, setNewBoardOpen] = useState<boolean>(true)
+  const [newBoardOpen, setNewBoardOpen] = useState<boolean>(false)
   const [activeIndex, setActiveIndex] = useState<number>(0)
   const [menuFeedback, setMenuFeedback] = useState<string>('')
 
@@ -91,7 +96,6 @@ const Menu = (): JSX.Element => {
   function openNewBoardModal() {
     setMenuOpen(false)
     setNewBoardOpen(true)
-    console.log('new board menu is ', newBoardOpen)
   }
 
   useEffect(() => {
@@ -137,12 +141,15 @@ const Menu = (): JSX.Element => {
               left: '54px',
               right: '54px',
               transform: 'none',
+              maxHeight: '600px',
+              overflowY: 'scroll',
             }}
+            dialogClass='rounded-lg'
           >
             <div
               ref={menuRef}
               role='menu'
-              className='flex flex-col items-start bg-white rounded-lg whitespace-nowrap'
+              className='flex flex-col items-start bg-white whitespace-nowrap'
             >
               <h2 className='px-6 py-4 heading-sm text-grey-medium' aria-hidden='true'>
                 ALL BOARDS ({allBoards?.length})
@@ -184,7 +191,7 @@ const Menu = (): JSX.Element => {
               role='menu'
               className='flex flex-col items-start bg-white rounded-lg whitespace-nowrap'
             >
-              <NewBoardForm />
+              <NewBoardForm setNewBoardOpen={setNewBoardOpen} />
             </div>
           </Modal>
           <div

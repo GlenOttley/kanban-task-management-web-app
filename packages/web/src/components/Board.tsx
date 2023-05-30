@@ -1,10 +1,9 @@
 import React, { useContext } from 'react'
 import useBoard from '../hooks/useBoard'
-import { AppContext } from '../App'
+import { AppContext } from '../Context'
 
 const Board = () => {
-  const context = useContext(AppContext)
-  const { selectedBoardId, setSelectedBoardId } = context
+  const { selectedBoardId, setSelectedBoardId } = useContext(AppContext)
   const { status, data: board, error } = useBoard(selectedBoardId)
   return (
     <>
@@ -14,10 +13,10 @@ const Board = () => {
         <span>Error: {error?.message}</span>
       ) : (
         <div className='flex gap-6'>
-          {board.columns.map((col) => (
-            <div key={col._id}>
-              <h1 className='text-xl'>{col.name}</h1>
-              {col.tasks.map((task) => (
+          {board?.columns?.map((column) => (
+            <div key={column._id}>
+              <h1 className='text-xl'>{column.name}</h1>
+              {column?.tasks?.map((task) => (
                 <h3 key={task._id} className='text-lg'>
                   {task.title}
                 </h3>
