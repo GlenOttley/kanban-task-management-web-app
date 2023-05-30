@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import iconSuccess from '../images/icon-success.svg'
 import iconWarning from '../images/icon-warning.svg'
 import iconInfo from '../images/icon-info.svg'
@@ -10,34 +10,32 @@ export interface Toast {
   duration?: number
 }
 
-const Toast = (): JSX.Element => {
-  const [visible, setVisible] = useState<boolean>(true)
+const Toast = (): JSX.Element | null => {
   const {
     toastDetails: { message, status, duration },
+    setToastDetails,
   } = useContext(AppContext)
 
-  // useEffect(() => {
-  //   let timer: NodeJS.Timeout
-  //   if (message) {
-  //     setVisible(true)
-  //     timer = setTimeout(() => {
-  //       setVisible(false)
-  //     }, duration || 6000)
-  //   }
-  //   return () => {
-  //     if (timer) {
-  //       clearTimeout(timer)
-  //     }
-  //   }
-  // }, [message])
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    if (message) {
+      timer = setTimeout(() => {
+        setToastDetails({ message: '' })
+      }, duration || 6000)
+    }
+    return () => {
+      if (timer) {
+        clearTimeout(timer)
+      }
+    }
+  }, [message])
 
   return (
     <div
       role='status'
-      aria-live='assertive'
-      aria-atomic='true'
+      aria-live='polite'
       className={`container absolute z-20 bottom-8 transition-opacity ease-in-out duration-300 ${
-        visible ? 'opacity-100' : 'opacity-0'
+        message ? 'opacity-100' : 'opacity-0'
       }`}
     >
       <div
@@ -61,9 +59,7 @@ const Toast = (): JSX.Element => {
           className='inline-block'
         />
         <span className='sr-only'>{status}</span>
-        <p className='body-lg' aria-live='assertive'>
-          {message}
-        </p>
+        <p className='body-lg'>{message}</p>
       </div>
     </div>
   )

@@ -26,7 +26,7 @@ interface Inputs {
 }
 
 const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
-  const { setSelectedBoardId, setToastDetails } = useContext(AppContext)
+  const { setSelectedBoardId, setToastDetails, toastDetails } = useContext(AppContext)
 
   const {
     register,
@@ -61,7 +61,7 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
     if (isSuccess) {
       setSelectedBoardId(response.data._id)
       refetch()
-      setToastDetails({ status: 'success', message: 'Board created successfully' })
+      setToastDetails({ status: 'success', message: 'Board created' })
       setNewBoardOpen(false)
     }
   }, [isSuccess])
@@ -146,7 +146,7 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
               append({ name: '' })
             }}
           >
-            + Add New Column
+            <span aria-hidden='true'>+</span> Add New Column
           </button>
         </fieldset>
 
