@@ -10,6 +10,7 @@ import iconChevronUp from '../images/icon-chevron-up.svg'
 import Modal from './Modal'
 import NewBoardForm from './NewBoardForm'
 import { Board } from 'packages/types/src'
+import ThemeSwitch from './ThemeSwitch'
 
 const Menu = (): JSX.Element => {
   const { selectedBoardId, setSelectedBoardId } = useContext(AppContext)
@@ -157,7 +158,7 @@ const Menu = (): JSX.Element => {
             <div
               ref={menuRef}
               role='menu'
-              className='flex flex-col items-start bg-white whitespace-nowrap'
+              className='flex flex-col items-stretch pb-4 pr-4 bg-white dark:bg-grey-dark whitespace-nowrap'
             >
               <h2 className='px-6 py-4 heading-sm text-grey-medium' aria-hidden='true'>
                 ALL BOARDS ({allBoards?.length})
@@ -185,15 +186,19 @@ const Menu = (): JSX.Element => {
                         }
                       }}
                       onClick={handleItemClick}
-                      className={`text-grey-medium py-3 px-6 ${
+                      className={`text-grey-medium text-left py-3 px-6  rounded-e-full ${
                         board._id === selectedBoard._id &&
                         'bg-purple text-white rounded-e-full'
+                      }
+                      ${
+                        board._id !== selectedBoard._id &&
+                        'group hover:bg-purple hover:bg-opacity-10 hover:text-purple dark:hover:bg-white'
                       }`}
                     >
                       <img
                         src={board._id === selectedBoard._id ? iconBoardWhite : iconBoard}
                         aria-hidden='true'
-                        className='inline-block mr-3'
+                        className='inline-block mr-3 group-hover:filter-purple'
                       />
                       {board.name}
                     </button>
@@ -202,7 +207,7 @@ const Menu = (): JSX.Element => {
                   return (
                     <button
                       key={index}
-                      className='px-6 py-3 text-purple'
+                      className='px-6 py-3 text-left text-purple'
                       onKeyDown={(e) => {
                         const { key } = e
                         if (
@@ -228,6 +233,10 @@ const Menu = (): JSX.Element => {
                   )
                 }
               })}
+              {/* TODO manage focus to themeswitch */}
+              <div className='w-full px-4'>
+                <ThemeSwitch />
+              </div>
             </div>
           </Modal>
           <Modal open={newBoardOpen} setOpen={setNewBoardOpen} dialogClass='container'>

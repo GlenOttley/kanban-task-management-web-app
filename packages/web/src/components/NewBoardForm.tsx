@@ -11,7 +11,6 @@ import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
 import IconCross from '../images/icon-cross.svg'
 import useCreateBoard from '../hooks/useCreateBoard'
 import useBoards from '../hooks/useBoards'
-import Toast from './Toast'
 
 interface ComponentProps {
   setNewBoardOpen: Dispatch<SetStateAction<boolean>>
@@ -26,7 +25,7 @@ interface Inputs {
 }
 
 const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
-  const { setSelectedBoardId, setToastDetails, toastDetails } = useContext(AppContext)
+  const { setSelectedBoardId, setToastDetails } = useContext(AppContext)
 
   const {
     register,
@@ -68,7 +67,7 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
 
   return (
     <div className='w-full p-6 rounded-md'>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} role='form'>
         <legend className='mb-6 heading-lg'>Add New Board</legend>
 
         <fieldset className='mb-3'>

@@ -1,16 +1,20 @@
-import React, { ReactElement } from 'react'
-import { render } from '@testing-library/react'
+import React, { ReactElement, ReactNode } from 'react'
+import { render, RenderOptions } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Context from '../Context'
 
 const queryClient = new QueryClient()
 
-const renderWithContext = (ui: ReactElement) => {
-  return render(
+const wrapper = ({ children }: { children: ReactNode }) => {
+  return (
     <QueryClientProvider client={queryClient}>
-      <Context>{ui}</Context>
+      <Context>{children}</Context>
     </QueryClientProvider>
   )
 }
 
-export default renderWithContext
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+  render(ui, { wrapper, ...options })
+
+export * from '@testing-library/react'
+export { customRender as render }

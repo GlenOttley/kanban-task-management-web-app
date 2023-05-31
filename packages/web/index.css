@@ -50,4 +50,9 @@
   .body-sm {
     @apply font-bold text-xs leading-[15px];
   }
+
+  .filter-purple {
+    filter: brightness(0) saturate(100%) invert(38%) sepia(14%) saturate(3028%)
+      hue-rotate(206deg) brightness(98%) contrast(85%);
+  }
 }
