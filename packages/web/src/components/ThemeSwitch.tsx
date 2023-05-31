@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, forwardRef } from 'react'
 import iconLightTheme from '../images/icon-light-theme.svg'
 import iconDarkTheme from '../images/icon-dark-theme.svg'
 
-const ThemeSwitch = (): JSX.Element => {
+const ThemeSwitch = forwardRef<HTMLButtonElement>((props, ref): JSX.Element => {
   const [active, setActive] = useState<boolean>(localStorage.getItem('dark') === 'true')
 
   function toggle() {
@@ -10,7 +10,6 @@ const ThemeSwitch = (): JSX.Element => {
   }
 
   useEffect(() => {
-    console.log(active)
     active
       ? document.documentElement.classList.add('dark')
       : document.documentElement.classList.remove('dark')
@@ -21,6 +20,7 @@ const ThemeSwitch = (): JSX.Element => {
     <div className='flex justify-center items-center gap-6 bg-grey-light dark:bg-grey-very-dark py-[14px] w-full rounded-md'>
       <img src={iconLightTheme} alt='light mode' />
       <button
+        ref={ref}
         aria-pressed={active}
         onClick={toggle}
         className='relative inline-block w-10 h-5 group'
@@ -35,6 +35,6 @@ const ThemeSwitch = (): JSX.Element => {
       <img src={iconDarkTheme} alt='dark mode' />
     </div>
   )
-}
+})
 
 export default ThemeSwitch

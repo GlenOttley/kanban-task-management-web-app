@@ -34,8 +34,8 @@ describe('Menu', () => {
     await userEvent.clear(columnField[0])
     const submitButton = screen.getByRole('button', { name: /create new board/i })
     await userEvent.click(submitButton)
-    const errorMessage = screen.getByText(/can't be empty/i)
-    expect(errorMessage).toBeInTheDocument()
+    const errorMessage = screen.getAllByText(/can't be empty/i)
+    expect(errorMessage[0]).toBeInTheDocument()
   })
 
   it('Should add a new column field if new column button is clicked', async () => {

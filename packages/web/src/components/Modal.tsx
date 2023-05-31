@@ -70,6 +70,7 @@ const Modal = ({
           ...backdropStyles,
         }}
         className={backdropClass}
+        onKeyDown={({ key }) => key === 'Escape' && setOpen(false)}
       >
         <div
           role='dialog'

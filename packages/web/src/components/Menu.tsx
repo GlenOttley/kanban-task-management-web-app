@@ -9,7 +9,6 @@ import iconChevronDown from '../images/icon-chevron-down.svg'
 import iconChevronUp from '../images/icon-chevron-up.svg'
 import Modal from './Modal'
 import NewBoardForm from './NewBoardForm'
-import { Board } from 'packages/types/src'
 import ThemeSwitch from './ThemeSwitch'
 
 const Menu = (): JSX.Element => {
@@ -34,8 +33,9 @@ const Menu = (): JSX.Element => {
   const menuButtonRef = useRef<HTMLButtonElement | null>(null)
   const menuRef = useRef<HTMLDivElement | null>(null)
   const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
+  const themeSwitchRef = useRef<HTMLButtonElement>(null)
 
-  const buttonMap = [...(allBoards || []), {} as Board]
+  // const buttonMap = [...(allBoards || [])]
 
   function handleMenuKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
     const { key } = e
@@ -65,22 +65,19 @@ const Menu = (): JSX.Element => {
     setMenuOpen(false)
   }
 
-  // function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
-  //   const { key } = e
-  //   if (key === 'Enter') {
-  //     e.preventDefault()
-  //     setSelectedBoardId(e.currentTarget.value)
-  //     closeDialog()
-  //   }
-  //   if (
-  //     key === 'ArrowDown' ||
-  //     key === 'ArrowUp' ||
-  //     key === 'Tab' ||
-  //     (e.shiftKey && key === 'Tab')
-  //   ) {
-  //     moveFocus(e)
-  //   }
-  // }
+  function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
+    const { key } = e
+    if (key === 'Enter') {
+      handleItemSelect(e)
+    } else if (key === 'ArrowDown' || key === 'ArrowUp') {
+      moveFocus(e)
+    } else if (!e.shiftKey && key === 'Tab') {
+      setActiveIndex(0)
+    } else if (e.shiftKey && key === 'Tab') {
+      e.preventDefault()
+      themeSwitchRef.current?.focus()
+    }
+  }
 
   function handleItemSelect(e: React.KeyboardEvent<HTMLButtonElement>) {
     e.preventDefault()
@@ -93,12 +90,12 @@ const Menu = (): JSX.Element => {
     closeDialog()
   }
 
-  function moveFocus(e: React.KeyboardEvent<HTMLButtonElement>) {
+  function moveFocus(e: React.KeyboardEvent<HTMLButtonElement | HTMLDivElement>) {
     e.preventDefault()
     setActiveIndex((prevIndex) =>
-      e.key === 'ArrowDown' || (!e.shiftKey && e.key === 'Tab')
-        ? (prevIndex + 1) % Number(buttonMap?.length)
-        : (prevIndex - 1 + Number(buttonMap?.length)) % Number(buttonMap?.length)
+      e.key === 'ArrowDown'
+        ? (prevIndex + 1) % Number(allBoards?.length)
+        : (prevIndex - 1 + Number(allBoards?.length)) % Number(allBoards?.length)
     )
   }
 
@@ -163,79 +160,54 @@ const Menu = (): JSX.Element => {
               <h2 className='px-6 py-4 heading-sm text-grey-medium' aria-hidden='true'>
                 ALL BOARDS ({allBoards?.length})
               </h2>
-              {buttonMap.map((board, index) => {
-                if (index !== buttonMap.length - 1) {
-                  return (
-                    <button
-                      key={index}
-                      value={board._id}
-                      ref={(el) => (menuItemsRef.current[index] = el)}
-                      role='menuitem'
-                      tabIndex={index === activeIndex ? 0 : -1}
-                      onKeyDown={(e) => {
-                        const { key } = e
-                        if (key === 'Enter') {
-                          handleItemSelect(e)
-                        } else if (
-                          key === 'ArrowDown' ||
-                          key === 'ArrowUp' ||
-                          key === 'Tab' ||
-                          (e.shiftKey && key === 'Tab')
-                        ) {
-                          moveFocus(e)
-                        }
-                      }}
-                      onClick={handleItemClick}
-                      className={`text-grey-medium text-left py-3 px-6  rounded-e-full ${
-                        board._id === selectedBoard._id &&
-                        'bg-purple text-white rounded-e-full'
-                      }
+              {allBoards?.map((board, index) => (
+                <button
+                  key={index}
+                  value={board._id}
+                  ref={(el) => (menuItemsRef.current[index] = el)}
+                  role='menuitem'
+                  tabIndex={index === activeIndex ? 0 : -1}
+                  onKeyDown={handleItemKeydown}
+                  onClick={handleItemClick}
+                  className={`text-grey-medium text-left py-3 px-6 rounded-e-full ${
+                    board._id === selectedBoard._id &&
+                    'bg-purple text-white rounded-e-full'
+                  }
                       ${
                         board._id !== selectedBoard._id &&
-                        'group hover:bg-purple hover:bg-opacity-10 hover:text-purple dark:hover:bg-white'
+                        'group hover:bg-purple hover:bg-opacity-10 hover:text-purple dark:hover:bg-white focus:bg-purple focus:bg-opacity-10 focus:text-purple dark:focus:bg-white'
                       }`}
-                    >
-                      <img
-                        src={board._id === selectedBoard._id ? iconBoardWhite : iconBoard}
-                        aria-hidden='true'
-                        className='inline-block mr-3 group-hover:filter-purple'
-                      />
-                      {board.name}
-                    </button>
-                  )
-                } else {
-                  return (
-                    <button
-                      key={index}
-                      className='px-6 py-3 text-left text-purple'
-                      onKeyDown={(e) => {
-                        const { key } = e
-                        if (
-                          key === 'ArrowDown' ||
-                          key === 'ArrowUp' ||
-                          key === 'Tab' ||
-                          (e.shiftKey && key === 'Tab')
-                        ) {
-                          moveFocus(e)
-                        }
-                      }}
-                      onClick={openNewBoardModal}
-                      ref={(el) => (menuItemsRef.current[index] = el)}
-                      tabIndex={index === activeIndex ? 0 : -1}
-                    >
-                      <img
-                        src={iconBoardPurple}
-                        aria-hidden='true'
-                        className='inline-block mr-3 fill-purple'
-                      />
-                      <span aria-hidden='true'>+</span> Create New Board
-                    </button>
-                  )
-                }
-              })}
-              {/* TODO manage focus to themeswitch */}
-              <div className='w-full px-4'>
-                <ThemeSwitch />
+                >
+                  <img
+                    src={board._id === selectedBoard._id ? iconBoardWhite : iconBoard}
+                    aria-hidden='true'
+                    className='inline-block mr-3 group-hover:filter-purple group-focus:filter-purple'
+                  />
+                  {board.name}
+                </button>
+              ))}
+              <button
+                className='px-6 py-3 mb-4 text-left text-purple rounded-e-full hover:bg-purple hover:bg-opacity-10 hover:text-purple dark:hover:bg-white focus:bg-purple focus:bg-opacity-10 focus:text-purple dark:focus:bg-white'
+                onClick={openNewBoardModal}
+              >
+                <img
+                  src={iconBoardPurple}
+                  aria-hidden='true'
+                  className='inline-block mr-3 fill-purple'
+                />
+                <span aria-hidden='true'>+</span> Create New Board
+              </button>
+
+              <div
+                className='w-full px-4'
+                onKeyDown={(e) => {
+                  if (!e.shiftKey && e.key === 'Tab') {
+                    e.preventDefault()
+                    menuItemsRef.current[0]?.focus()
+                  }
+                }}
+              >
+                <ThemeSwitch ref={themeSwitchRef} />
               </div>
             </div>
           </Modal>

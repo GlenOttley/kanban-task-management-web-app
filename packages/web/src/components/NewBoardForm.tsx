@@ -32,6 +32,7 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
     handleSubmit,
     formState: { errors },
     control,
+    setFocus,
   } = useForm<Inputs>({
     defaultValues: {
       columns: [{ name: 'Todo' }, { name: 'Doing' }],
@@ -55,6 +56,7 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
 
   const [formFeedback, setFormFeedback] = useState<string>('')
   const formFeedbackRef = useRef<HTMLDivElement | null>(null)
+  const submitButtonRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
     if (isSuccess) {
@@ -64,6 +66,10 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
       setNewBoardOpen(false)
     }
   }, [isSuccess])
+
+  useEffect(() => {
+    setFocus('name')
+  }, [])
 
   return (
     <div className='w-full p-6 rounded-md'>
@@ -91,6 +97,13 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
               className={`px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg placeholder:body-lg placeholder:text-black placeholder:opacity-25 
               ${errors.name && 'error border-red !border-opacity-100'}`}
               {...register('name', { required: true })}
+              // ref={boardNameInputRef}
+              onKeyDown={(e) => {
+                if (e.shiftKey && e.key === 'Tab') {
+                  e.preventDefault()
+                  submitButtonRef.current?.focus()
+                }
+              }}
             />
           </div>
         </fieldset>
@@ -153,6 +166,13 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
           type='submit'
           disabled={isLoading}
           className='w-full mb-6 btn btn-sm btn-primary'
+          ref={submitButtonRef}
+          onKeyDown={(e) => {
+            if (!e.shiftKey && e.key === 'Tab') {
+              e.preventDefault()
+              setFocus('name')
+            }
+          }}
         >
           {isLoading ? '...Please Wait' : 'Create New Board'}
         </button>
