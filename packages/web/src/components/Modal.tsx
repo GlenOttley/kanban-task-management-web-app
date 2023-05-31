@@ -81,6 +81,7 @@ const Modal = ({
             left: '50%',
             transform: 'translateX(-50%) translateY(-50%)',
             zIndex: '20',
+            maxWidth: '480px',
             ...dialogStyles,
           }}
           className={dialogClass}

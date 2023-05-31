@@ -144,13 +144,11 @@ const Menu = (): JSX.Element => {
             triggerElement={menuButtonRef}
             dialogStyles={{
               top: '80px',
-              left: '54px',
-              right: '54px',
-              transform: 'none',
+              transform: 'translateX(-50%)',
               maxHeight: '450px',
               overflowY: 'scroll',
             }}
-            dialogClass='rounded-lg'
+            dialogClass='rounded-lg min-w-[264px]'
           >
             <div
               ref={menuRef}
