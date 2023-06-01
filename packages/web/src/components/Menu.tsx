@@ -125,7 +125,7 @@ const Menu = (): JSX.Element => {
         <>
           <button
             ref={menuButtonRef}
-            className='heading-lg'
+            className='heading-lg md:text-[20px]'
             aria-haspopup='true'
             aria-expanded={menuOpen}
             onKeyDown={handleMenuKeydown}
@@ -142,18 +142,12 @@ const Menu = (): JSX.Element => {
             open={menuOpen}
             setOpen={setMenuOpen}
             triggerElement={menuButtonRef}
-            dialogStyles={{
-              top: '80px',
-              transform: 'translateX(-50%)',
-              maxHeight: '450px',
-              overflowY: 'scroll',
-            }}
-            dialogClass='rounded-lg min-w-[264px]'
+            dialogClass='min-w-[264px] top-[80px] translate-y-0 max-h-[450px] overflow-y-scroll no-scrollbar'
           >
             <div
               ref={menuRef}
               role='menu'
-              className='flex flex-col items-stretch pb-4 pr-4 bg-white dark:bg-grey-dark whitespace-nowrap'
+              className='flex flex-col items-stretch pb-4 pr-4 bg-white rounded-md dark:bg-grey-dark whitespace-nowrap'
             >
               <h2 className='px-6 py-4 heading-sm text-grey-medium' aria-hidden='true'>
                 ALL BOARDS ({allBoards?.length})
@@ -209,7 +203,7 @@ const Menu = (): JSX.Element => {
               </div>
             </div>
           </Modal>
-          <Modal open={newBoardOpen} setOpen={setNewBoardOpen} dialogClass='container'>
+          <Modal open={newBoardOpen} setOpen={setNewBoardOpen}>
             <div
               role='menu'
               className='flex flex-col items-start bg-white rounded-lg whitespace-nowrap'

@@ -16,6 +16,8 @@ export interface Context {
   setSelectedBoardId: Dispatch<SetStateAction<string>>
   toastDetails: Toast
   setToastDetails: Dispatch<SetStateAction<Toast>>
+  sidebarOpen: boolean
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const AppContext = createContext<Context>({
@@ -23,6 +25,8 @@ export const AppContext = createContext<Context>({
   setSelectedBoardId: () => {},
   toastDetails: {} as Toast,
   setToastDetails: () => {},
+  sidebarOpen: false,
+  setSidebarOpen: () => {},
 })
 
 const Context = ({ children }: ComponentProps) => {
@@ -32,14 +36,17 @@ const Context = ({ children }: ComponentProps) => {
   const [toastDetails, setToastDetails] = useState<Toast>({
     message: '',
   })
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
 
   return (
     <AppContext.Provider
       value={{
         selectedBoardId,
         setSelectedBoardId,
-        toastDetails: toastDetails,
-        setToastDetails: setToastDetails,
+        toastDetails,
+        setToastDetails,
+        sidebarOpen,
+        setSidebarOpen,
       }}
     >
       {children}

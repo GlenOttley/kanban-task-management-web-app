@@ -13,9 +13,7 @@ interface ComponentProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   triggerElement?: MutableRefObject<any>
-  dialogStyles?: React.CSSProperties
   dialogClass?: string
-  backdropStyles?: React.CSSProperties
   backdropClass?: string
 }
 
@@ -24,9 +22,7 @@ const Modal = ({
   open,
   setOpen,
   triggerElement,
-  dialogStyles,
   dialogClass,
-  backdropStyles,
   backdropClass,
 }: ComponentProps): JSX.Element => {
   const dialogRef = useRef<HTMLDivElement | null>(null)
@@ -58,33 +54,18 @@ const Modal = ({
   if (open) {
     return createPortal(
       <div
-        style={{
-          // TODO add defaults for transition
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          width: '100%',
-          height: '100%',
-          position: 'fixed',
-          inset: '0px',
-          zIndex: '10',
-          // overflowY: 'scroll',
-          ...backdropStyles,
-        }}
-        className={backdropClass}
+        // TODO add defaults for transition
+        className={`bg-[rgba(0,0,0,0.5)] bg-opacity-50 w-full h-full fixed inset-0 z-10 px-4 ${' '}`.concat(
+          "' '" + backdropClass ?? ''
+        )}
         onKeyDown={({ key }) => key === 'Escape' && setOpen(false)}
       >
         <div
           role='dialog'
           ref={dialogRef}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translateX(-50%) translateY(-50%)',
-            zIndex: '20',
-            maxWidth: '480px',
-            ...dialogStyles,
-          }}
-          className={dialogClass}
+          className={`container max-w-[512px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full z-20 ${' '}`.concat(
+            dialogClass ?? ''
+          )}
         >
           {children}
         </div>
