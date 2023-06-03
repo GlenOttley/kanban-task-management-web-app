@@ -6,7 +6,7 @@ const Board = () => {
   const { selectedBoardId, sidebarOpen } = useContext(AppContext)
   const { status, data: board, error } = useBoard(selectedBoardId)
   return (
-    <div className={`${sidebarOpen ? 'ml-[260px]' : ''}`}>
+    <>
       {status === 'loading' ? (
         <span>Loading...</span>
       ) : status === 'error' ? (
@@ -25,7 +25,7 @@ const Board = () => {
           ))}
         </div>
       )}
-    </div>
+    </>
   )
 }
 

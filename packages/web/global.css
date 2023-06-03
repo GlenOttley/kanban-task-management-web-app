@@ -9,7 +9,10 @@
     @apply !outline-none !ring-1 !ring-purple;
   }
   #root {
-    @apply h-screen;
+    @apply h-screen overflow-hidden bg-grey-light dark:bg-grey-very-dark;
+  }
+  html {
+    @apply text-black;
   }
 }
 
@@ -24,7 +27,7 @@
     @apply text-[13px] leading-[23px] py-2;
   }
   .btn-primary {
-    @apply text-white bg-purple hover:bg-purple-hover;
+    @apply text-white bg-purple hover:bg-purple-hover focus:bg-purple-hover;
   }
   .btn-secondary {
     @apply text-purple bg-purple bg-opacity-10 hover:bg-opacity-25;

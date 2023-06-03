@@ -40,6 +40,10 @@ module.exports = {
         md: '6px',
         lg: '8px',
       },
+      spacing: {
+        'sidebar-tablet': '260px',
+        'sidebar-desktop': '300px',
+      },
     },
   },
 

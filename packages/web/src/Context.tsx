@@ -18,6 +18,8 @@ export interface Context {
   setToastDetails: Dispatch<SetStateAction<Toast>>
   sidebarOpen: boolean
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
+  liveFeedback: string
+  setLiveFeedback: Dispatch<SetStateAction<string>>
 }
 
 export const AppContext = createContext<Context>({
@@ -27,6 +29,8 @@ export const AppContext = createContext<Context>({
   setToastDetails: () => {},
   sidebarOpen: false,
   setSidebarOpen: () => {},
+  liveFeedback: '',
+  setLiveFeedback: () => {},
 })
 
 const Context = ({ children }: ComponentProps) => {
@@ -34,9 +38,10 @@ const Context = ({ children }: ComponentProps) => {
     '646bed58f3f236e423e58f30'
   )
   const [toastDetails, setToastDetails] = useState<Toast>({
-    message: '',
+    message: 'App rendered',
   })
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
+  const [liveFeedback, setLiveFeedback] = useState<string>('')
 
   return (
     <AppContext.Provider
@@ -47,6 +52,8 @@ const Context = ({ children }: ComponentProps) => {
         setToastDetails,
         sidebarOpen,
         setSidebarOpen,
+        liveFeedback,
+        setLiveFeedback,
       }}
     >
       {children}

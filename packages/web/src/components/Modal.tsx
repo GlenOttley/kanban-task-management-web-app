@@ -56,7 +56,7 @@ const Modal = ({
       <div
         // TODO add defaults for transition
         className={`bg-[rgba(0,0,0,0.5)] bg-opacity-50 w-full h-full fixed inset-0 z-10 px-4 ${' '}`.concat(
-          "' '" + backdropClass ?? ''
+          backdropClass ?? ''
         )}
         onKeyDown={({ key }) => key === 'Escape' && setOpen(false)}
       >

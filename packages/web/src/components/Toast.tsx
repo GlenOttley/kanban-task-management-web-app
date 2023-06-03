@@ -14,29 +14,32 @@ const Toast = (): JSX.Element | null => {
   const {
     toastDetails: { message, status, duration },
     setToastDetails,
+    sidebarOpen,
   } = useContext(AppContext)
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout
-    if (message) {
-      timer = setTimeout(() => {
-        setToastDetails({ message: '' })
-      }, duration || 6000)
-    }
-    return () => {
-      if (timer) {
-        clearTimeout(timer)
-      }
-    }
-  }, [message])
+  // useEffect(() => {
+  //   let timer: NodeJS.Timeout
+  //   if (message) {
+  //     timer = setTimeout(() => {
+  //       setToastDetails({ message: '' })
+  //     }, duration || 6000)
+  //   }
+  //   return () => {
+  //     if (timer) {
+  //       clearTimeout(timer)
+  //     }
+  //   }
+  // }, [message])
 
   return (
     <div
       role='status'
       aria-live='polite'
-      className={`container absolute z-20 bottom-8 transition-opacity ease-in-out duration-300 ${
+      className={`absolute z-20 bottom-8 left-4 right-4 transition-opacity ease-in-out duration-300 ${
         message ? 'opacity-100' : 'opacity-0'
-      }`}
+      }
+      ${sidebarOpen ? '' : ''}
+      `}
     >
       <div
         className={`bg-white py-3 px-4 rounded-md border-l-[8px] flex items-center gap-4 shadow-lg  ${
