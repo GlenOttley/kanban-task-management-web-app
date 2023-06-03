@@ -78,7 +78,7 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
 
         <fieldset className='mb-3'>
           <div className='relative flex flex-col gap-2 mb-3'>
-            <label htmlFor='boardName' className='body-sm text-grey-medium'>
+            <label htmlFor='boardName' className='body-md text-grey-medium'>
               Board Name
             </label>
             {errors.name && (
@@ -109,7 +109,7 @@ const NewBoardForm = ({ setNewBoardOpen }: ComponentProps): JSX.Element => {
         </fieldset>
 
         <fieldset className='flex flex-col'>
-          <legend className='pb-2 body-sm text-grey-medium'>Board Columns</legend>
+          <legend className='pb-2 body-md text-grey-medium'>Board Columns</legend>
           {fields.map((column, index) => (
             <React.Fragment key={index}>
               <div className='flex flex-col gap-3 mb-3 '>

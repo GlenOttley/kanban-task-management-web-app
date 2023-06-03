@@ -53,7 +53,7 @@
   .body-lg {
     @apply font-medium text-[13px] leading-[23px];
   }
-  .body-sm {
+  .body-md {
     @apply font-bold text-xs leading-[15px];
   }
 

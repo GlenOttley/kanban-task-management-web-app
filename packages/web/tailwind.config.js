@@ -16,6 +16,8 @@ module.exports = {
       white: 'hsl(0, 0%, 100%)',
       red: 'hsl(0, 78%, 63%)',
       'red-hover': 'hsl(0, 100%, 80%)',
+      blue: 'hsl(193, 75%, 59%)',
+      green: 'hsl(154, 68%, 64%)',
     },
     fontFamily: {
       sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -43,6 +45,9 @@ module.exports = {
       spacing: {
         'sidebar-tablet': '260px',
         'sidebar-desktop': '300px',
+      },
+      boxShadow: {
+        md: '0px 4px 6px rgba(54, 78, 126, 0.1)',
       },
     },
   },
