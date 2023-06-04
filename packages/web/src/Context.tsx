@@ -38,7 +38,7 @@ const Context = ({ children }: ComponentProps) => {
     '646bed58f3f236e423e58f30'
   )
   const [toastDetails, setToastDetails] = useState<Toast>({
-    message: 'App rendered',
+    message: '',
   })
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
   const [liveFeedback, setLiveFeedback] = useState<string>('')

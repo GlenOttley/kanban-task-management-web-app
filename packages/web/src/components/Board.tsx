@@ -20,9 +20,9 @@ const Board = () => {
       ) : status === 'error' ? (
         <span>Error: {error?.message}</span>
       ) : (
-        <ul className='flex gap-6 overflow-scroll'>
+        <ul className='flex gap-6'>
           {board?.columns?.map((column, index) => (
-            <li key={column._id}>
+            <li key={column._id} className='min-w-[280px] max-w-[280px]'>
               <h2 className='mb-6 uppercase heading-sm text-grey-medium'>
                 <span
                   className={`h-[15px] w-[15px] relative top-[3px] inline-block rounded-full mr-3 ${getBgColor(

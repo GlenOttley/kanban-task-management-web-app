@@ -9,7 +9,7 @@
     @apply !outline-none !ring-1 !ring-purple;
   }
   #root {
-    @apply h-screen overflow-hidden bg-grey-light dark:bg-grey-very-dark;
+    @apply h-screen overflow-x-hidden bg-grey-light dark:bg-grey-very-dark;
   }
   html {
     @apply text-black;

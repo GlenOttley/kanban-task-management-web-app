@@ -18,7 +18,7 @@ const App = (): JSX.Element => {
         }`}
       >
         <Nav />
-        <main className='h-full px-4 md:px-6'>
+        <main className='h-full px-4 overflow-scroll no-scrollbar md:px-6'>
           <Board />
           <LiveRegion />
           <Toast />
