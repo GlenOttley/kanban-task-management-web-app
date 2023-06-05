@@ -20,11 +20,17 @@ const getBoards = asyncHandler(async (req: Request, res: Response): Promise<void
 // @access  Public
 const getBoard = asyncHandler(async (req: Request, res: Response): Promise<void> => {
   try {
-    const board: SavedBoardDocument | null = await Board.findById(req.params.id)
+    const board: SavedBoardDocument | null = await Board.findById(req.params.id).populate(
+      {
+        path: 'columns.tasks',
+        model: 'Task',
+      }
+    )
     res.status(200).json(board)
   } catch (error) {
-    res.status(404)
-    throw new Error('Something went wrong, please try again')
+    res.status(404).json(error)
+    console.log(error)
+    // throw new Error('Something went wrong, please try again')
   }
 })
 
@@ -43,26 +49,26 @@ const createBoard = asyncHandler(async (req: Request, res: Response) => {
 // @route PATCH /api/boards/:id
 // @access Private
 
-const updateBoard = asyncHandler(async (req: Request<{}, {}, IBoard>, res: Response) => {
-  const { _id } = req.body
+// const updateBoard = asyncHandler(async (req: Request<{}, {}, IBoard>, res: Response) => {
+//   const { _id } = req.body
 
-  const invoice = await Invoice.findById(req.params.id)
+//   const invoice = await Invoice.findById(req.params.id)
 
-  if (invoice) {
-    invoice.createdAt = createdAt
-    invoice.paymentTerms = paymentTerms
-    invoice.paymentDue = paymentDue
-    invoice.description = description
-    invoice.status = status
-    invoice.client = client
-    invoice.items = items
-    invoice.total = total
-    const updatedInvoice = await invoice.save()
-    res.json(updatedInvoice)
-  } else {
-    res.status(404)
-    throw new Error('Invoice not found')
-  }
-})
+//   if (invoice) {
+//     invoice.createdAt = createdAt
+//     invoice.paymentTerms = paymentTerms
+//     invoice.paymentDue = paymentDue
+//     invoice.description = description
+//     invoice.status = status
+//     invoice.client = client
+//     invoice.items = items
+//     invoice.total = total
+//     const updatedInvoice = await invoice.save()
+//     res.json(updatedInvoice)
+//   } else {
+//     res.status(404)
+//     throw new Error('Invoice not found')
+//   }
+// })
 
 export { getBoards, getBoard, createBoard }

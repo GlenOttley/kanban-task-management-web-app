@@ -29,6 +29,10 @@ const taskSchema: Schema<Task> = new Schema({
     type: [subtaskSchema],
     _id: false,
   },
+  column: {
+    type: Schema.Types.ObjectId,
+    ref: 'Column',
+  },
 })
 
 const columnSchema: Schema<Column> = new Schema({
@@ -36,9 +40,12 @@ const columnSchema: Schema<Column> = new Schema({
     type: String,
     required: true,
   },
-  tasks: {
-    type: [taskSchema],
-  },
+  tasks: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Task',
+    },
+  ],
 })
 
 const boardSchema: Schema<Board> = new Schema(
@@ -54,6 +61,8 @@ const boardSchema: Schema<Board> = new Schema(
   { versionKey: false }
 )
 
-export interface SavedBoardDocument extends Board, Omit<Document, '_id'> {}
+export interface SavedTaskDocument extends Task, Omit<Document, '_id'> {}
+export const taskModel = model<SavedTaskDocument>('Task', taskSchema)
 
+export interface SavedBoardDocument extends Board, Omit<Document, '_id'> {}
 export default model<SavedBoardDocument>('Board', boardSchema)

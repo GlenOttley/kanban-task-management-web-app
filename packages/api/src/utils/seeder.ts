@@ -1,8 +1,9 @@
 import dotenv from 'dotenv'
-import { boardData } from 'data'
+import { boardData, taskData } from 'data'
 import connectDB from './db'
 import path from 'path'
 import Board from '../models/boardModel'
+import Task from '../models/taskModel'
 
 const serverRoot = path.resolve()
 
@@ -16,6 +17,9 @@ const importData = async () => {
     await Board.deleteMany()
     await Board.insertMany(boardData)
 
+    await Task.deleteMany()
+    await Task.insertMany(taskData)
+
     console.log('Data imported!')
 
     process.exit()
@@ -28,6 +32,7 @@ const importData = async () => {
 const destroyData = async () => {
   try {
     await Board.deleteMany()
+    await Task.deleteMany()
 
     console.log('Data destroyed!')
     process.exit()
