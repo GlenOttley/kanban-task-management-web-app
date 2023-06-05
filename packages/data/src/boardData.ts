@@ -1,6 +1,6 @@
 import { Board } from 'types'
 
-export const boardData: Board[] = [
+export const boardData = [
   {
     _id: '646bed58f3f236e423e58f30',
     name: 'Platform Launch',
