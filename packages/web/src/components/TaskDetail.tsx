@@ -1,12 +1,20 @@
 import React from 'react'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
-import { Task } from 'packages/types/src'
+import { Task } from 'types'
+import useToggleComplete from '../hooks/useToggleComplete'
 
 interface ComponentProps {
   task: Task
 }
 
-const TaskDetail = ({ task: { title, description, subtasks } }: ComponentProps) => {
+const TaskDetail = ({ task }: ComponentProps) => {
+  const { _id, title, description, subtasks, column } = task
+  const { mutate } = useToggleComplete()
+
+  function toggleComplete(e: React.ChangeEvent<HTMLInputElement>) {
+    mutate({ columnId: column, taskId: _id, subtaskId: e.target.id })
+  }
+
   return (
     <div className='w-full p-6 bg-white rounded-md'>
       <div className='flex items-center justify-between mb-6'>
@@ -25,7 +33,7 @@ const TaskDetail = ({ task: { title, description, subtasks } }: ComponentProps) 
           </legend>
           <div className='flex flex-col gap-2'>
             {subtasks?.map((subtask) => (
-              <div className='p-3 rounded-sm bg-grey-light'>
+              <div className='p-3 rounded-sm bg-grey-light' key={subtask._id}>
                 <label
                   className={`flex gap-4 text-xs font-bold cursor-pointer ${
                     subtask.isCompleted ? 'text-grey-medium line-through' : ''
@@ -36,7 +44,7 @@ const TaskDetail = ({ task: { title, description, subtasks } }: ComponentProps) 
                     name={subtask._id}
                     id={subtask._id}
                     checked={subtask.isCompleted}
-                    onClick={() => console.log(subtask.title)}
+                    onChange={toggleComplete}
                   />
                   {subtask.title}
                 </label>

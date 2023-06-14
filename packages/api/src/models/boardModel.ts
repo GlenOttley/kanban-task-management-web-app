@@ -27,7 +27,6 @@ const taskSchema: Schema<Task> = new Schema({
   },
   subtasks: {
     type: [subtaskSchema],
-    _id: false,
   },
   column: {
     type: Schema.Types.ObjectId,

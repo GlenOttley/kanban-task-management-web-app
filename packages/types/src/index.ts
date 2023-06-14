@@ -16,10 +16,11 @@ export interface Task {
   description: string
   status: string
   subtasks?: Subtask[]
+  column: string
 }
 
 export interface Subtask {
-  _id?: string
+  _id: string
   title: string
   isCompleted: boolean
 }

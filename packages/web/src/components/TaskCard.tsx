@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Task } from 'packages/types/src'
+import { Task } from 'types'
 import Modal from './Modal'
 import TaskDetail from './TaskDetail'
 

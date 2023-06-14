@@ -12,7 +12,7 @@ const App = (): JSX.Element => {
       <Context>
         <Home />
       </Context>
-      <ReactQueryDevtools panelPosition='bottom' position='bottom-right' />
+      <ReactQueryDevtools panelPosition='right' position='bottom-right' />
     </QueryClientProvider>
   )
 }

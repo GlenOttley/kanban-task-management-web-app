@@ -2,8 +2,7 @@ import dotenv from 'dotenv'
 import { boardData, taskData } from 'data'
 import connectDB from './db'
 import path from 'path'
-import Board from '../models/boardModel'
-import Task from '../models/taskModel'
+import Board, { taskModel as Task } from '../models/boardModel'
 
 const serverRoot = path.resolve()
 
