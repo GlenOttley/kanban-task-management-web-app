@@ -23,7 +23,7 @@ interface ComponentProps {
 const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
   const { selectedBoardId, setSelectedBoardId, setLiveFeedback } = useContext(AppContext)
   const { data: allBoards } = useBoards()
-  const { data: selectedBoard } = useBoard(selectedBoardId)
+  const { data: selectedBoard, isSuccess } = useBoard(selectedBoardId)
 
   const [newBoardOpen, setNewBoardOpen] = useState<boolean>(false)
   const [activeIndex, setActiveIndex] = useState<number>(0)
@@ -86,6 +86,10 @@ const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
     setActiveIndex(Number(allBoards?.findIndex((board) => board._id === selectedBoardId)))
     // setMenuFeedback(`${selectedBoard?.name} selected`)
   }, [selectedBoard, selectedBoardId, allBoards])
+
+  useEffect(() => {
+    isSuccess && localStorage.setItem('selectedBoardId', selectedBoardId)
+  }, [isSuccess])
 
   return newBoardOpen ? (
     <Modal open={newBoardOpen} setOpen={setNewBoardOpen}>

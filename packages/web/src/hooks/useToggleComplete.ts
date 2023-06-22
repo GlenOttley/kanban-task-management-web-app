@@ -23,7 +23,6 @@ export default function toggleCompleteMutation() {
         selectedBoardId,
       ])
       queryClient.setQueryData(['board', previousBoardData?._id], (oldQueryData: any) => {
-        console.log(previousBoardData)
         const columnToUpdate = oldQueryData.columns.find(
           (column: Column) => column._id === updatedSubtask.columnId
         )

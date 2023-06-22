@@ -27,7 +27,7 @@ const StatusMenu = ({ task }: ComponentProps) => {
   }
 
   return (
-    <div className='relative '>
+    <div className='relative'>
       <legend className='mb-2 text-xs font-bold text-grey-medium '>Status</legend>
       <button
         className='flex items-center justify-between w-full px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg'

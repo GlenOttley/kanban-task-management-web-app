@@ -49,4 +49,19 @@ const updateTaskStatus = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-export { toggleSubtaskComplete, updateTaskStatus }
+// @desc Delete a task
+// @route DELETE /api/task/:id
+// @access Private
+const deleteTask = asyncHandler(async (req: Request, res: Response) => {
+  const taskId = req.params.id
+  const task = await Task.findById(taskId)
+  if (task) {
+    await Task.findByIdAndDelete(taskId)
+    res.status(200).json(`Task id: ${taskId} has been deleted`)
+  } else {
+    res.status(404)
+    throw new Error('Task not found')
+  }
+})
+
+export { toggleSubtaskComplete, updateTaskStatus, deleteTask }

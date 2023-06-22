@@ -35,7 +35,7 @@ export const AppContext = createContext<Context>({
 
 const Context = ({ children }: ComponentProps) => {
   const [selectedBoardId, setSelectedBoardId] = useState<string>(
-    '646bed58f3f236e423e58f30'
+    localStorage.getItem('selectedBoardId') ?? '646bed58f3f236e423e58f30'
   )
   const [toastDetails, setToastDetails] = useState<Toast>({
     message: '',

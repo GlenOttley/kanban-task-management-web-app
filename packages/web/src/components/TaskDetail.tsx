@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
 import { Task } from 'types'
 import useToggleComplete from '../hooks/useToggleComplete'
 import StatusMenu from './StatusMenu'
+import DetailMenu from './DetailMenu'
 
 interface ComponentProps {
   task: Task
@@ -16,14 +17,34 @@ const TaskDetail = ({ task }: ComponentProps) => {
     mutate({ columnId: column, taskId: _id, subtaskId: e.target.id })
   }
 
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+
   return (
     <div className='w-full p-6 bg-white rounded-md'>
       <div className='flex items-center justify-between mb-6'>
         <h3 className='heading-lg'>{title}</h3>
-        <button className='px-4 translate-x-4'>
-          <img className='' src={iconVerticalEllipsis} aria-hidden='true' />
-          <span className='sr-only'>Open menu</span>
-        </button>
+        <div className='relative translate-x-4'>
+          <button
+            className='px-4'
+            onClick={() => setMenuOpen(!menuOpen)}
+            ref={menuButtonRef}
+          >
+            <img
+              className='min-h-[20px] min-w-[5px]'
+              src={iconVerticalEllipsis}
+              aria-hidden='true'
+            />
+            <span className='sr-only'>Open menu</span>
+          </button>
+          {menuOpen && (
+            <DetailMenu
+              task={task}
+              setOpen={setMenuOpen}
+              triggerElement={menuButtonRef}
+            />
+          )}
+        </div>
       </div>
       <p className='mb-6 body-lg text-grey-medium'>{description}</p>
       <form>

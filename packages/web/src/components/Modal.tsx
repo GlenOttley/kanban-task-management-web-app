@@ -27,29 +27,29 @@ const Modal = ({
 }: ComponentProps): JSX.Element => {
   const dialogRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      const isModalContentClicked = dialogRef.current?.contains(target)
-      const isTriggerElementClicked = triggerElement?.current?.contains(target)
-      const isTargetHigherZIndex =
-        target.style.zIndex && parseInt(target.style.zIndex, 10) > 20
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     const target = event.target as HTMLElement
+  //     const isModalContentClicked = dialogRef.current?.contains(target)
+  //     const isTriggerElementClicked = triggerElement?.current?.contains(target)
+  //     const isTargetHigherZIndex =
+  //       target.style.zIndex && parseInt(target.style.zIndex, 10) > 20
 
-      /* 
-      TODO re-implement this function so that clicking outside will close the modal 
-      currently this prevents the Add New Board button from working within the Menu component
-      */
-      // if (!isModalContentClicked && !isTargetHigherZIndex && !isTriggerElementClicked) {
-      //   setOpen(false)
-      // }
-    }
+  //     /*
+  //     TODO re-implement this function so that clicking outside will close the modal
+  //     currently this prevents the Add New Board button from working within the Menu component
+  //     */
+  //     // if (!isModalContentClicked && !isTargetHigherZIndex && !isTriggerElementClicked) {
+  //     //   setOpen(false)
+  //     // }
+  //   }
 
-    document.addEventListener('click', handleClickOutside)
+  //   document.addEventListener('click', handleClickOutside)
 
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [setOpen])
+  //   return () => {
+  //     document.removeEventListener('click', handleClickOutside)
+  //   }
+  // }, [setOpen])
 
   if (open) {
     return createPortal(
