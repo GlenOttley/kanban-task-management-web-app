@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { toggleComplete } from '../controllers/taskController'
+import { toggleSubtaskComplete, updateTaskStatus } from '../controllers/taskController'
 
 const router = Router()
 
-router.patch('/:id', toggleComplete)
+router.patch('/:id/toggle-subtask', toggleSubtaskComplete)
+router.patch('/:id/update-status', updateTaskStatus)
 
 export default router

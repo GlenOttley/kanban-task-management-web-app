@@ -29,7 +29,7 @@ const taskSchema: Schema<Task> = new Schema({
     type: [subtaskSchema],
   },
   column: {
-    type: Schema.Types.ObjectId,
+    // type: Schema.Types.ObjectId,
     ref: 'Column',
   },
 })
@@ -62,6 +62,9 @@ const boardSchema: Schema<Board> = new Schema(
 
 export interface SavedTaskDocument extends Task, Omit<Document, '_id'> {}
 export const taskModel = model<SavedTaskDocument>('Task', taskSchema)
+
+export interface SavedColumnDocument extends Column, Omit<Document, '_id'> {}
+export const columnModel = model<SavedColumnDocument>('Column', columnSchema)
 
 export interface SavedBoardDocument extends Board, Omit<Document, '_id'> {}
 export default model<SavedBoardDocument>('Board', boardSchema)

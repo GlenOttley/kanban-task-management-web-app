@@ -13,15 +13,33 @@ export default function toggleCompleteMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: toggleComplete,
-    onMutate: async (data) => {
+    onMutate: async (updatedSubtask) => {
       await queryClient.cancelQueries(['board'], { exact: false })
       const previousBoardData: Board | undefined = queryClient.getQueryData(['board'], {
         exact: false,
       })
-      queryClient.setQueryData(
-        ['board', previousBoardData?._id],
-        (oldQueryData: any) => {}
-      )
+      queryClient.setQueryData(['board', previousBoardData?._id], (oldQueryData: any) => {
+        const columnToUpdate = oldQueryData.columns.find(
+          (column: Column) => column._id === updatedSubtask.columnId
+        )
+        const taskToUpdate = columnToUpdate.tasks.find(
+          (task: Task) => task._id === updatedSubtask.taskId
+        )
+        const subtaskToUpdate = taskToUpdate.subtasks.find(
+          (subtask: Subtask) => subtask._id === updatedSubtask.subtaskId
+        )
+
+        subtaskToUpdate.isCompleted = !subtaskToUpdate.isCompleted
+
+        return oldQueryData
+      })
+      return { previousBoardData }
+    },
+    onError: (_error, _hero, context) => {
+      queryClient.setQueryData(['board'], context?.previousBoardData)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['board'])
     },
   })
 }

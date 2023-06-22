@@ -1,11 +1,11 @@
 export interface Board {
-  _id?: string
+  _id: string
   name: string
   columns?: Column[]
 }
 
 export interface Column {
-  _id?: string
+  _id: string
   name: string
   tasks?: Task[]
 }

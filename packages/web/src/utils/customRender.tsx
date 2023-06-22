@@ -5,7 +5,7 @@ import Context from '../Context'
 
 const queryClient = new QueryClient()
 
-const wrapper = ({ children }: { children: ReactNode }) => {
+export const wrapper = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Context>{children}</Context>

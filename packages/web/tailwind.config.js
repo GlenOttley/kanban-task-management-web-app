@@ -38,6 +38,7 @@ module.exports = {
         },
       },
       borderRadius: {
+        xs: '2px',
         sm: '4px',
         md: '6px',
         lg: '8px',
@@ -52,5 +53,5 @@ module.exports = {
     },
   },
 
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }

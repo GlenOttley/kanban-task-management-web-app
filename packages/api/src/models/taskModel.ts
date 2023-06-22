@@ -30,7 +30,7 @@ export const taskSchema: Schema<Task> = new Schema({
     _id: false,
   },
   column: {
-    type: Schema.Types.ObjectId,
+    // type: Schema.Types.ObjectId,
     ref: 'Column',
   },
 })
