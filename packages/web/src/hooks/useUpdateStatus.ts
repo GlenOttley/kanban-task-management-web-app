@@ -2,12 +2,18 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { AppContext } from '../Context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Board, Column, Task, Subtask } from 'types'
+import { Board, Column, Task } from 'types'
 
-function toggleComplete(data: { taskId: string; subtaskId: string; columnId: string }) {
-  const { taskId, subtaskId } = data
-  return axios.patch(`/api/tasks/${taskId}/toggle-subtask`, {
-    subtaskId,
+function updateStatus(data: {
+  taskId: string
+  status: string
+  column: string
+  prevColumn: string
+}) {
+  const { taskId, status, column } = data
+  return axios.patch(`/api/tasks/${taskId}/update-status`, {
+    status,
+    column,
   })
 }
 
@@ -15,7 +21,7 @@ export default function toggleCompleteMutation() {
   const { selectedBoardId } = useContext(AppContext)
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: toggleComplete,
+    mutationFn: updateStatus,
     onMutate: async (updatedSubtask) => {
       await queryClient.cancelQueries(['board'], { exact: false })
       const previousBoardData: Board | undefined = queryClient.getQueryData([
@@ -23,21 +29,18 @@ export default function toggleCompleteMutation() {
         selectedBoardId,
       ])
       queryClient.setQueryData(['board', previousBoardData?._id], (oldQueryData: any) => {
-        console.log(previousBoardData)
         const columnToUpdate = oldQueryData.columns.find(
-          (column: Column) => column._id === updatedSubtask.columnId
+          (column: Column) => column._id === updatedSubtask.prevColumn
         )
         const taskToUpdate = columnToUpdate.tasks.find(
           (task: Task) => task._id === updatedSubtask.taskId
         )
-        const subtaskToUpdate = taskToUpdate.subtasks.find(
-          (subtask: Subtask) => subtask._id === updatedSubtask.subtaskId
-        )
 
-        subtaskToUpdate.isCompleted = !subtaskToUpdate.isCompleted
+        taskToUpdate.status = status
 
         return oldQueryData
       })
+
       return { previousBoardData }
     },
     onError: (_error, _hero, context) => {

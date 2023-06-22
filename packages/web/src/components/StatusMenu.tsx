@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import useBoard from '../hooks/useBoard'
+import useUpdateStatus from '../hooks/useUpdateStatus'
 import { AppContext } from '../Context'
 import { Task } from 'types'
 import iconChevronUp from '../images/icon-chevron-up.svg'
@@ -12,8 +13,18 @@ interface ComponentProps {
 const StatusMenu = ({ task }: ComponentProps) => {
   const { selectedBoardId } = useContext(AppContext)
   const { data: board } = useBoard(selectedBoardId)
+  const { mutate } = useUpdateStatus()
 
   const [open, setOpen] = useState(false)
+
+  function updateStatus(newColumnName: string, newColumnId: string) {
+    mutate({
+      taskId: task._id,
+      column: newColumnId,
+      status: newColumnName,
+      prevColumn: task.column,
+    })
+  }
 
   return (
     <div className='relative '>
@@ -50,6 +61,7 @@ const StatusMenu = ({ task }: ComponentProps) => {
               aria-checked={task.status === column.name}
               tabIndex={-1}
               type='button'
+              onClick={() => updateStatus(column.name, column._id)}
             >
               {column.name}
             </button>

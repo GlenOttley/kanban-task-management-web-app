@@ -363,7 +363,7 @@ export const taskData = [
     _id: '647dc839acf1b0a3fb66f7d6',
     title: 'Share on Show HN',
     description: '',
-    status: '',
+    status: 'Todo',
     subtasks: [
       {
         title: 'Draft out HN post',
@@ -385,7 +385,7 @@ export const taskData = [
     _id: '647dc839acf1b0a3fb66f7d7',
     title: 'Write launch article to publish on multiple channels',
     description: '',
-    status: '',
+    status: 'Todo',
     subtasks: [
       {
         title: 'Write article',
@@ -411,7 +411,7 @@ export const taskData = [
     _id: '647dc839acf1b0a3fb66f7d8',
     title: 'Launch version one',
     description: '',
-    status: '',
+    status: 'Now',
     subtasks: [
       {
         title: 'Launch privately to our waitlist',
@@ -430,7 +430,7 @@ export const taskData = [
     title: 'Review early feedback and plan next steps for roadmap',
     description:
       "Beyond the initial launch, we're keeping the initial roadmap completely empty. This meeting will help us plan out our next steps based on actual customer feedback.",
-    status: '',
+    status: 'Now',
     subtasks: [
       {
         title: 'Interview 10 customers',

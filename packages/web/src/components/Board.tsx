@@ -4,7 +4,7 @@ import { AppContext } from '../Context'
 import TaskCard from './TaskCard'
 
 const Board = () => {
-  const { selectedBoardId, sidebarOpen } = useContext(AppContext)
+  const { selectedBoardId } = useContext(AppContext)
   const { status, data: board, error } = useBoard(selectedBoardId)
   const colors = ['bg-blue', 'bg-purple', 'bg-green']
 
