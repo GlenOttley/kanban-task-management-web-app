@@ -30,7 +30,7 @@
     @apply text-white bg-purple hover:bg-purple-hover focus:bg-purple-hover;
   }
   .btn-secondary {
-    @apply text-purple bg-purple bg-opacity-10 hover:bg-opacity-25;
+    @apply text-purple bg-purple bg-opacity-10 hover:bg-opacity-25 dark:bg-white dark:text-purple;
   }
   .btn-desctructive {
     @apply text-white bg-red hover:bg-red-hover;

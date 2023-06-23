@@ -4,10 +4,13 @@ import Board from '../components/Board'
 import Toast from '../components/Toast'
 import Sidebar from '../components/Sidebar'
 import LiveRegion from '../components/LiveRegion'
+import NewBoardForm from '../components/NewBoardForm'
+import Modal from '../components/Modal'
 import { AppContext } from '../Context'
 
 const App = (): JSX.Element => {
-  const { sidebarOpen, darkMode } = useContext(AppContext)
+  const { sidebarOpen, darkMode, newBoardFormOpen, setNewBoardFormOpen } =
+    useContext(AppContext)
 
   useEffect(() => {
     darkMode
@@ -30,6 +33,16 @@ const App = (): JSX.Element => {
           <Board />
           <LiveRegion />
           <Toast />
+          {newBoardFormOpen && (
+            <Modal open={newBoardFormOpen} setOpen={setNewBoardFormOpen}>
+              <div
+                role='menu'
+                className='flex flex-col items-start bg-white rounded-lg whitespace-nowrap'
+              >
+                <NewBoardForm />
+              </div>
+            </Modal>
+          )}
         </main>
       </div>
     </>

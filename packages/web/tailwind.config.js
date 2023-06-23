@@ -18,6 +18,7 @@ module.exports = {
       'red-hover': 'hsl(0, 100%, 80%)',
       blue: 'hsl(193, 75%, 59%)',
       green: 'hsl(154, 68%, 64%)',
+      transparent: 'transparent',
     },
     fontFamily: {
       sans: ['Plus Jakarta Sans', 'sans-serif'],

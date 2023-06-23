@@ -22,6 +22,8 @@ export interface Context {
   setLiveFeedback: Dispatch<SetStateAction<string>>
   darkMode: boolean
   setDarkMode: Dispatch<SetStateAction<boolean>>
+  newBoardFormOpen: boolean
+  setNewBoardFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const AppContext = createContext<Context>({
@@ -35,6 +37,8 @@ export const AppContext = createContext<Context>({
   setLiveFeedback: () => {},
   darkMode: false,
   setDarkMode: () => {},
+  newBoardFormOpen: false,
+  setNewBoardFormOpen: () => {},
 })
 
 const Context = ({ children }: ComponentProps) => {
@@ -49,6 +53,7 @@ const Context = ({ children }: ComponentProps) => {
   const [darkMode, setDarkMode] = useState<boolean>(
     localStorage.getItem('dark') === 'true'
   )
+  const [newBoardFormOpen, setNewBoardFormOpen] = useState<boolean>(false)
 
   return (
     <AppContext.Provider
@@ -63,6 +68,8 @@ const Context = ({ children }: ComponentProps) => {
         setLiveFeedback,
         darkMode,
         setDarkMode,
+        newBoardFormOpen,
+        setNewBoardFormOpen,
       }}
     >
       {children}

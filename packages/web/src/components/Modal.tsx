@@ -61,7 +61,6 @@ const Modal = ({
         onKeyDown={({ key }) => {
           if (key === 'Escape') {
             setOpen(false)
-            console.log('modal closed')
           }
         }}
       >

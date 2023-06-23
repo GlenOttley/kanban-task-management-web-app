@@ -28,6 +28,7 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
     const [activeIndex, setActiveIndex] = useState<number>(0)
 
     const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
+    const wrapperRef = useRef<any>(null)
 
     function updateStatus(newColumnName: string, newColumnId: string) {
       mutate({
@@ -65,38 +66,52 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
       menuItemsRef.current[activeIndex]?.focus()
     }, [activeIndex, open])
 
+    useEffect(() => {
+      function handleClickOutside(event: MouseEvent) {
+        const isTriggerElementClicked = wrapperRef?.current?.contains(event.target)
+        if (!isTriggerElementClicked) {
+          setOpen(false)
+        }
+      }
+
+      document.addEventListener('click', handleClickOutside)
+      return () => document.removeEventListener('click', handleClickOutside)
+    }, [])
+
     return (
       <div className='relative'>
         <legend className='mb-2 text-xs font-bold text-grey-medium dark:text-white'>
           Status
         </legend>
-        <button
-          className={`flex items-center justify-between w-full px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg dark:text-white ${
-            open ? 'ring-1 ring-purple' : ''
-          }`}
-          type='button'
-          aria-haspopup='true'
-          aria-controls='statusmenu'
-          tabIndex={0}
-          aria-label={`Current status: ${task.status}`}
-          ref={ref}
-          onClick={() => setOpen(!open)}
-          onKeyDown={(e) => {
-            if (!e.shiftKey && e.key === 'Tab') {
-              e.preventDefault()
-              nextItemRef.current?.focus()
-            } else if (e.key === 'Enter' || e.key === ' ') {
-              menuItemsRef.current[activeIndex]?.focus()
-            }
-          }}
-        >
-          {task.status}
-          <img
-            src={open ? iconChevronUp : iconChevronDown}
-            aria-hidden='true'
-            className='ml-[9px] inline-block'
-          />
-        </button>
+        <div ref={wrapperRef}>
+          <button
+            className={`flex items-center justify-between w-full px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg dark:text-white ${
+              open ? 'ring-1 ring-purple' : ''
+            }`}
+            type='button'
+            aria-haspopup='true'
+            aria-controls='statusmenu'
+            tabIndex={0}
+            aria-label={`Current status: ${task.status}`}
+            ref={ref}
+            onClick={() => setOpen(!open)}
+            onKeyDown={(e) => {
+              if (!e.shiftKey && e.key === 'Tab') {
+                e.preventDefault()
+                nextItemRef.current?.focus()
+              } else if (e.key === 'Enter' || e.key === ' ') {
+                menuItemsRef.current[activeIndex]?.focus()
+              }
+            }}
+          >
+            {task.status}
+            <img
+              src={open ? iconChevronUp : iconChevronDown}
+              aria-hidden='true'
+              className='ml-[9px] inline-block'
+            />
+          </button>
+        </div>
         {open && (
           <div
             className='absolute w-full p-4 bg-white rounded-lg top-[75px] flex flex-col items-start dark:bg-grey-very-dark'

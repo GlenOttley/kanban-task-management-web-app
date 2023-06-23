@@ -12,8 +12,6 @@ import useBoards from '../hooks/useBoards'
 import iconBoard from '../images/icon-board.svg'
 import iconBoardWhite from '../images/icon-board-white.svg'
 import iconBoardPurple from '../images/icon-board-purple.svg'
-import Modal from './Modal'
-import NewBoardForm from './NewBoardForm'
 import ThemeSwitch from './ThemeSwitch'
 
 interface ComponentProps {
@@ -27,11 +25,11 @@ const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
     setLiveFeedback,
     sidebarOpen,
     setSidebarOpen,
+    setNewBoardFormOpen,
   } = useContext(AppContext)
   const { data: allBoards } = useBoards()
   const { data: selectedBoard, isSuccess } = useBoard(selectedBoardId)
 
-  const [newBoardOpen, setNewBoardOpen] = useState<boolean>(false)
   const [activeIndex, setActiveIndex] = useState<number>(0)
   // const [menuFeedback, setMenuFeedback] = useState<string>('')
 
@@ -82,7 +80,9 @@ const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
 
   function openNewBoardModal() {
     // setModalOpen(false)
-    setNewBoardOpen(true)
+    // setNewBoardOpen(true)
+    setNewBoardFormOpen(true)
+    closeMenu()
   }
 
   useEffect(() => {
@@ -98,16 +98,7 @@ const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
     isSuccess && localStorage.setItem('selectedBoardId', selectedBoardId)
   }, [isSuccess])
 
-  return newBoardOpen ? (
-    <Modal open={newBoardOpen} setOpen={setNewBoardOpen}>
-      <div
-        role='menu'
-        className='flex flex-col items-start bg-white rounded-lg whitespace-nowrap'
-      >
-        <NewBoardForm setNewBoardOpen={setNewBoardOpen} />
-      </div>
-    </Modal>
-  ) : (
+  return (
     <>
       <div
         ref={menuRef}
