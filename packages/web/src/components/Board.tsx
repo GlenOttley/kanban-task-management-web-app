@@ -5,7 +5,7 @@ import TaskCard from './TaskCard'
 
 const Board = () => {
   const { selectedBoardId } = useContext(AppContext)
-  const { status, data: board, error } = useBoard(selectedBoardId)
+  const { status, data: board, error, refetch } = useBoard(selectedBoardId)
   const colors = ['bg-blue', 'bg-purple', 'bg-green']
 
   function getBgColor(index: number) {
