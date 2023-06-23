@@ -17,6 +17,7 @@ const App = (): JSX.Element => {
 
   return (
     <>
+      <Sidebar />
       <div
         className={`h-full transition-all ${
           sidebarOpen
@@ -31,7 +32,6 @@ const App = (): JSX.Element => {
           <Toast />
         </main>
       </div>
-      <Sidebar />
     </>
   )
 }

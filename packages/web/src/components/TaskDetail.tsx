@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
 import { Task } from 'types'
 import useToggleComplete from '../hooks/useToggleComplete'
@@ -13,12 +13,17 @@ const TaskDetail = ({ task }: ComponentProps) => {
   const { _id, title, description, subtasks, column } = task
   const { mutate } = useToggleComplete()
 
-  function toggleComplete(e: React.ChangeEvent<HTMLInputElement>) {
-    mutate({ columnId: column, taskId: _id, subtaskId: e.target.id })
+  function toggleComplete(subtaskId: string) {
+    mutate({ columnId: column, taskId: _id, subtaskId })
   }
 
   const [menuOpen, setMenuOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const statusMenuRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    menuButtonRef?.current?.focus()
+  })
 
   return (
     <div className='w-full p-6 bg-white rounded-md dark:bg-grey-dark'>
@@ -27,8 +32,14 @@ const TaskDetail = ({ task }: ComponentProps) => {
         <div className='relative translate-x-4'>
           <button
             className='px-4'
-            onClick={() => setMenuOpen(!menuOpen)}
             ref={menuButtonRef}
+            onClick={() => setMenuOpen(!menuOpen)}
+            onKeyDown={(e) => {
+              if (e.shiftKey && e.key === 'Tab') {
+                e.preventDefault()
+                statusMenuRef.current?.focus()
+              }
+            }}
           >
             <img
               className='min-h-[20px] min-w-[5px]'
@@ -70,16 +81,21 @@ const TaskDetail = ({ task }: ComponentProps) => {
                     className='border-opacity-25 cursor-pointer border-grey-medium checked:bg-purple checked:hover:bg-purple checked:focus:bg-purple checked:border-purple checked:border-opacity-100 rounded-xs'
                     type='checkbox'
                     name={subtask._id}
-                    id={subtask._id}
+                    value={subtask._id}
                     checked={subtask.isCompleted}
-                    onChange={toggleComplete}
+                    onChange={() => toggleComplete(subtask._id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        toggleComplete(subtask._id)
+                      }
+                    }}
                   />
                   {subtask.title}
                 </label>
               </div>
             ))}
           </div>
-          <StatusMenu task={task} />
+          <StatusMenu task={task} ref={statusMenuRef} nextItemRef={menuButtonRef} />
         </fieldset>
       </form>
     </div>

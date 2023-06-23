@@ -21,7 +21,13 @@ interface ComponentProps {
 }
 
 const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
-  const { selectedBoardId, setSelectedBoardId, setLiveFeedback } = useContext(AppContext)
+  const {
+    selectedBoardId,
+    setSelectedBoardId,
+    setLiveFeedback,
+    sidebarOpen,
+    setSidebarOpen,
+  } = useContext(AppContext)
   const { data: allBoards } = useBoards()
   const { data: selectedBoard, isSuccess } = useBoard(selectedBoardId)
 
@@ -35,6 +41,7 @@ const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
 
   function closeMenu() {
     setModalOpen && setModalOpen(false)
+    sidebarOpen && setSidebarOpen(false)
   }
 
   function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {

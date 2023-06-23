@@ -31,7 +31,7 @@ const Board = () => {
                 ></span>
                 {column.name} ({column.tasks?.length})
               </h2>
-              <ul className='flex flex-col gap-5'>
+              <ul className='flex flex-col gap-5' aria-label={column.name}>
                 {column?.tasks?.map((task) => (
                   <TaskCard key={task._id} task={task} />
                 ))}

@@ -58,12 +58,17 @@ const Modal = ({
         className={`bg-[rgba(0,0,0,0.5)] bg-opacity-50 w-full h-full fixed inset-0 z-10 px-4 ${' '}`.concat(
           backdropClass ?? ''
         )}
-        onKeyDown={({ key }) => key === 'Escape' && setOpen(false)}
+        onKeyDown={({ key }) => {
+          if (key === 'Escape') {
+            setOpen(false)
+            console.log('modal closed')
+          }
+        }}
       >
         <div
           role='dialog'
           ref={dialogRef}
-          className={`container max-w-[512px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full z-20 ${' '}`.concat(
+          className={`container max-w-[512px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full z-20  ${' '}`.concat(
             dialogClass ?? ''
           )}
         >
