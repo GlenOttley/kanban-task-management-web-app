@@ -14,11 +14,11 @@ const TaskCard = ({ task }: ComponentProps) => {
   return (
     <>
       <li
-        className='px-4 py-6 bg-white rounded-lg shadow-md cursor-pointer group'
+        className='px-4 py-6 bg-white rounded-lg shadow-md cursor-pointer group dark:bg-grey-dark'
         onClick={() => setViewTaskOpen(true)}
       >
         <h3
-          className='mb-2 heading-md group-hover:text-purple'
+          className='mb-2 heading-md group-hover:text-purple dark:text-white'
           aria-describedby={`subtasks-complete-${_id}`}
         >
           <button className='text-left'>{title}</button>

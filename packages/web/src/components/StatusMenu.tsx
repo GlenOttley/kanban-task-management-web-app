@@ -28,9 +28,13 @@ const StatusMenu = ({ task }: ComponentProps) => {
 
   return (
     <div className='relative'>
-      <legend className='mb-2 text-xs font-bold text-grey-medium '>Status</legend>
+      <legend className='mb-2 text-xs font-bold text-grey-medium dark:text-white'>
+        Status
+      </legend>
       <button
-        className='flex items-center justify-between w-full px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg'
+        className={`flex items-center justify-between w-full px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg dark:text-white ${
+          open ? 'ring-1 ring-purple' : ''
+        }`}
         type='button'
         aria-haspopup='true'
         aria-controls='statusmenu'
@@ -47,7 +51,7 @@ const StatusMenu = ({ task }: ComponentProps) => {
       </button>
       {open && (
         <div
-          className='absolute w-full p-4 bg-white rounded-lg top-[75px] flex flex-col items-start'
+          className='absolute w-full p-4 bg-white rounded-lg top-[75px] flex flex-col items-start dark:bg-grey-very-dark'
           role='menu'
           id='statusmenu'
           aria-label='Select Status'

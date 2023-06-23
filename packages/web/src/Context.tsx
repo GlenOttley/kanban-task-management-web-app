@@ -20,6 +20,8 @@ export interface Context {
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   liveFeedback: string
   setLiveFeedback: Dispatch<SetStateAction<string>>
+  darkMode: boolean
+  setDarkMode: Dispatch<SetStateAction<boolean>>
 }
 
 export const AppContext = createContext<Context>({
@@ -31,6 +33,8 @@ export const AppContext = createContext<Context>({
   setSidebarOpen: () => {},
   liveFeedback: '',
   setLiveFeedback: () => {},
+  darkMode: false,
+  setDarkMode: () => {},
 })
 
 const Context = ({ children }: ComponentProps) => {
@@ -42,6 +46,9 @@ const Context = ({ children }: ComponentProps) => {
   })
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
   const [liveFeedback, setLiveFeedback] = useState<string>('')
+  const [darkMode, setDarkMode] = useState<boolean>(
+    localStorage.getItem('dark') === 'true'
+  )
 
   return (
     <AppContext.Provider
@@ -54,6 +61,8 @@ const Context = ({ children }: ComponentProps) => {
         setSidebarOpen,
         liveFeedback,
         setLiveFeedback,
+        darkMode,
+        setDarkMode,
       }}
     >
       {children}

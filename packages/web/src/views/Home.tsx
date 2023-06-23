@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Nav from '../components/Nav'
 import Board from '../components/Board'
 import Toast from '../components/Toast'
@@ -7,7 +7,14 @@ import LiveRegion from '../components/LiveRegion'
 import { AppContext } from '../Context'
 
 const App = (): JSX.Element => {
-  const { sidebarOpen } = useContext(AppContext)
+  const { sidebarOpen, darkMode } = useContext(AppContext)
+
+  useEffect(() => {
+    darkMode
+      ? document.documentElement.classList.add('dark')
+      : document.documentElement.classList.remove('dark')
+  }, [darkMode])
+
   return (
     <>
       <div

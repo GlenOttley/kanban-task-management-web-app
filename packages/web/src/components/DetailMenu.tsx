@@ -37,7 +37,7 @@ const DetailMenu = ({ task, setOpen, triggerElement }: ComponentProps) => {
   return (
     <div
       ref={menuRef}
-      className='absolute flex flex-col items-start w-[120px] md:w-48 gap-4 p-4 -left-[60px] bg-white rounded-lg whitespace-nowrap top-10'
+      className='absolute flex flex-col items-start w-[120px] md:w-48 gap-4 p-4 -left-[60px] bg-white rounded-lg whitespace-nowrap top-10 dark:bg-grey-very-dark'
       role='menu'
       tabIndex={-1}
     >
