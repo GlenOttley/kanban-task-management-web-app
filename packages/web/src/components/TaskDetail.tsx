@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
+import { AppContext } from '../Context'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
 import { Task } from 'types'
 import useToggleComplete from '../hooks/useToggleComplete'
@@ -9,8 +10,9 @@ interface ComponentProps {
   task: Task
 }
 
-const TaskDetail = ({ task }: ComponentProps) => {
-  const { _id, title, description, subtasks, column } = task
+const TaskDetail = () => {
+  const { selectedTask } = useContext(AppContext)
+  const { _id, title, description, subtasks, column } = selectedTask
   const { mutate } = useToggleComplete()
 
   function toggleComplete(subtaskId: string) {
@@ -50,7 +52,7 @@ const TaskDetail = ({ task }: ComponentProps) => {
           </button>
           {menuOpen && (
             <DetailMenu
-              task={task}
+              task={selectedTask}
               setOpen={setMenuOpen}
               triggerElement={menuButtonRef}
             />
@@ -95,7 +97,7 @@ const TaskDetail = ({ task }: ComponentProps) => {
               </div>
             ))}
           </div>
-          <StatusMenu task={task} ref={statusMenuRef} nextItemRef={menuButtonRef} />
+          <StatusMenu ref={statusMenuRef} nextItemRef={menuButtonRef} />
         </fieldset>
       </form>
     </div>

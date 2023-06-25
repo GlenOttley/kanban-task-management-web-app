@@ -4,7 +4,9 @@ import React, {
   SetStateAction,
   useEffect,
   useRef,
+  useContext,
 } from 'react'
+import { AppContext } from '../Context'
 import useDeleteTask from '../hooks/useDeleteTask'
 import { Task } from 'types'
 
@@ -15,11 +17,17 @@ interface ComponentProps {
 }
 
 const DetailMenu = ({ task, setOpen, triggerElement }: ComponentProps) => {
+  const { setEditTaskFormOpen, setTaskDetailOpen } = useContext(AppContext)
   const { mutate } = useDeleteTask()
   const menuRef = useRef<HTMLDivElement>(null)
 
   function deleteTask() {
     mutate(task)
+  }
+
+  function handleOpenEditTask() {
+    setTaskDetailOpen(false)
+    setEditTaskFormOpen((open) => !open)
   }
 
   useEffect(() => {
@@ -41,8 +49,13 @@ const DetailMenu = ({ task, setOpen, triggerElement }: ComponentProps) => {
       role='menu'
       tabIndex={-1}
     >
-      <button className='w-full text-left body-lg text-grey-medium'>Edit Task</button>
-      <button className='w-full text-left body-lg text-red' onClick={deleteTask}>
+      <button
+        onClick={handleOpenEditTask}
+        className='w-full text-left body-lg text-grey-medium'
+      >
+        Edit Task
+      </button>
+      <button onClick={deleteTask} className='w-full text-left body-lg text-red'>
         Delete Task
       </button>
     </div>

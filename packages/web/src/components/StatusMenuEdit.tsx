@@ -7,21 +7,19 @@ import React, {
   useEffect,
 } from 'react'
 import useBoard from '../hooks/useBoard'
-import useUpdateStatus from '../hooks/useUpdateStatus'
 import { AppContext } from '../Context'
-import { Task } from 'types'
 import iconChevronUp from '../images/icon-chevron-up.svg'
 import iconChevronDown from '../images/icon-chevron-down.svg'
+import { useFormContext } from 'react-hook-form'
 
 interface ComponentProps {
   nextItemRef: RefObject<HTMLButtonElement>
 }
 
-const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
+const StatusMenuEdit = forwardRef<HTMLInputElement, ComponentProps>(
   ({ nextItemRef }: ComponentProps, ref) => {
     const { selectedBoardId, selectedTask, setTaskDetailOpen } = useContext(AppContext)
     const { data: board } = useBoard(selectedBoardId)
-    const { mutate } = useUpdateStatus()
 
     const [open, setOpen] = useState(false)
     const [activeIndex, setActiveIndex] = useState<number>(0)
@@ -29,14 +27,11 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
     const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
     const wrapperRef = useRef<any>(null)
 
+    const { register, setValue } = useFormContext()
+
     function updateStatus(newColumnName: string, newColumnId: string) {
-      mutate({
-        taskId: selectedTask._id,
-        column: newColumnId,
-        status: newColumnName,
-        prevColumn: selectedTask.column,
-      })
-      setTaskDetailOpen(false)
+      setValue('status', newColumnName)
+      setValue('column', newColumnId)
     }
 
     function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
@@ -84,16 +79,23 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
           Status
         </legend>
         <div ref={wrapperRef}>
-          <button
-            className={`flex items-center justify-between w-full px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg dark:text-white ${
+          <input
+            className={`flex items-center justify-between text-left w-full px-4 py-2 border border-opacity-25 rounded-sm border-grey-medium body-lg dark:text-white ${
               open ? 'ring-1 ring-purple' : ''
             }`}
+            style={{
+              backgroundImage: `url(${open ? iconChevronUp : iconChevronDown})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPositionX: 'right 16px',
+              backgroundPositionY: 'center',
+            }}
             type='button'
+            // value={selectedTask.status}
             aria-haspopup='true'
             aria-controls='statusmenu'
             tabIndex={0}
             aria-label={`Current status: ${selectedTask.status}`}
-            ref={ref}
+            // ref={ref}
             onClick={() => setOpen(!open)}
             onKeyDown={(e) => {
               if (!e.shiftKey && e.key === 'Tab') {
@@ -103,14 +105,15 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
                 menuItemsRef.current[activeIndex]?.focus()
               }
             }}
+            {...register('status')}
           >
-            {selectedTask.status}
-            <img
+            {/* {selectedTask.status} */}
+            {/* <img
               src={open ? iconChevronUp : iconChevronDown}
               aria-hidden='true'
               className='ml-[9px] inline-block'
-            />
-          </button>
+            /> */}
+          </input>
         </div>
         {open && (
           <div
@@ -149,4 +152,4 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
   }
 )
 
-export default StatusMenu
+export default StatusMenuEdit

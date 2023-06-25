@@ -1,21 +1,25 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
+import { AppContext } from '../Context'
 import { Task } from 'types'
-import Modal from './Modal'
-import TaskDetail from './TaskDetail'
 
 interface ComponentProps {
   task: Task
 }
 
 const TaskCard = ({ task }: ComponentProps) => {
+  const { setSelectedTask, setTaskDetailOpen } = useContext(AppContext)
   const { _id, title, subtasks } = task
-  const [viewTaskOpen, setViewTaskOpen] = useState<boolean>(false)
+
+  function openTaskDetail() {
+    setSelectedTask(task)
+    setTaskDetailOpen(true)
+  }
 
   return (
     <>
       <li
         className='px-4 py-6 bg-white rounded-lg shadow-md cursor-pointer group dark:bg-grey-dark'
-        onClick={() => setViewTaskOpen(true)}
+        onClick={openTaskDetail}
       >
         <h3
           className='mb-2 heading-md group-hover:text-purple dark:text-white'
@@ -28,9 +32,9 @@ const TaskCard = ({ task }: ComponentProps) => {
           {subtasks?.length} subtasks
         </p>
       </li>
-      <Modal open={viewTaskOpen} setOpen={setViewTaskOpen}>
+      {/* <Modal open={viewTaskOpen} setOpen={setViewTaskOpen}>
         <TaskDetail task={task} />
-      </Modal>
+      </Modal> */}
     </>
   )
 }

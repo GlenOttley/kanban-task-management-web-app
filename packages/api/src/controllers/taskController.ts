@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import asyncHandler from 'express-async-handler'
-import Task from '../models/taskModel'
+import Task, { SavedTaskDocument } from '../models/taskModel'
 
 // @desc Toggle a subtask complete
 // @route PATCH /api/task/:id/toggle-subtask
@@ -22,12 +22,10 @@ const toggleSubtaskComplete = asyncHandler(async (req: Request, res: Response) =
           }`
         )
     } else {
-      res.status(404)
-      throw new Error('Subtask not found')
+      res.status(404).json({ error: 'Subtask not found' })
     }
   } else {
-    res.status(404)
-    throw new Error('Task not found')
+    res.status(404).json({ error: 'Task not found' })
   }
 })
 
@@ -44,8 +42,7 @@ const updateTaskStatus = asyncHandler(async (req: Request, res: Response) => {
     await task.save()
     res.status(200).json(`Task id: ${taskId} has new status: ${status}`)
   } else {
-    res.status(404)
-    throw new Error('Task not found')
+    res.status(404).json({ error: 'Task not found' })
   }
 })
 
@@ -59,9 +56,31 @@ const deleteTask = asyncHandler(async (req: Request, res: Response) => {
     await Task.findByIdAndDelete(taskId)
     res.status(200).json(`Task id: ${taskId} has been deleted`)
   } else {
-    res.status(404)
-    throw new Error('Task not found')
+    res.status(404).json({ error: 'Task not found' })
   }
 })
 
-export { toggleSubtaskComplete, updateTaskStatus, deleteTask }
+// @desc    Edit a task
+// @route   PATCH /api/tasks/:id
+// @access  Private
+const editTask = asyncHandler(async (req: Request, res: Response) => {
+  const requestBody: SavedTaskDocument = req.body
+  const { description, status, title, subtasks, column } = requestBody
+
+  const task = await Task.findById(req.params.id)
+
+  if (task) {
+    task.title = title
+    task.description = description
+    task.subtasks = subtasks
+    task.status = status
+    task.column = column
+
+    await task.save()
+    res.status(200).json(task)
+  } else {
+    res.status(404).json({ error: 'Task not found' })
+  }
+})
+
+export { toggleSubtaskComplete, updateTaskStatus, deleteTask, editTask }

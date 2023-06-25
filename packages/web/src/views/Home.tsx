@@ -7,10 +7,20 @@ import LiveRegion from '../components/LiveRegion'
 import NewBoardForm from '../components/NewBoardForm'
 import Modal from '../components/Modal'
 import { AppContext } from '../Context'
+import EditTaskForm from '../components/EditTaskForm'
+import TaskDetail from '../components/TaskDetail'
 
 const App = (): JSX.Element => {
-  const { sidebarOpen, darkMode, newBoardFormOpen, setNewBoardFormOpen } =
-    useContext(AppContext)
+  const {
+    sidebarOpen,
+    darkMode,
+    newBoardFormOpen,
+    setNewBoardFormOpen,
+    editTaskFormOpen,
+    setEditTaskFormOpen,
+    taskDetailOpen,
+    setTaskDetailOpen,
+  } = useContext(AppContext)
 
   useEffect(() => {
     darkMode
@@ -33,6 +43,7 @@ const App = (): JSX.Element => {
           <Board />
           <LiveRegion />
           <Toast />
+
           {newBoardFormOpen && (
             <Modal open={newBoardFormOpen} setOpen={setNewBoardFormOpen}>
               <div
@@ -41,6 +52,18 @@ const App = (): JSX.Element => {
               >
                 <NewBoardForm />
               </div>
+            </Modal>
+          )}
+
+          {taskDetailOpen && (
+            <Modal open={taskDetailOpen} setOpen={setTaskDetailOpen}>
+              <TaskDetail />
+            </Modal>
+          )}
+
+          {editTaskFormOpen && (
+            <Modal open={editTaskFormOpen} setOpen={setEditTaskFormOpen}>
+              <EditTaskForm />
             </Modal>
           )}
         </main>

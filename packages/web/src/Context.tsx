@@ -6,6 +6,7 @@ import React, {
   ReactNode,
 } from 'react'
 import { type Toast } from './components/Toast'
+import { Task } from 'types'
 
 interface ComponentProps {
   children: ReactNode
@@ -14,6 +15,8 @@ interface ComponentProps {
 export interface Context {
   selectedBoardId: string
   setSelectedBoardId: Dispatch<SetStateAction<string>>
+  selectedTask: Task
+  setSelectedTask: Dispatch<SetStateAction<Task>>
   toastDetails: Toast
   setToastDetails: Dispatch<SetStateAction<Toast>>
   sidebarOpen: boolean
@@ -24,11 +27,17 @@ export interface Context {
   setDarkMode: Dispatch<SetStateAction<boolean>>
   newBoardFormOpen: boolean
   setNewBoardFormOpen: Dispatch<SetStateAction<boolean>>
+  editTaskFormOpen: boolean
+  setEditTaskFormOpen: Dispatch<SetStateAction<boolean>>
+  taskDetailOpen: boolean
+  setTaskDetailOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const AppContext = createContext<Context>({
   selectedBoardId: '',
   setSelectedBoardId: () => {},
+  selectedTask: {} as Task,
+  setSelectedTask: () => {},
   toastDetails: {} as Toast,
   setToastDetails: () => {},
   sidebarOpen: false,
@@ -39,12 +48,17 @@ export const AppContext = createContext<Context>({
   setDarkMode: () => {},
   newBoardFormOpen: false,
   setNewBoardFormOpen: () => {},
+  editTaskFormOpen: false,
+  setEditTaskFormOpen: () => {},
+  taskDetailOpen: false,
+  setTaskDetailOpen: () => {},
 })
 
 const Context = ({ children }: ComponentProps) => {
   const [selectedBoardId, setSelectedBoardId] = useState<string>(
     localStorage.getItem('selectedBoardId') ?? '646bed58f3f236e423e58f30'
   )
+  const [selectedTask, setSelectedTask] = useState<Task>({} as Task)
   const [toastDetails, setToastDetails] = useState<Toast>({
     message: '',
   })
@@ -54,12 +68,16 @@ const Context = ({ children }: ComponentProps) => {
     localStorage.getItem('dark') === 'true'
   )
   const [newBoardFormOpen, setNewBoardFormOpen] = useState<boolean>(false)
+  const [editTaskFormOpen, setEditTaskFormOpen] = useState<boolean>(false)
+  const [taskDetailOpen, setTaskDetailOpen] = useState<boolean>(false)
 
   return (
     <AppContext.Provider
       value={{
         selectedBoardId,
         setSelectedBoardId,
+        selectedTask,
+        setSelectedTask,
         toastDetails,
         setToastDetails,
         sidebarOpen,
@@ -70,6 +88,10 @@ const Context = ({ children }: ComponentProps) => {
         setDarkMode,
         newBoardFormOpen,
         setNewBoardFormOpen,
+        editTaskFormOpen,
+        setEditTaskFormOpen,
+        taskDetailOpen,
+        setTaskDetailOpen,
       }}
     >
       {children}

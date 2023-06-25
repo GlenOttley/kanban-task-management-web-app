@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import asyncHandler from 'express-async-handler'
 import Board, { SavedBoardDocument } from '../models/boardModel'
 import Task from '../models/taskModel'
+import { Board as IBoard, Column } from 'packages/types/src'
 
 // @desc    Fetch all boards
 // @route   GET /api/boards
@@ -11,7 +12,7 @@ const getBoards = asyncHandler(async (req: Request, res: Response): Promise<void
     const boards: SavedBoardDocument[] = await Board.find({})
     res.status(200).json(boards)
   } catch (error) {
-    res.status(404).json(error)
+    res.status(404).json({ error })
   }
 })
 
@@ -31,9 +32,7 @@ const getBoard = asyncHandler(async (req: Request, res: Response): Promise<void>
     })
     res.status(200).json(populatedBoard)
   } catch (error) {
-    res.status(404).json(error)
-    console.log(error)
-    // throw new Error('Something went wrong, please try again')
+    res.status(404).json({ error: `Board with ID: ${req.params.id} not found` })
   }
 })
 
@@ -48,4 +47,37 @@ const createBoard = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).json(createdBoard)
 })
 
-export { getBoards, getBoard, createBoard }
+// @desc    Edit board
+// @route   PATCH /api/boards/:id
+// @access  Private
+const editBoard = asyncHandler(async (req: Request, res: Response) => {
+  const requestBody: IBoard = req.body
+  const { name, columns } = requestBody
+
+  const board = await Board.findById(req.params.id)
+
+  if (board) {
+    board.name = name
+
+    const originalColumns: Column[] = board.columns || []
+
+    columns?.forEach((newColumn: Column) => {
+      const matchingIndex = originalColumns.findIndex(
+        (originalColumn) => originalColumn._id.toString() === newColumn._id
+      )
+
+      if (matchingIndex !== -1) {
+        originalColumns[matchingIndex].name = newColumn.name
+      } else {
+        originalColumns.push(newColumn)
+      }
+    })
+
+    const updatedBoard = await board.save()
+    res.status(200).json(updatedBoard)
+  } else {
+    res.status(404).json({ error: `Board with ID: ${req.params.id} not found` })
+  }
+})
+
+export { getBoards, getBoard, createBoard, editBoard }
