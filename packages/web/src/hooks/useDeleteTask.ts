@@ -10,42 +10,37 @@ function deleteTask(task: Task) {
 
 export default function deleteTaskMutation() {
   const queryClient = useQueryClient()
-  const { selectedBoardId } = useContext(AppContext)
+  const { selectedBoardId, setToastDetails } = useContext(AppContext)
 
   return useMutation({
     mutationFn: deleteTask,
     onMutate: async (deletedTask) => {
       await queryClient.cancelQueries(['board', selectedBoardId])
-
       const previousBoardData: Board | undefined = queryClient.getQueryData([
         'board',
         selectedBoardId,
       ])
+      queryClient.setQueryData(['board', previousBoardData?._id], (oldQueryData: any) => {
+        const columnToUpdate = oldQueryData.columns.find(
+          (column: Column) => column._id === deletedTask.column
+        )
+        columnToUpdate.tasks = columnToUpdate.tasks.filter(
+          (task: Task) => task._id !== deletedTask._id
+        )
+        return oldQueryData
+      })
 
-      const updatedBoardData = {
-        ...previousBoardData,
-        columns: previousBoardData?.columns?.map((column: Column) => {
-          if (column._id === deletedTask.column) {
-            const updatedTasks = column?.tasks?.filter(
-              (task) => task._id !== deletedTask._id
-            )
-            return {
-              ...column,
-              tasks: updatedTasks,
-            }
-          }
-          return column
-        }),
-      }
-
-      queryClient.setQueryData(['board', previousBoardData?._id], updatedBoardData)
       return { previousBoardData }
     },
-
     onError: (_error, _hero, context) => {
       queryClient.setQueryData(['board'], context?.previousBoardData)
+      setToastDetails({
+        status: 'warning',
+        message: 'Something went wrong, please refresh the page and try again',
+      })
     },
     onSettled: () => {
+      setToastDetails({ status: 'success', message: 'Task deleted successfully' })
       queryClient.invalidateQueries(['board'])
     },
   })

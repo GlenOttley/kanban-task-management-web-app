@@ -1,5 +1,5 @@
 import React from 'react'
-import Menu from './Menu'
+import Menu from './BoardSelectMenu'
 import { render, screen } from '../utils/customRender'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'

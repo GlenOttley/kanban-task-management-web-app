@@ -18,8 +18,8 @@ function updateStatus(data: {
 }
 
 export default function updateStatusMutation() {
-  const { selectedBoardId } = useContext(AppContext)
   const queryClient = useQueryClient()
+  const { selectedBoardId } = useContext(AppContext)
 
   return useMutation({
     mutationFn: updateStatus,

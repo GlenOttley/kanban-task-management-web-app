@@ -17,19 +17,19 @@ const Toast = (): JSX.Element | null => {
     sidebarOpen,
   } = useContext(AppContext)
 
-  // useEffect(() => {
-  //   let timer: NodeJS.Timeout
-  //   if (message) {
-  //     timer = setTimeout(() => {
-  //       setToastDetails({ message: '' })
-  //     }, duration || 6000)
-  //   }
-  //   return () => {
-  //     if (timer) {
-  //       clearTimeout(timer)
-  //     }
-  //   }
-  // }, [message])
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    if (message) {
+      timer = setTimeout(() => {
+        setToastDetails({ message: '' })
+      }, duration || 6000)
+    }
+    return () => {
+      if (timer) {
+        clearTimeout(timer)
+      }
+    }
+  }, [message])
 
   return (
     <div

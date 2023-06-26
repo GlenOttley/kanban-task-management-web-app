@@ -31,6 +31,14 @@ export interface Context {
   setEditTaskFormOpen: Dispatch<SetStateAction<boolean>>
   taskDetailOpen: boolean
   setTaskDetailOpen: Dispatch<SetStateAction<boolean>>
+  boardDetailOpen: boolean
+  setBoardDetailOpen: Dispatch<SetStateAction<boolean>>
+  editBoardFormOpen: boolean
+  setEditBoardFormOpen: Dispatch<SetStateAction<boolean>>
+  confirmDeleteTaskOpen: boolean
+  setConfirmDeleteTaskOpen: Dispatch<SetStateAction<boolean>>
+  confirmDeleteBoardOpen: boolean
+  setConfirmDeleteBoardOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const AppContext = createContext<Context>({
@@ -52,11 +60,19 @@ export const AppContext = createContext<Context>({
   setEditTaskFormOpen: () => {},
   taskDetailOpen: false,
   setTaskDetailOpen: () => {},
+  boardDetailOpen: false,
+  setBoardDetailOpen: () => {},
+  editBoardFormOpen: false,
+  setEditBoardFormOpen: () => {},
+  confirmDeleteTaskOpen: false,
+  setConfirmDeleteTaskOpen: () => {},
+  confirmDeleteBoardOpen: false,
+  setConfirmDeleteBoardOpen: () => {},
 })
 
 const Context = ({ children }: ComponentProps) => {
   const [selectedBoardId, setSelectedBoardId] = useState<string>(
-    localStorage.getItem('selectedBoardId') ?? '646bed58f3f236e423e58f30'
+    localStorage.getItem('selectedBoardId') || ''
   )
   const [selectedTask, setSelectedTask] = useState<Task>({} as Task)
   const [toastDetails, setToastDetails] = useState<Toast>({
@@ -70,6 +86,10 @@ const Context = ({ children }: ComponentProps) => {
   const [newBoardFormOpen, setNewBoardFormOpen] = useState<boolean>(false)
   const [editTaskFormOpen, setEditTaskFormOpen] = useState<boolean>(false)
   const [taskDetailOpen, setTaskDetailOpen] = useState<boolean>(false)
+  const [boardDetailOpen, setBoardDetailOpen] = useState<boolean>(false)
+  const [editBoardFormOpen, setEditBoardFormOpen] = useState<boolean>(false)
+  const [confirmDeleteTaskOpen, setConfirmDeleteTaskOpen] = useState<boolean>(false)
+  const [confirmDeleteBoardOpen, setConfirmDeleteBoardOpen] = useState<boolean>(false)
 
   return (
     <AppContext.Provider
@@ -92,6 +112,14 @@ const Context = ({ children }: ComponentProps) => {
         setEditTaskFormOpen,
         taskDetailOpen,
         setTaskDetailOpen,
+        boardDetailOpen,
+        setBoardDetailOpen,
+        editBoardFormOpen,
+        setEditBoardFormOpen,
+        confirmDeleteTaskOpen,
+        setConfirmDeleteTaskOpen,
+        confirmDeleteBoardOpen,
+        setConfirmDeleteBoardOpen,
       }}
     >
       {children}

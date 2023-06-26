@@ -21,7 +21,7 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
   ({ nextItemRef }: ComponentProps, ref) => {
     const { selectedBoardId, selectedTask, setTaskDetailOpen } = useContext(AppContext)
     const { data: board } = useBoard(selectedBoardId)
-    const { mutate } = useUpdateStatus()
+    const { mutate, isSuccess } = useUpdateStatus()
 
     const [open, setOpen] = useState(false)
     const [activeIndex, setActiveIndex] = useState<number>(0)
@@ -36,7 +36,6 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
         status: newColumnName,
         prevColumn: selectedTask.column,
       })
-      setTaskDetailOpen(false)
     }
 
     function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
@@ -77,6 +76,12 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
       document.addEventListener('click', handleClickOutside)
       return () => document.removeEventListener('click', handleClickOutside)
     }, [])
+
+    useEffect(() => {
+      if (isSuccess) {
+        setTaskDetailOpen(false)
+      }
+    }, [isSuccess])
 
     return (
       <div className='relative'>

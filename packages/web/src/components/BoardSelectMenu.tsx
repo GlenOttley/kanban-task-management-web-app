@@ -18,7 +18,7 @@ interface ComponentProps {
   setModalOpen?: Dispatch<SetStateAction<boolean>>
 }
 
-const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
+const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
   const {
     selectedBoardId,
     setSelectedBoardId,
@@ -165,4 +165,4 @@ const Menu = ({ setModalOpen }: ComponentProps): JSX.Element => {
   )
 }
 
-export default Menu
+export default BoardSelectMenu

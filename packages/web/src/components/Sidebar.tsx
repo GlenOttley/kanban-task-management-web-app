@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Menu from './Menu'
+import Menu from './BoardSelectMenu'
 import logoDark from '../images/logo-dark.svg'
 import logoLight from '../images/logo-light.svg'
 import iconShow from '../images/icon-show-sidebar.svg'

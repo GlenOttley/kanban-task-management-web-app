@@ -54,30 +54,48 @@ const editBoard = asyncHandler(async (req: Request, res: Response) => {
   const requestBody: IBoard = req.body
   const { name, columns } = requestBody
 
-  const board = await Board.findById(req.params.id)
+  try {
+    const board = await Board.findById(req.params.id)
 
-  if (board) {
-    board.name = name
+    if (board) {
+      board.name = name
+      board.columns = columns
 
-    const originalColumns: Column[] = board.columns || []
+      // const originalColumns: Column[] = board.columns || []
 
-    columns?.forEach((newColumn: Column) => {
-      const matchingIndex = originalColumns.findIndex(
-        (originalColumn) => originalColumn._id.toString() === newColumn._id
-      )
+      // columns?.forEach((newColumn: Column) => {
+      //   const matchingIndex = originalColumns.findIndex(
+      //     (originalColumn) => originalColumn._id.toString() === newColumn._id
+      //   )
 
-      if (matchingIndex !== -1) {
-        originalColumns[matchingIndex].name = newColumn.name
-      } else {
-        originalColumns.push(newColumn)
-      }
-    })
+      //   if (matchingIndex !== -1) {
+      //     originalColumns[matchingIndex].name = newColumn.name
+      //   } else {
+      //     originalColumns.push(newColumn)
+      //   }
+      // })
 
-    const updatedBoard = await board.save()
-    res.status(200).json(updatedBoard)
-  } else {
-    res.status(404).json({ error: `Board with ID: ${req.params.id} not found` })
+      const updatedBoard = await board.save()
+      res.status(200).json(updatedBoard)
+    } else {
+      res.status(404).json({ error: `Board with ID: ${req.params.id} not found` })
+    }
+  } catch (error) {
+    res.status(404).json({ error })
   }
 })
 
-export { getBoards, getBoard, createBoard, editBoard }
+// @desc Delete a board
+// @route DELETE /api/board/:id
+// @access Private
+const deleteBoard = asyncHandler(async (req: Request, res: Response) => {
+  const boardId = req.params.id
+  try {
+    await Board.findByIdAndDelete(boardId)
+    res.status(200).json(`Board id: ${boardId} has been deleted`)
+  } catch (error) {
+    res.status(404).json({ error: 'Board not found' })
+  }
+})
+
+export { getBoards, getBoard, createBoard, editBoard, deleteBoard }

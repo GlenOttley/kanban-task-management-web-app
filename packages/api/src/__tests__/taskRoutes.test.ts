@@ -2,8 +2,7 @@ import supertest from 'supertest'
 import createServer from '../utils/server'
 import { Task } from 'types'
 import { SavedTaskDocument } from '../models/taskModel'
-import { createTask } from '../utils/createTask'
-import { deleteTask } from '../utils/deleteTask'
+import { createTask, deleteTask } from '../utils/taskUtils'
 import { Types } from 'mongoose'
 
 const app = createServer()

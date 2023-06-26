@@ -7,5 +7,8 @@ const fetchBoard = (boardId: string) => {
 }
 
 export default function useBoard(boardId: string) {
-  return useQuery<Board, Error>(['board', boardId], () => fetchBoard(boardId))
+  return useQuery<Board, Error>({
+    queryKey: ['board', boardId],
+    queryFn: () => fetchBoard(boardId),
+  })
 }

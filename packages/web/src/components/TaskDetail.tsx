@@ -1,14 +1,9 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { AppContext } from '../Context'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
-import { Task } from 'types'
 import useToggleComplete from '../hooks/useToggleComplete'
 import StatusMenu from './StatusMenu'
-import DetailMenu from './DetailMenu'
-
-interface ComponentProps {
-  task: Task
-}
+import TaskDetailMenu from './TaskDetailMenu'
 
 const TaskDetail = () => {
   const { selectedTask } = useContext(AppContext)
@@ -19,13 +14,13 @@ const TaskDetail = () => {
     mutate({ columnId: column, taskId: _id, subtaskId })
   }
 
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [taskDetailMenuOpen, setTaskDetailMenuOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const statusMenuRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     menuButtonRef?.current?.focus()
-  })
+  }, [])
 
   return (
     <div className='w-full p-6 bg-white rounded-md dark:bg-grey-dark'>
@@ -35,7 +30,7 @@ const TaskDetail = () => {
           <button
             className='px-4'
             ref={menuButtonRef}
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => setTaskDetailMenuOpen(!taskDetailMenuOpen)}
             onKeyDown={(e) => {
               if (e.shiftKey && e.key === 'Tab') {
                 e.preventDefault()
@@ -50,10 +45,9 @@ const TaskDetail = () => {
             />
             <span className='sr-only'>Open menu</span>
           </button>
-          {menuOpen && (
-            <DetailMenu
-              task={selectedTask}
-              setOpen={setMenuOpen}
+          {taskDetailMenuOpen && (
+            <TaskDetailMenu
+              setOpen={setTaskDetailMenuOpen}
               triggerElement={menuButtonRef}
             />
           )}

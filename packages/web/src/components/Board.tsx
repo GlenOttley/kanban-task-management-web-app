@@ -5,7 +5,7 @@ import TaskCard from './TaskCard'
 
 const Board = () => {
   const { selectedBoardId } = useContext(AppContext)
-  const { status, data: board, error, refetch } = useBoard(selectedBoardId)
+  const { status, data: board, error } = useBoard(selectedBoardId)
   const colors = ['bg-blue', 'bg-purple', 'bg-green']
 
   function getBgColor(index: number) {
@@ -22,10 +22,10 @@ const Board = () => {
       ) : (
         <ul className='flex gap-6'>
           {board?.columns?.map((column, index) => (
-            <li key={column._id} className='min-w-[280px] max-w-[280px]'>
+            <li key={column._id ?? index} className='min-w-[280px] max-w-[280px]'>
               <h2 className='mb-6 uppercase heading-sm text-grey-medium'>
                 <span
-                  className={`h-[15px] w-[15px] relative top-[3px] inline-block rounded-full mr-3 ${getBgColor(
+                  className={` h-[15px] w-[15px] relative top-[3px] inline-block rounded-full mr-3 ${getBgColor(
                     index
                   )} `}
                 ></span>

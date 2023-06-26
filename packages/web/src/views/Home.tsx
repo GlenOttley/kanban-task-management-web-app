@@ -9,6 +9,10 @@ import Modal from '../components/Modal'
 import { AppContext } from '../Context'
 import EditTaskForm from '../components/EditTaskForm'
 import TaskDetail from '../components/TaskDetail'
+import useBoards from '../hooks/useBoards'
+import EditBoardForm from '../components/EditBoardForm'
+import ConfirmDeleteTask from '../components/ConfirmDeleteTask'
+import ConfirmDeleteBoard from '../components/ConfirmDeleteBoard'
 
 const App = (): JSX.Element => {
   const {
@@ -20,13 +24,26 @@ const App = (): JSX.Element => {
     setEditTaskFormOpen,
     taskDetailOpen,
     setTaskDetailOpen,
+    setSelectedBoardId,
+    editBoardFormOpen,
+    setEditBoardFormOpen,
+    confirmDeleteTaskOpen,
+    setConfirmDeleteTaskOpen,
+    confirmDeleteBoardOpen,
+    setConfirmDeleteBoardOpen,
   } = useContext(AppContext)
+
+  const { data: allBoards } = useBoards()
 
   useEffect(() => {
     darkMode
       ? document.documentElement.classList.add('dark')
       : document.documentElement.classList.remove('dark')
   }, [darkMode])
+
+  useEffect(() => {
+    allBoards && setSelectedBoardId(allBoards[0]._id)
+  }, [allBoards])
 
   return (
     <>
@@ -64,6 +81,24 @@ const App = (): JSX.Element => {
           {editTaskFormOpen && (
             <Modal open={editTaskFormOpen} setOpen={setEditTaskFormOpen}>
               <EditTaskForm />
+            </Modal>
+          )}
+
+          {editBoardFormOpen && (
+            <Modal open={editBoardFormOpen} setOpen={setEditBoardFormOpen}>
+              <EditBoardForm />
+            </Modal>
+          )}
+
+          {confirmDeleteTaskOpen && (
+            <Modal open={confirmDeleteTaskOpen} setOpen={setConfirmDeleteTaskOpen}>
+              <ConfirmDeleteTask />
+            </Modal>
+          )}
+
+          {confirmDeleteBoardOpen && (
+            <Modal open={confirmDeleteBoardOpen} setOpen={setConfirmDeleteBoardOpen}>
+              <ConfirmDeleteBoard />
             </Modal>
           )}
         </main>
