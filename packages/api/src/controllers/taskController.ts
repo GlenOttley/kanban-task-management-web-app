@@ -83,4 +83,21 @@ const editTask = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-export { toggleSubtaskComplete, updateTaskStatus, deleteTask, editTask }
+// @desc    Create new task
+// @route   POST /api/tasks
+// @access  Private
+const createTask = asyncHandler(async (req: Request, res: Response) => {
+  try {
+    const task: SavedTaskDocument = new Task(req.body)
+    const createdTask = await task.save()
+    res.status(201).json(createdTask)
+  } catch (error: any) {
+    if (error?.code === 11000) {
+      res.status(409).json({ error: `Task with id: ${req.body._id} already exists` })
+    } else {
+      res.status(500).json({ error: 'Internal server error' })
+    }
+  }
+})
+
+export { toggleSubtaskComplete, updateTaskStatus, deleteTask, editTask, createTask }

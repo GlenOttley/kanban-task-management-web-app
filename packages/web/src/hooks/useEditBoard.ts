@@ -33,6 +33,7 @@ export default function editTaskMutation() {
         'board',
         updatedBoard._id,
       ])
+
       queryClient.setQueryData(['board', previousBoardData?._id], (oldQueryData: any) => {
         return { ...oldQueryData, name: updatedBoard.name, columns: updatedBoard.columns }
       })

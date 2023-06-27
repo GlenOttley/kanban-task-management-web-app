@@ -28,7 +28,7 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
     setNewBoardFormOpen,
   } = useContext(AppContext)
   const { data: allBoards } = useBoards()
-  const { data: selectedBoard, isSuccess } = useBoard(selectedBoardId)
+  const { data: selectedBoard } = useBoard(selectedBoardId)
 
   const [activeIndex, setActiveIndex] = useState<number>(0)
   // const [menuFeedback, setMenuFeedback] = useState<string>('')
@@ -56,15 +56,12 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
     }
   }
 
-  function handleItemSelect(e: React.KeyboardEvent<HTMLButtonElement>) {
+  function handleItemSelect(
+    e: React.KeyboardEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>
+  ) {
     e.preventDefault()
     setSelectedBoardId(e.currentTarget.value)
-    setLiveFeedback(`${selectedBoard?.name} selected`)
-    closeMenu()
-  }
-
-  function handleItemClick(e: React.MouseEvent<HTMLButtonElement>) {
-    setSelectedBoardId(e.currentTarget.value)
+    localStorage.setItem('selectedBoardId', e.currentTarget.value)
     setLiveFeedback(`${selectedBoard?.name} selected`)
     closeMenu()
   }
@@ -79,8 +76,6 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
   }
 
   function openNewBoardModal() {
-    // setModalOpen(false)
-    // setNewBoardOpen(true)
     setNewBoardFormOpen(true)
     closeMenu()
   }
@@ -91,12 +86,7 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
 
   useEffect(() => {
     setActiveIndex(Number(allBoards?.findIndex((board) => board._id === selectedBoardId)))
-    // setMenuFeedback(`${selectedBoard?.name} selected`)
   }, [selectedBoard, selectedBoardId, allBoards])
-
-  useEffect(() => {
-    isSuccess && localStorage.setItem('selectedBoardId', selectedBoardId)
-  }, [isSuccess])
 
   return (
     <>
@@ -116,7 +106,7 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
             role='menuitem'
             tabIndex={index === activeIndex ? 0 : -1}
             onKeyDown={handleItemKeydown}
-            onClick={handleItemClick}
+            onClick={handleItemSelect}
             className={`text-grey-medium text-left py-3 px-6 rounded-e-full ${
               board._id === selectedBoard?._id && 'bg-purple text-white rounded-e-full'
             }

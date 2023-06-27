@@ -13,6 +13,7 @@ import useBoards from '../hooks/useBoards'
 import EditBoardForm from '../components/EditBoardForm'
 import ConfirmDeleteTask from '../components/ConfirmDeleteTask'
 import ConfirmDeleteBoard from '../components/ConfirmDeleteBoard'
+import NewTaskForm from '../components/NewTaskForm'
 
 const App = (): JSX.Element => {
   const {
@@ -31,6 +32,8 @@ const App = (): JSX.Element => {
     setConfirmDeleteTaskOpen,
     confirmDeleteBoardOpen,
     setConfirmDeleteBoardOpen,
+    newTaskFormOpen,
+    setNewTaskFormOpen,
   } = useContext(AppContext)
 
   const { data: allBoards } = useBoards()
@@ -42,7 +45,8 @@ const App = (): JSX.Element => {
   }, [darkMode])
 
   useEffect(() => {
-    allBoards && setSelectedBoardId(allBoards[0]._id)
+    allBoards &&
+      setSelectedBoardId(localStorage.getItem('selectedBoardId') || allBoards[0]._id)
   }, [allBoards])
 
   return (
@@ -63,12 +67,7 @@ const App = (): JSX.Element => {
 
           {newBoardFormOpen && (
             <Modal open={newBoardFormOpen} setOpen={setNewBoardFormOpen}>
-              <div
-                role='menu'
-                className='flex flex-col items-start bg-white rounded-lg whitespace-nowrap'
-              >
-                <NewBoardForm />
-              </div>
+              <NewBoardForm />
             </Modal>
           )}
 
@@ -99,6 +98,12 @@ const App = (): JSX.Element => {
           {confirmDeleteBoardOpen && (
             <Modal open={confirmDeleteBoardOpen} setOpen={setConfirmDeleteBoardOpen}>
               <ConfirmDeleteBoard />
+            </Modal>
+          )}
+
+          {newTaskFormOpen && (
+            <Modal open={newTaskFormOpen} setOpen={setNewTaskFormOpen}>
+              <NewTaskForm />
             </Modal>
           )}
         </main>

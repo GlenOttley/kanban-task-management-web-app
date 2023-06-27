@@ -1,7 +1,21 @@
-import { Task } from 'types'
+import { Task, Subtask } from 'types'
 import TaskModel from '../models/taskModel'
 
-export async function createTask(task: Task) {
+interface SubtaskPartial extends Partial<Subtask> {
+  _id?: string
+  title?: string
+  isCompleted?: boolean
+}
+
+interface TaskPartial extends Omit<Partial<Task>, 'subtasks'> {
+  _id?: string
+  title?: string
+  description?: string
+  status?: string
+  subtasks?: SubtaskPartial[]
+}
+
+export async function createTask(task: TaskPartial) {
   return TaskModel.create(task)
 }
 

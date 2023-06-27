@@ -11,6 +11,7 @@ import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
 import IconCross from '../images/icon-cross.svg'
 import useCreateBoard from '../hooks/useCreateBoard'
 import useBoards from '../hooks/useBoards'
+import useBoard from '../hooks/useBoard'
 
 interface Column {
   name: string
@@ -23,12 +24,17 @@ interface Inputs {
 
 const NewBoardForm = (): JSX.Element | null => {
   const {
+    selectedBoardId,
     setSelectedBoardId,
     setToastDetails,
     newBoardFormOpen,
     setNewBoardFormOpen,
     setSidebarOpen,
   } = useContext(AppContext)
+
+  const [formFeedback, setFormFeedback] = useState<string>('')
+  const formFeedbackRef = useRef<HTMLDivElement | null>(null)
+  const submitButtonRef = useRef<HTMLButtonElement | null>(null)
 
   const {
     register,
@@ -45,21 +51,16 @@ const NewBoardForm = (): JSX.Element | null => {
   const { fields, append, remove } = useFieldArray({
     name: 'columns',
     control,
-    rules: {
-      required: "Can't be empty",
-    },
   })
 
-  const { isLoading, isError, isSuccess, mutate, data: response } = useCreateBoard()
-  const { refetch } = useBoards()
+  const { isLoading, isSuccess, mutate, data: response } = useCreateBoard()
+  const { refetch } = useBoard(selectedBoardId)
+
+  const columnPlaceholders = ['e.g. Todo', 'e.g. Doing']
 
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
     mutate(formData)
   }
-
-  const [formFeedback, setFormFeedback] = useState<string>('')
-  const formFeedbackRef = useRef<HTMLDivElement | null>(null)
-  const submitButtonRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
     if (isSuccess) {
@@ -77,7 +78,7 @@ const NewBoardForm = (): JSX.Element | null => {
 
   if (newBoardFormOpen) {
     return (
-      <div className='w-full p-6 rounded-md dark:bg-grey-dark'>
+      <div className='w-full p-6 bg-white rounded-md dark:bg-grey-dark'>
         <form onSubmit={handleSubmit(onSubmit)} role='form'>
           <legend className='mb-6 heading-lg dark:text-white'>Add New Board</legend>
 
@@ -102,7 +103,7 @@ const NewBoardForm = (): JSX.Element | null => {
                 id='boardName'
                 placeholder='e.g. Web Design'
                 aria-describedby='boardNameError'
-                className={`px-4 py-2 bg-transparent border border-opacity-25 rounded-sm text-white border-grey-medium body-lg placeholder:body-lg placeholder:text-black placeholder:opacity-25 dark:placeholder:text-white  
+                className={`px-4 py-2 bg-transparent border border-opacity-25 rounded-sm dark:text-white border-grey-medium body-lg placeholder:body-lg placeholder:text-black placeholder:opacity-25 dark:placeholder:text-white  
                 ${errors.name && 'error border-red !border-opacity-100'}`}
                 {...register('name', { required: true })}
                 // ref={boardNameInputRef}
@@ -134,11 +135,14 @@ const NewBoardForm = (): JSX.Element | null => {
                     )}
                     <input
                       key={index}
+                      placeholder={
+                        index % 2 !== 0 ? columnPlaceholders[1] : columnPlaceholders[0]
+                      }
                       type='text'
                       id={column.id}
                       aria-label='Column name'
                       aria-describedby={`boardNameError-${index}`}
-                      className={`w-full text-white px-4 py-2 bg-transparent border border-opacity-25 rounded-sm border-grey-medium body-lg placeholder:body-lg placeholder:text-black placeholder:opacity-25 
+                      className={`w-full dark:text-white px-4 py-2 bg-transparent border border-opacity-25 rounded-sm border-grey-medium body-lg placeholder:body-lg placeholder:text-black placeholder:opacity-25 
                       ${
                         errors?.columns?.[index] && 'error border-red !border-opacity-100'
                       }`}

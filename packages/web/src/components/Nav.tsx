@@ -13,7 +13,7 @@ import Modal from './Modal'
 import BoardDetailMenu from './BoardDetailMenu'
 
 const Nav = (): JSX.Element => {
-  const { selectedBoardId, sidebarOpen } = useContext(AppContext)
+  const { selectedBoardId, sidebarOpen, setNewTaskFormOpen } = useContext(AppContext)
   const {
     status: selectedBoardStatus,
     data: selectedBoard,
@@ -81,7 +81,11 @@ const Nav = (): JSX.Element => {
       </Modal>
 
       <div className='relative flex'>
-        <button className='btn btn-primary py-[10px] md:btn-lg'>
+        <button
+          className='btn btn-primary py-[10px] md:btn-lg'
+          disabled={selectedBoard?.columns?.length === 0}
+          onClick={() => setNewTaskFormOpen(true)}
+        >
           <img src={iconPlus} aria-hidden='true' className='md:hidden' />
           <span className='sr-only md:not-sr-only'>+ Add new task</span>
         </button>

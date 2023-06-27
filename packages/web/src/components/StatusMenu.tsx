@@ -9,7 +9,6 @@ import React, {
 import useBoard from '../hooks/useBoard'
 import useUpdateStatus from '../hooks/useUpdateStatus'
 import { AppContext } from '../Context'
-import { Task } from 'types'
 import iconChevronUp from '../images/icon-chevron-up.svg'
 import iconChevronDown from '../images/icon-chevron-down.svg'
 

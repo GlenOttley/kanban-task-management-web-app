@@ -39,6 +39,8 @@ export interface Context {
   setConfirmDeleteTaskOpen: Dispatch<SetStateAction<boolean>>
   confirmDeleteBoardOpen: boolean
   setConfirmDeleteBoardOpen: Dispatch<SetStateAction<boolean>>
+  newTaskFormOpen: boolean
+  setNewTaskFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const AppContext = createContext<Context>({
@@ -68,6 +70,8 @@ export const AppContext = createContext<Context>({
   setConfirmDeleteTaskOpen: () => {},
   confirmDeleteBoardOpen: false,
   setConfirmDeleteBoardOpen: () => {},
+  newTaskFormOpen: false,
+  setNewTaskFormOpen: () => {},
 })
 
 const Context = ({ children }: ComponentProps) => {
@@ -90,6 +94,7 @@ const Context = ({ children }: ComponentProps) => {
   const [editBoardFormOpen, setEditBoardFormOpen] = useState<boolean>(false)
   const [confirmDeleteTaskOpen, setConfirmDeleteTaskOpen] = useState<boolean>(false)
   const [confirmDeleteBoardOpen, setConfirmDeleteBoardOpen] = useState<boolean>(false)
+  const [newTaskFormOpen, setNewTaskFormOpen] = useState<boolean>(false)
 
   return (
     <AppContext.Provider
@@ -120,6 +125,8 @@ const Context = ({ children }: ComponentProps) => {
         setConfirmDeleteTaskOpen,
         confirmDeleteBoardOpen,
         setConfirmDeleteBoardOpen,
+        newTaskFormOpen,
+        setNewTaskFormOpen,
       }}
     >
       {children}
