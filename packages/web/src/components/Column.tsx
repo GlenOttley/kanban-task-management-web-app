@@ -1,37 +1,39 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import TaskCard from './TaskCard'
+import { Task } from 'types'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useDroppable } from '@dnd-kit/core'
-import { Column as IColumn } from 'types'
 
 interface ComponentProps {
-  column: IColumn
+  id: string
+  name: string
+  tasks: Task[]
   bgColor: string
 }
 
-const Column = ({ column, bgColor }: ComponentProps) => {
-  const { isOver, setNodeRef } = useDroppable({
-    id: column._id,
-  })
+const Column = ({ id, name, tasks, bgColor }: ComponentProps) => {
+  const { setNodeRef } = useDroppable({ id })
 
   return (
-    <li key={column._id} className='min-w-[280px] max-w-[280px]'>
-      <h2 className='mb-6 uppercase heading-sm text-grey-medium'>
-        <span
-          className={` h-[15px] w-[15px] relative top-[3px] inline-block rounded-full mr-3 ${bgColor} `}
-        ></span>
-        {column.name} ({column.tasks?.length})
-      </h2>
-      <ul
-        className='flex flex-col gap-5'
-        aria-label={column.name}
-        id={column._id}
-        ref={setNodeRef}
-      >
-        {column?.tasks?.map((task) => (
-          <TaskCard key={task._id} task={task} />
-        ))}
-      </ul>
-    </li>
+    <SortableContext
+      id={id}
+      items={tasks.map((task: Task) => task._id)}
+      strategy={verticalListSortingStrategy}
+    >
+      <li className='min-w-[280px] max-w-[280px]'>
+        <h2 className='mb-6 uppercase heading-sm text-grey-medium'>
+          <span
+            className={` h-[15px] w-[15px] relative top-[3px] inline-block rounded-full mr-3 ${bgColor} `}
+          ></span>
+          {name} ({tasks?.length})
+        </h2>
+        <ul className='flex flex-col gap-5' aria-label={name} ref={setNodeRef}>
+          {tasks.map((task) => (
+            <TaskCard key={task._id} id={task._id} task={task} />
+          ))}
+        </ul>
+      </li>
+    </SortableContext>
   )
 }
 

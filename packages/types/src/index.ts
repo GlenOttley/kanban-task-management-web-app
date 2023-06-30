@@ -7,7 +7,7 @@ export interface Board {
 export interface Column {
   _id: string
   name: string
-  tasks?: Task[]
+  tasks: Task[]
 }
 
 export interface Task {
