@@ -39,8 +39,12 @@ const updateTaskStatus = asyncHandler(async (req: Request, res: Response) => {
   if (task) {
     task.status = status
     task.column = column
+
+    const tasksWithSameColumn = await Task.find({ column })
+    task.position = tasksWithSameColumn.length
+
     await task.save()
-    res.status(200).json(`Task id: ${taskId} has new status: ${status}`)
+    res.status(200).json(task)
   } else {
     res.status(404).json({ error: 'Task not found' })
   }

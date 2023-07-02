@@ -36,6 +36,20 @@ export const taskSchema: Schema<TaskSchema> = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Column',
   },
+  position: {
+    type: Number,
+    required: true,
+  },
+})
+
+taskSchema.pre('save', async function (next) {
+  if (!this.position) {
+    const matchingTasksCount = await this.$model('Task').countDocuments({
+      column: this.column,
+    })
+    this.position = matchingTasksCount
+  }
+  next()
 })
 
 export interface SavedTaskDocument extends TaskSchema, Omit<Document, '_id'> {}

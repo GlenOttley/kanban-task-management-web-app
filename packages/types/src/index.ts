@@ -17,6 +17,7 @@ export interface Task {
   status: string
   subtasks?: Subtask[]
   column: string
+  position?: number
 }
 
 export interface Subtask {

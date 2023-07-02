@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import createServer from '../utils/server'
 import { Task } from 'types'
 import { SavedTaskDocument } from '../models/taskModel'
-import { createTask, deleteTask } from '../utils/taskUtils'
+import { createTask, deleteTask, deleteAllTasks } from '../utils/taskUtils'
 import { Types } from 'mongoose'
 
 const app = createServer()
@@ -29,6 +29,7 @@ const dummyTask: Task = {
     },
   ],
   column: generateId(),
+  position: 0,
 }
 
 const dummyTaskWithoutIds = {
@@ -47,7 +48,52 @@ const dummyTaskWithoutIds = {
     },
   ],
   column: generateId(),
+  position: 0,
 }
+
+describe('POST /api/tasks', () => {
+  afterEach(async () => {
+    await deleteAllTasks()
+  })
+
+  test('returns 201 Created status', async () => {
+    const response = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
+    expect(response.status).toBe(201)
+  })
+
+  test('returns new Task with posted values', async () => {
+    const { body } = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
+    expect(body.title).toBe(dummyTaskWithoutIds.title)
+    expect(body.description).toBe(dummyTaskWithoutIds.description)
+    expect(body.status).toBe(dummyTaskWithoutIds.status)
+    expect(body.subtasks[0]).toMatchObject(dummyTaskWithoutIds.subtasks[0])
+  })
+
+  test('generates subtask ids', async () => {
+    const { body } = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
+    expect(body.subtasks[0]._id).toBeTruthy()
+    expect(body.subtasks[1]._id).toBeTruthy()
+  })
+
+  test('returns 409 Conflict stats code if task._id already exists', async () => {
+    await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
+    const response = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
+    expect(response.status).toBe(409)
+  })
+
+  test('sets the position property equal to the number of tasks with matching columnId', async () => {
+    const numberOfTasks = 3
+    for (let i = 0; i < numberOfTasks; i++) {
+      await supertest(app)
+        .post('/api/tasks')
+        .send({ ...dummyTaskWithoutIds, _id: generateId() })
+    }
+    const { body } = await supertest(app)
+      .post('/api/tasks')
+      .send({ ...dummyTaskWithoutIds, _id: generateId() })
+    expect(body.position).toBe(numberOfTasks)
+  })
+})
 
 describe('PATCH /tasks/:id', () => {
   let task: SavedTaskDocument
@@ -122,33 +168,34 @@ describe('PATCH /tasks/:id', () => {
   })
 })
 
-describe('POST /api/tasks', () => {
+describe('PATCH /tasks/:id/update-status', () => {
+  let task: SavedTaskDocument
+
+  beforeEach(async () => {
+    task = await createTask(dummyTask)
+  })
+
   afterEach(async () => {
-    await deleteTask(dummyTaskWithoutIds._id)
+    await deleteAllTasks()
   })
 
-  test('returns 201 Created status', async () => {
-    const response = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
-    expect(response.status).toBe(201)
+  test('updates the tasks status and column', async () => {
+    const updatedDetails = { status: 'new status', column: generateId() }
+    const { body } = await supertest(app)
+      .patch(`/api/tasks/${task._id}/update-status`)
+      .send(updatedDetails)
+    expect(body.status).toBe(updatedDetails.status)
+    expect(body.column).toBe(updatedDetails.column)
   })
 
-  test('returns new Task with posted values', async () => {
-    const { body } = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
-    expect(body.title).toBe(dummyTaskWithoutIds.title)
-    expect(body.description).toBe(dummyTaskWithoutIds.description)
-    expect(body.status).toBe(dummyTaskWithoutIds.status)
-    expect(body.subtasks[0]).toMatchObject(dummyTaskWithoutIds.subtasks[0])
-  })
-
-  test('generates subtask ids', async () => {
-    const { body } = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
-    expect(body.subtasks[0]._id).toBeTruthy()
-    expect(body.subtasks[1]._id).toBeTruthy()
-  })
-
-  test('returns 409 Conflict stats code if task._id already exists', async () => {
-    await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
-    const response = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
-    expect(response.status).toBe(409)
+  test('updates the tasks position property', async () => {
+    let task2 = await createTask({ ...dummyTask, _id: generateId() })
+    let task3 = await createTask({ ...dummyTask, _id: generateId() })
+    const updatedDetails = { status: 'new status', column: generateId() }
+    expect(task3.position).toBe(2)
+    const { body } = await supertest(app)
+      .patch(`/api/tasks/${task3._id}/update-status`)
+      .send(updatedDetails)
+    expect(body.position).toBe(0)
   })
 })

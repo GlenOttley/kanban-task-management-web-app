@@ -22,6 +22,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addc9',
+    position: 0,
   },
   {
     _id: '647dc839acf1b0a3fb66f7c5',
@@ -36,6 +37,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addc9',
+    position: 1,
   },
   {
     _id: '647dc839acf1b0a3fb66f7c6',
@@ -54,6 +56,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addc9',
+    position: 2,
   },
   {
     _id: '647dc839acf1b0a3fb66f7c7',
@@ -73,6 +76,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addc9',
+    position: 3,
   },
   {
     _id: '647dc839acf1b0a3fb66f7c8',
@@ -95,6 +99,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addca',
+    position: 0,
   },
   {
     _id: '647dc839acf1b0a3fb66f7c9',
@@ -117,6 +122,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addca',
+    position: 1,
   },
   {
     _id: '647dc839acf1b0a3fb66f7ca',
@@ -139,6 +145,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addca',
+    position: 2,
   },
   {
     _id: '647dc839acf1b0a3fb66f7cb',
@@ -157,6 +164,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addca',
+    position: 3,
   },
   {
     _id: '647dc839acf1b0a3fb66f7cc',
@@ -175,6 +183,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addca',
+    position: 4,
   },
   {
     _id: '647dc839acf1b0a3fb66f7cd',
@@ -200,6 +209,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addca',
+    position: 5,
   },
   {
     _id: '647dc839acf1b0a3fb66f7ce',
@@ -215,6 +225,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addcb',
+    position: 0,
   },
   {
     _id: '647dc839acf1b0a3fb66f7cf',
@@ -230,6 +241,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addcb',
+    position: 1,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d0',
@@ -253,6 +265,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addcb',
+    position: 2,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d1',
@@ -272,6 +285,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addcb',
+    position: 3,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d2',
@@ -287,6 +301,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addcb',
+    position: 4,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d3',
@@ -305,6 +320,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addcb',
+    position: 5,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d4',
@@ -324,6 +340,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f30',
     column: '647dd8ac93050499e86addcb',
+    position: 6,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d5',
@@ -358,6 +375,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f45',
     column: '647dd8ac93050499e86addcd',
+    position: 0,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d6',
@@ -380,6 +398,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f45',
     column: '647dd8ac93050499e86addcd',
+    position: 1,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d7',
@@ -406,6 +425,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f45',
     column: '647dd8ac93050499e86addcd',
+    position: 2,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d8',
@@ -424,6 +444,7 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f4c',
     column: '647dd8ac93050499e86addd1',
+    position: 0,
   },
   {
     _id: '647dc839acf1b0a3fb66f7d9',
@@ -447,5 +468,6 @@ export const taskData = [
     ],
     // board: '646bed58f3f236e423e58f4c',
     column: '647dd8ac93050499e86addd1',
+    position: 1,
   },
 ]

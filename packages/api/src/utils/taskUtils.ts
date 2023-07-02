@@ -22,3 +22,7 @@ export async function createTask(task: TaskPartial) {
 export async function deleteTask(id: string) {
   return TaskModel.findByIdAndDelete(id)
 }
+
+export async function deleteAllTasks() {
+  return TaskModel.deleteMany()
+}

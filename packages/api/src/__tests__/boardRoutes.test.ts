@@ -19,14 +19,17 @@ const dummyBoard: Board = {
     {
       _id: generateId(),
       name: 'To Do',
+      tasks: [],
     },
     {
       _id: generateId(),
       name: 'In Progress',
+      tasks: [],
     },
     {
       _id: generateId(),
       name: 'Done',
+      tasks: [],
     },
   ],
 }
