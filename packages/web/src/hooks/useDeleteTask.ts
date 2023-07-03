@@ -22,7 +22,7 @@ export default function deleteTaskMutation() {
       ])
       queryClient.setQueryData(['board', previousBoardData?._id], (oldQueryData: any) => {
         const columnToUpdate = oldQueryData.columns.find(
-          (column: Column) => column._id === deletedTask.column
+          (column: Column) => column._id === deletedTask.columnId
         )
         columnToUpdate.tasks = columnToUpdate.tasks.filter(
           (task: Task) => task._id !== deletedTask._id

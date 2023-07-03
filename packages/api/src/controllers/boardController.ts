@@ -21,18 +21,21 @@ const getBoards = asyncHandler(async (req: Request, res: Response): Promise<void
 // @access  Public
 const getBoard = asyncHandler(async (req: Request, res: Response): Promise<void> => {
   try {
-    const board: SavedBoardDocument | null = await Board.findById(req.params.id)
-    const columnIds = board?.columns?.map((column) => column._id)
-    const tasks = await Task.find({ column: { $in: columnIds } })
-    const populatedBoard = board?.toObject()
-    populatedBoard.columns.forEach((column: any) => {
-      column.tasks = tasks.filter(
-        (task) => task.column.toString() === column._id.toString()
-      )
+    const board = await Board.findById(req.params.id).populate({
+      path: 'columns',
+      populate: {
+        path: 'tasks',
+        model: 'Task',
+      },
     })
-    res.status(200).json(populatedBoard)
+
+    if (board) {
+      res.status(200).json(board)
+    } else {
+      res.status(404).json({ error: `Board with ID: ${req.params.id} not found` })
+    }
   } catch (error) {
-    res.status(404).json({ error: `Board with ID: ${req.params.id} not found` })
+    res.json(error)
   }
 })
 
@@ -60,20 +63,6 @@ const editBoard = asyncHandler(async (req: Request, res: Response) => {
     if (board) {
       board.name = name
       board.columns = columns
-
-      // const originalColumns: Column[] = board.columns || []
-
-      // columns?.forEach((newColumn: Column) => {
-      //   const matchingIndex = originalColumns.findIndex(
-      //     (originalColumn) => originalColumn._id.toString() === newColumn._id
-      //   )
-
-      //   if (matchingIndex !== -1) {
-      //     originalColumns[matchingIndex].name = newColumn.name
-      //   } else {
-      //     originalColumns.push(newColumn)
-      //   }
-      // })
 
       const updatedBoard = await board.save()
       res.status(200).json(updatedBoard)

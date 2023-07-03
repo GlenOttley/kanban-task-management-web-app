@@ -2,7 +2,6 @@ import React, { useContext, MouseEvent, useRef, useEffect } from 'react'
 import { AppContext } from '../Context'
 import { Task } from 'types'
 import { useSortable } from '@dnd-kit/sortable'
-import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 
 interface ComponentProps {
@@ -11,7 +10,7 @@ interface ComponentProps {
 }
 
 const TaskCard = ({ task, id }: ComponentProps) => {
-  const { title, subtasks, status, column } = task
+  const { title, subtasks, status, columnId } = task
   const { setSelectedTask, setTaskDetailOpen } = useContext(AppContext)
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 

@@ -114,7 +114,6 @@ const Board = () => {
           }
         })
       })
-      console.log(columns)
     }
   }
 

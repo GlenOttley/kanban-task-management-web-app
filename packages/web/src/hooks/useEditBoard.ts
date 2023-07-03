@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { AppContext } from '../Context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Board } from 'types'
+import { Board, Task } from 'types'
 
 interface FormData {
   _id: string
@@ -10,6 +10,7 @@ interface FormData {
   columns: {
     _id?: string
     name: string
+    tasks: Task[]
   }[]
 }
 

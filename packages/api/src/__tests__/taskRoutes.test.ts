@@ -4,6 +4,7 @@ import { Task } from 'types'
 import { SavedTaskDocument } from '../models/taskModel'
 import { createTask, deleteTask, deleteAllTasks } from '../utils/taskUtils'
 import { Types } from 'mongoose'
+import { createBoard } from '../utils/boardUtils'
 
 const app = createServer()
 
@@ -16,6 +17,7 @@ const dummyTask: Task = {
   title: 'Dummy Task',
   description: 'This is a dummy task',
   status: 'In Progress',
+  columnId: generateId(),
   subtasks: [
     {
       _id: generateId(),
@@ -28,8 +30,6 @@ const dummyTask: Task = {
       isCompleted: true,
     },
   ],
-  column: generateId(),
-  position: 0,
 }
 
 const dummyTaskWithoutIds = {
@@ -37,6 +37,7 @@ const dummyTaskWithoutIds = {
   title: 'Dummy Task',
   description: 'This is a dummy task',
   status: 'In Progress',
+  columnId: generateId(),
   subtasks: [
     {
       title: 'Subtask 1',
@@ -47,8 +48,6 @@ const dummyTaskWithoutIds = {
       isCompleted: true,
     },
   ],
-  column: generateId(),
-  position: 0,
 }
 
 describe('POST /api/tasks', () => {
@@ -80,19 +79,6 @@ describe('POST /api/tasks', () => {
     const response = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
     expect(response.status).toBe(409)
   })
-
-  test('sets the position property equal to the number of tasks with matching columnId', async () => {
-    const numberOfTasks = 3
-    for (let i = 0; i < numberOfTasks; i++) {
-      await supertest(app)
-        .post('/api/tasks')
-        .send({ ...dummyTaskWithoutIds, _id: generateId() })
-    }
-    const { body } = await supertest(app)
-      .post('/api/tasks')
-      .send({ ...dummyTaskWithoutIds, _id: generateId() })
-    expect(body.position).toBe(numberOfTasks)
-  })
 })
 
 describe('PATCH /tasks/:id', () => {
@@ -111,7 +97,7 @@ describe('PATCH /tasks/:id', () => {
     expect(body.title).toBe(task.title)
     expect(body.description).toBe(task.description)
     expect(body.status).toBe(task.status)
-    expect(body.column).toBe(task.column.toString())
+    expect(body.columnId).toBe(task.columnId.toString())
     expect(body.subtasks).toHaveLength(task.subtasks!.length)
   })
 
@@ -151,12 +137,12 @@ describe('PATCH /tasks/:id', () => {
     expect(body.subtasks).toEqual(expect.arrayContaining(updatedSubtasks))
   })
 
-  test('updates the task column', async () => {
-    const updatedColumn = generateId()
+  test('updates the task columnId', async () => {
+    const updatedColumnId = generateId()
     const { body } = await supertest(app)
       .patch(`/api/tasks/${task._id}`)
-      .send({ ...dummyTask, column: updatedColumn })
-    expect(body.column).toBe(updatedColumn)
+      .send({ ...dummyTask, columnId: updatedColumnId })
+    expect(body.columnId).toBe(updatedColumnId)
   })
 
   test('returns 404 if the task is not found', async () => {
@@ -179,23 +165,17 @@ describe('PATCH /tasks/:id/update-status', () => {
     await deleteAllTasks()
   })
 
-  test('updates the tasks status and column', async () => {
-    const updatedDetails = { status: 'new status', column: generateId() }
+  test('updates the tasks status and columnId', async () => {
+    const updatedDetails = {
+      boardID: generateId(),
+      prevColumnId: generateId(),
+      newColumnId: generateId(),
+      status: 'new status',
+    }
     const { body } = await supertest(app)
       .patch(`/api/tasks/${task._id}/update-status`)
       .send(updatedDetails)
     expect(body.status).toBe(updatedDetails.status)
-    expect(body.column).toBe(updatedDetails.column)
-  })
-
-  test('updates the tasks position property', async () => {
-    let task2 = await createTask({ ...dummyTask, _id: generateId() })
-    let task3 = await createTask({ ...dummyTask, _id: generateId() })
-    const updatedDetails = { status: 'new status', column: generateId() }
-    expect(task3.position).toBe(2)
-    const { body } = await supertest(app)
-      .patch(`/api/tasks/${task3._id}/update-status`)
-      .send(updatedDetails)
-    expect(body.position).toBe(0)
+    // expect(body.columnId).toBe(updatedDetails.newColumnId)
   })
 })

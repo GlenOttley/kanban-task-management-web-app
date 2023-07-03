@@ -1,7 +1,7 @@
 export interface Board {
   _id: string
   name: string
-  columns?: Column[]
+  columns: Column[]
 }
 
 export interface Column {
@@ -16,8 +16,7 @@ export interface Task {
   description: string
   status: string
   subtasks?: Subtask[]
-  column: string
-  position?: number
+  columnId: string
 }
 
 export interface Subtask {

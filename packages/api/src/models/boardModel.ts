@@ -6,6 +6,12 @@ const columnSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  tasks: [
+    {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+  ],
 })
 
 const boardSchema: Schema<Board> = new Schema(

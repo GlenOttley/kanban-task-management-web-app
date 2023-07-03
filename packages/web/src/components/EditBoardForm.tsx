@@ -4,11 +4,12 @@ import { useForm, SubmitHandler, useFieldArray, FormProvider } from 'react-hook-
 import IconCross from '../images/icon-cross.svg'
 import useEditBoard from '../hooks/useEditBoard'
 import useBoard from '../hooks/useBoard'
+import { Task } from 'packages/types/src'
 
 interface Inputs {
   _id: string
   name: string
-  columns: { _id?: string; name: string }[]
+  columns: { name: string; tasks: Task[] }[]
 }
 
 const EditBoardForm = (): JSX.Element => {
@@ -53,6 +54,7 @@ const EditBoardForm = (): JSX.Element => {
   const columnPlaceholders = ['e.g. Todo', 'e.g. Doing']
 
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
+    // console.log(formData)
     mutate(formData)
   }
 
@@ -154,7 +156,7 @@ const EditBoardForm = (): JSX.Element => {
               className='w-full mb-6 btn btn-sm btn-secondary'
               aria-label='Add new column'
               onClick={() => {
-                append({ name: '' })
+                append({ name: '', tasks: [] })
               }}
             >
               <span aria-hidden='true'>+</span> Add New Column

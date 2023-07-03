@@ -21,7 +21,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addc9',
+    columnId: '647dd8ac93050499e86addc9',
     position: 0,
   },
   {
@@ -36,7 +36,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addc9',
+    columnId: '647dd8ac93050499e86addc9',
     position: 1,
   },
   {
@@ -55,7 +55,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addc9',
+    columnId: '647dd8ac93050499e86addc9',
     position: 2,
   },
   {
@@ -75,7 +75,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addc9',
+    columnId: '647dd8ac93050499e86addc9',
     position: 3,
   },
   {
@@ -98,7 +98,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addca',
+    columnId: '647dd8ac93050499e86addca',
     position: 0,
   },
   {
@@ -121,7 +121,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addca',
+    columnId: '647dd8ac93050499e86addca',
     position: 1,
   },
   {
@@ -144,7 +144,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addca',
+    columnId: '647dd8ac93050499e86addca',
     position: 2,
   },
   {
@@ -163,7 +163,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addca',
+    columnId: '647dd8ac93050499e86addca',
     position: 3,
   },
   {
@@ -182,7 +182,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addca',
+    columnId: '647dd8ac93050499e86addca',
     position: 4,
   },
   {
@@ -208,7 +208,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addca',
+    columnId: '647dd8ac93050499e86addca',
     position: 5,
   },
   {
@@ -224,7 +224,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addcb',
+    columnId: '647dd8ac93050499e86addcb',
     position: 0,
   },
   {
@@ -240,7 +240,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addcb',
+    columnId: '647dd8ac93050499e86addcb',
     position: 1,
   },
   {
@@ -264,7 +264,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addcb',
+    columnId: '647dd8ac93050499e86addcb',
     position: 2,
   },
   {
@@ -284,7 +284,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addcb',
+    columnId: '647dd8ac93050499e86addcb',
     position: 3,
   },
   {
@@ -300,7 +300,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addcb',
+    columnId: '647dd8ac93050499e86addcb',
     position: 4,
   },
   {
@@ -319,7 +319,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addcb',
+    columnId: '647dd8ac93050499e86addcb',
     position: 5,
   },
   {
@@ -339,7 +339,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f30',
-    column: '647dd8ac93050499e86addcb',
+    columnId: '647dd8ac93050499e86addcb',
     position: 6,
   },
   {
@@ -374,7 +374,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f45',
-    column: '647dd8ac93050499e86addcd',
+    columnId: '647dd8ac93050499e86addcd',
     position: 0,
   },
   {
@@ -397,7 +397,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f45',
-    column: '647dd8ac93050499e86addcd',
+    columnId: '647dd8ac93050499e86addcd',
     position: 1,
   },
   {
@@ -424,7 +424,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f45',
-    column: '647dd8ac93050499e86addcd',
+    columnId: '647dd8ac93050499e86addcd',
     position: 2,
   },
   {
@@ -443,7 +443,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f4c',
-    column: '647dd8ac93050499e86addd1',
+    columnId: '647dd8ac93050499e86addd1',
     position: 0,
   },
   {
@@ -467,7 +467,7 @@ export const taskData = [
       },
     ],
     // board: '646bed58f3f236e423e58f4c',
-    column: '647dd8ac93050499e86addd1',
+    columnId: '647dd8ac93050499e86addd1',
     position: 1,
   },
 ]

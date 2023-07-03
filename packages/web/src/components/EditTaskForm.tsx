@@ -39,8 +39,8 @@ const EditTaskForm = (): JSX.Element => {
       description: selectedTask.description,
       status: selectedTask.status,
       subtasks: selectedTask.subtasks,
-      column: selectedTask.column,
-      prevColumn: selectedTask.column,
+      column: selectedTask.columnId,
+      prevColumn: selectedTask.columnId,
     },
     mode: 'onSubmit',
   })

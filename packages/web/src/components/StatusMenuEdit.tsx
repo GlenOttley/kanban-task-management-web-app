@@ -23,7 +23,7 @@ const StatusMenuEdit = ({ nextItemRef }: ComponentProps) => {
 
   function updateStatus(newColumnName: string, newColumnId: string) {
     setValue('status', newColumnName)
-    setValue('column', newColumnId)
+    setValue('columnId', newColumnId)
   }
 
   function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {

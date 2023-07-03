@@ -15,12 +15,11 @@ import StatusMenuEdit from './StatusMenuEdit'
 import useBoard from '../hooks/useBoard'
 
 interface Inputs {
-  _id: string
   title: string
   description: string
-  subtasks: Partial<Subtask>[]
   status: string
-  column: string
+  columnId: string
+  subtasks: Partial<Subtask>[]
 }
 
 const NewTaskForm = (): JSX.Element => {
@@ -45,7 +44,7 @@ const NewTaskForm = (): JSX.Element => {
         },
       ],
       status: selectedBoard?.columns![0].name,
-      column: selectedBoard?.columns![0]._id,
+      columnId: selectedBoard?.columns![0]._id,
     },
   })
 
@@ -73,7 +72,7 @@ const NewTaskForm = (): JSX.Element => {
 
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
     console.log(formData)
-    mutate(formData)
+    mutate({ ...formData, boardId: selectedBoardId })
   }
 
   useEffect(() => {

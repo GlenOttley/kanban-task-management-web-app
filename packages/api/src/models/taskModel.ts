@@ -12,8 +12,8 @@ const subtaskSchema: Schema<Subtask> = new Schema({
   },
 })
 
-interface TaskSchema extends Omit<Task, 'column'> {
-  column: ObjectId
+interface TaskSchema extends Omit<Task, 'columnId'> {
+  columnId: ObjectId
 }
 
 export const taskSchema: Schema<TaskSchema> = new Schema({
@@ -32,24 +32,10 @@ export const taskSchema: Schema<TaskSchema> = new Schema({
   subtasks: {
     type: [subtaskSchema],
   },
-  column: {
+  columnId: {
     type: Schema.Types.ObjectId,
     ref: 'Column',
   },
-  position: {
-    type: Number,
-    required: true,
-  },
-})
-
-taskSchema.pre('save', async function (next) {
-  if (!this.position) {
-    const matchingTasksCount = await this.$model('Task').countDocuments({
-      column: this.column,
-    })
-    this.position = matchingTasksCount
-  }
-  next()
 })
 
 export interface SavedTaskDocument extends TaskSchema, Omit<Document, '_id'> {}

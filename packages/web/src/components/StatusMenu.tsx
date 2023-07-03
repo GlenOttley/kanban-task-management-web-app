@@ -30,10 +30,11 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
 
     function updateStatus(newColumnName: string, newColumnId: string) {
       mutate({
+        boardId: selectedBoardId,
+        prevColumnId: selectedTask.columnId,
+        newColumnId: newColumnId,
         taskId: selectedTask._id,
-        column: newColumnId,
         status: newColumnName,
-        prevColumn: selectedTask.column,
       })
     }
 

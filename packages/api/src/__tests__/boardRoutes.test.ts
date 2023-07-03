@@ -90,9 +90,7 @@ describe('PATCH /api/boards/:id', () => {
     expect(body._id).toBe(board._id.toString())
     expect(body.name).toBe(board.name)
     expect(body.columns).toHaveLength(board.columns?.length ?? 0)
-    expect(JSON.stringify(body.columns[0])).toMatch(
-      new RegExp(JSON.stringify(board.columns?.[0]))
-    )
+    expect(body.columns[0].name).toBe(board.columns[0].name)
   })
 
   test('updates the board name', async () => {
@@ -130,8 +128,8 @@ describe('PATCH /api/boards/:id', () => {
     expect(body.columns).toHaveLength(2)
   })
 
-  test.skip('board does not exist', async () => {
-    const fakeBoardId = '123'
+  test('board does not exist', async () => {
+    const fakeBoardId = generateId()
     const response = await supertest(app)
       .patch(`/api/boards/${fakeBoardId}`)
       .send({ name: board.name, columns: board.columns })

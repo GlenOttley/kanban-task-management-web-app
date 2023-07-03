@@ -1,15 +1,14 @@
 import axios from 'axios'
-import { useContext } from 'react'
-import { AppContext } from '../Context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Board, Column, Subtask } from 'types'
+import { Board, Column, Task, Subtask } from 'types'
 
 interface FormData {
+  boardId: string
   title: string
   description?: string
   status: string
   subtasks?: Partial<Subtask>[]
-  column: string
+  columnId: string
 }
 
 const createTask = (formData: FormData) => {
@@ -17,20 +16,19 @@ const createTask = (formData: FormData) => {
 }
 
 export default function useCreateTask() {
-  const { selectedBoardId } = useContext(AppContext)
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: createTask,
     onMutate: async (newTask) => {
-      await queryClient.cancelQueries(['board', selectedBoardId])
+      await queryClient.cancelQueries(['board', newTask.boardId])
       const previousBoardData: Board | undefined = queryClient.getQueryData([
         'board',
-        selectedBoardId,
+        newTask.boardId,
       ])
       queryClient.setQueryData(['board', previousBoardData?._id], (oldQueryData: any) => {
         const columnToUpdate = oldQueryData.columns.find(
-          (column: Column) => column._id === newTask.column
+          (column: Column) => column._id === newTask.columnId
         )
         columnToUpdate.tasks = [
           ...columnToUpdate.tasks,

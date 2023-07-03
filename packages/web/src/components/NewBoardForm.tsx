@@ -65,6 +65,7 @@ const NewBoardForm = (): JSX.Element | null => {
   useEffect(() => {
     if (isSuccess) {
       setSelectedBoardId(response.data._id)
+      localStorage.setItem('selectedBoardId', response.data._id)
       refetch()
       setToastDetails({ status: 'success', message: 'Board created' })
       setNewBoardFormOpen(false)

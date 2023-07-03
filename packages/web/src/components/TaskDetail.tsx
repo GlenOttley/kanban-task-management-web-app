@@ -7,11 +7,11 @@ import TaskDetailMenu from './TaskDetailMenu'
 
 const TaskDetail = () => {
   const { selectedTask } = useContext(AppContext)
-  const { _id, title, description, subtasks, column } = selectedTask
+  const { _id, title, description, subtasks, columnId } = selectedTask
   const { mutate } = useToggleComplete()
 
   function toggleComplete(subtaskId: string) {
-    mutate({ columnId: column, taskId: _id, subtaskId })
+    mutate({ columnId: columnId, taskId: _id, subtaskId })
   }
 
   const [taskDetailMenuOpen, setTaskDetailMenuOpen] = useState(false)
