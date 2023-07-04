@@ -94,29 +94,41 @@ const updateColumn = asyncHandler(async (req: Request, res: Response) => {
   const boardId = req.params.id
   const { columnId, prevColumnId, tasks, taskToRemove } = req.body
   try {
-    await Board.updateOne(
+    const updatedBoard = await Board.findOneAndUpdate(
       {
         _id: boardId,
         'columns._id': columnId,
       },
       {
         $set: { 'columns.$.tasks': tasks },
-      }
+      },
+      { new: true }
     )
 
+    let prevBoard = null
+    let updatedTask = null
     if (prevColumnId && taskToRemove) {
-      await Board.updateOne(
+      prevBoard = await Board.findOneAndUpdate(
         {
           _id: boardId,
           'columns._id': prevColumnId,
         },
         {
           $pull: { 'columns.$.tasks': taskToRemove },
-        }
+        },
+        { new: true }
+      )
+      updatedTask = await Task.findByIdAndUpdate(
+        taskToRemove,
+        { $set: { columnId: columnId } },
+        { new: true }
       )
     }
 
-    res.status(200).json(`Board: ${boardId} updated successfully`)
+    res.status(200).json({
+      updatedBoard: updatedBoard,
+      prevBoard: prevBoard,
+    })
   } catch (error) {
     res.json(error)
   }

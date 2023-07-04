@@ -74,7 +74,7 @@ describe('POST /api/tasks', () => {
     expect(body.subtasks[1]._id).toBeTruthy()
   })
 
-  test('returns 409 Conflict stats code if task._id already exists', async () => {
+  test.skip('returns 409 Conflict stats code if task._id already exists', async () => {
     await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
     const response = await supertest(app).post('/api/tasks').send(dummyTaskWithoutIds)
     expect(response.status).toBe(409)

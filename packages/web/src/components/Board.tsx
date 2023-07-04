@@ -3,6 +3,7 @@ import useBoard from '../hooks/useBoard'
 import { AppContext } from '../Context'
 import Column from './Column'
 import useUpdateStatus from '../hooks/useUpdateStatus'
+import useUpdateColumn from '../hooks/useUpdateColumn'
 
 import {
   DndContext,
@@ -20,7 +21,8 @@ import { Column as IColumn } from 'packages/types/src'
 const Board = () => {
   const { selectedBoardId } = useContext(AppContext)
   const { status, data: board, error } = useBoard(selectedBoardId)
-  const { mutate } = useUpdateStatus()
+  const { mutate: updateStatus } = useUpdateStatus()
+  const { mutate: updateColumn } = useUpdateColumn()
 
   const colors = ['bg-blue', 'bg-purple', 'bg-green']
   const sensors = useSensors(
@@ -103,34 +105,56 @@ const Board = () => {
     }
     const activeIndex = activeColumn.tasks.findIndex((i) => i._id === activeId)
     const overIndex = overColumn.tasks.findIndex((i) => i._id === overId)
-    if (activeIndex !== overIndex) {
+    if (active.data.current?.prevColumn !== overColumn._id) {
+      // update task status when dropped into new column
+      // mutate({
+      //   boardId: selectedBoardId,
+      //   prevColumnId: active?.data?.current?.prevColumn,
+      //   newColumnId: overColumn._id,
+      //   taskId: activeId,
+      //   status: overColumn.name,
+      //   eventType: 'drag',
+      // })
+      // board?.columns && setColumns(board.columns)
+
+      updateColumn({
+        boardId: selectedBoardId,
+        columnId: overColumn._id,
+        tasks: overColumn.tasks.map((task) => task._id),
+        prevColumnId: active.data.current?.prevColumn,
+        taskToRemove: activeId,
+      })
+      // board?.columns && setColumns(board.columns)
+      console.log('dual column update')
+      console.log({
+        boardId: selectedBoardId,
+        columnId: overColumn._id,
+        tasks: overColumn.tasks.map((task) => task._id),
+        prevColumnId: active.data.current?.prevColumn,
+        taskToRemove: activeId,
+      })
+    } else if (activeIndex !== overIndex) {
       setColumns((prevState) => {
         return prevState.map((column) => {
           if (column._id === activeColumn._id) {
             column.tasks = arrayMove(overColumn.tasks, activeIndex, overIndex)
+            // updateColumn({
+            //   boardId: selectedBoardId,
+            //   columnId: overColumn._id,
+            //   tasks: column.tasks.map((task) => task._id),
+            // })
+            console.log('single column update')
+            // console.log({
+            //   boardId: selectedBoardId,
+            //   columnId: overColumn._id,
+            //   tasks: column.tasks.map((task) => task._id),
+            // })
             return column
           } else {
             return column
           }
         })
       })
-      console.log(columns)
-    } else {
-      // update task status when dropped into new column
-      mutate({
-        boardId: selectedBoardId,
-        prevColumnId: active?.data?.current?.prevColumn,
-        newColumnId: overColumn._id,
-        taskId: activeId,
-        status: overColumn.name,
-        eventType: 'drag',
-      })
-      // board?.columns && setColumns(board.columns)
-      // console.log('boardId:', selectedBoardId)
-      // console.log('prevColumnId:', active.data.current?.prevColumn)
-      // console.log('newColumnId:', overColumn._id)
-      // console.log('taskId:', activeId)
-      // console.log('status:', overColumn.name)
     }
   }
 

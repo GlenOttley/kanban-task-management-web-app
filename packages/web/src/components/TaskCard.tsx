@@ -64,7 +64,8 @@ const TaskCard = ({ task, id }: ComponentProps) => {
         className='mb-2 heading-md group-hover:text-purple dark:text-white'
         aria-describedby={`subtasks-complete-${id}`}
       >
-        <button className='text-left'>{title}</button>
+        <button className='text-left'>{id}</button>
+        <p className='text-xs'>columnId: {task.columnId}</p>
       </h3>
       <p className='body-md text-grey-medium' id={`subtasks-complete-${id}`}>
         {subtasks?.filter((subtask) => subtask.isCompleted).length} of {subtasks?.length}{' '}
