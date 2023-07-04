@@ -114,6 +114,23 @@ const Board = () => {
           }
         })
       })
+      console.log(columns)
+    } else {
+      // update task status when dropped into new column
+      mutate({
+        boardId: selectedBoardId,
+        prevColumnId: active?.data?.current?.prevColumn,
+        newColumnId: overColumn._id,
+        taskId: activeId,
+        status: overColumn.name,
+        eventType: 'drag',
+      })
+      // board?.columns && setColumns(board.columns)
+      // console.log('boardId:', selectedBoardId)
+      // console.log('prevColumnId:', active.data.current?.prevColumn)
+      // console.log('newColumnId:', overColumn._id)
+      // console.log('taskId:', activeId)
+      // console.log('status:', overColumn.name)
     }
   }
 
@@ -130,9 +147,9 @@ const Board = () => {
   //   }
   // })
 
-  useEffect(() => {
-    localStorage.setItem('columns', JSON.stringify(columns))
-  }, [columns])
+  // useEffect(() => {
+  //   localStorage.setItem('columns', JSON.stringify(columns))
+  // }, [columns])
 
   return (
     <div className='py-6'>

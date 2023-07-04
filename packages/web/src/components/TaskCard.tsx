@@ -20,11 +20,9 @@ const TaskCard = ({ task, id }: ComponentProps) => {
       duration: 150,
       easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
     },
-    // data: {
-    //   taskId: id,
-    //   status: status,
-    //   prevColumn: column,
-    // },
+    data: {
+      prevColumn: columnId,
+    },
   })
 
   function handleMouseDown() {

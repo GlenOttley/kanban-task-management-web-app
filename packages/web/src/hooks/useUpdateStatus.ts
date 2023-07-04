@@ -8,6 +8,7 @@ function updateStatus(data: {
   newColumnId: string
   taskId: string
   status: string
+  eventType: 'select' | 'drag'
 }) {
   const { boardId, prevColumnId, newColumnId, taskId, status } = data
   return axios.patch(`/api/tasks/${taskId}/update-status`, {
@@ -30,14 +31,18 @@ export default function updateStatusMutation() {
         updatedSubtask.boardId,
       ])
       queryClient.setQueryData(['board', previousBoardData?._id], (oldQueryData: any) => {
+        const columnIdToUpdate =
+          updatedSubtask.eventType === 'select'
+            ? updatedSubtask.prevColumnId
+            : updatedSubtask.newColumnId
         const columnToUpdate = oldQueryData.columns.find(
-          (column: Column) => column._id === updatedSubtask.prevColumnId
+          (column: Column) => column._id === columnIdToUpdate
         )
         const taskToUpdate = columnToUpdate.tasks.find(
           (task: Task) => task._id === updatedSubtask.taskId
         )
 
-        taskToUpdate.status = status
+        taskToUpdate.status = updatedSubtask.status
 
         return oldQueryData
       })

@@ -35,6 +35,7 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
         newColumnId: newColumnId,
         taskId: selectedTask._id,
         status: newColumnName,
+        eventType: 'select',
       })
     }
 
@@ -82,6 +83,8 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
         setTaskDetailOpen(false)
       }
     }, [isSuccess])
+
+    // console.log(selectedTask)
 
     return (
       <div className='relative'>
