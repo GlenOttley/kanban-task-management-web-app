@@ -87,4 +87,39 @@ const deleteBoard = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-export { getBoards, getBoard, createBoard, editBoard, deleteBoard }
+// @desc Update a column
+// @route PATCH /api/board/:id/update-column
+// @access Private
+const updateColumn = asyncHandler(async (req: Request, res: Response) => {
+  const boardId = req.params.id
+  const { columnId, prevColumnId, tasks, taskToRemove } = req.body
+  try {
+    await Board.updateOne(
+      {
+        _id: boardId,
+        'columns._id': columnId,
+      },
+      {
+        $set: { 'columns.$.tasks': tasks },
+      }
+    )
+
+    if (prevColumnId && taskToRemove) {
+      await Board.updateOne(
+        {
+          _id: boardId,
+          'columns._id': prevColumnId,
+        },
+        {
+          $pull: { 'columns.$.tasks': taskToRemove },
+        }
+      )
+    }
+
+    res.status(200).json(`Board: ${boardId} updated successfully`)
+  } catch (error) {
+    res.json(error)
+  }
+})
+
+export { getBoards, getBoard, createBoard, editBoard, deleteBoard, updateColumn }
