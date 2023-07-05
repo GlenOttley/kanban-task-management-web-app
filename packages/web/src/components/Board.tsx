@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import useBoard from '../hooks/useBoard'
 import { AppContext } from '../Context'
 import Column from './Column'
-import useUpdateStatus from '../hooks/useUpdateStatus'
 import useUpdateColumn from '../hooks/useUpdateColumn'
 
 import {
@@ -20,9 +19,8 @@ import { Column as IColumn } from 'packages/types/src'
 
 const Board = () => {
   const { selectedBoardId } = useContext(AppContext)
-  const { status, data: board, error } = useBoard(selectedBoardId)
-  const { mutate: updateStatus } = useUpdateStatus()
-  const { mutate: updateColumn } = useUpdateColumn()
+  const { status, data: board, error, refetch: refetchBoard } = useBoard(selectedBoardId)
+  const { mutate: updateColumn, isSuccess: updateColumnSuccess } = useUpdateColumn()
 
   const colors = ['bg-blue', 'bg-purple', 'bg-green']
   const sensors = useSensors(
@@ -94,7 +92,8 @@ const Board = () => {
     })
   }
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  // TODO batch these requests
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
     const activeId = String(active.id)
     const overId = over ? String(over.id) : null
@@ -106,49 +105,26 @@ const Board = () => {
     const activeIndex = activeColumn.tasks.findIndex((i) => i._id === activeId)
     const overIndex = overColumn.tasks.findIndex((i) => i._id === overId)
     if (active.data.current?.prevColumn !== overColumn._id) {
-      // update task status when dropped into new column
-      // mutate({
-      //   boardId: selectedBoardId,
-      //   prevColumnId: active?.data?.current?.prevColumn,
-      //   newColumnId: overColumn._id,
-      //   taskId: activeId,
-      //   status: overColumn.name,
-      //   eventType: 'drag',
-      // })
-      // board?.columns && setColumns(board.columns)
-
+      // move task between columns
       updateColumn({
         boardId: selectedBoardId,
         columnId: overColumn._id,
         tasks: overColumn.tasks.map((task) => task._id),
         prevColumnId: active.data.current?.prevColumn,
         taskToRemove: activeId,
-      })
-      // board?.columns && setColumns(board.columns)
-      console.log('dual column update')
-      console.log({
-        boardId: selectedBoardId,
-        columnId: overColumn._id,
-        tasks: overColumn.tasks.map((task) => task._id),
-        prevColumnId: active.data.current?.prevColumn,
-        taskToRemove: activeId,
+        status: overColumn.name,
       })
     } else if (activeIndex !== overIndex) {
+      // reorder tasks within a single column
       setColumns((prevState) => {
         return prevState.map((column) => {
           if (column._id === activeColumn._id) {
             column.tasks = arrayMove(overColumn.tasks, activeIndex, overIndex)
-            // updateColumn({
-            //   boardId: selectedBoardId,
-            //   columnId: overColumn._id,
-            //   tasks: column.tasks.map((task) => task._id),
-            // })
-            console.log('single column update')
-            // console.log({
-            //   boardId: selectedBoardId,
-            //   columnId: overColumn._id,
-            //   tasks: column.tasks.map((task) => task._id),
-            // })
+            updateColumn({
+              boardId: selectedBoardId,
+              columnId: overColumn._id,
+              tasks: column.tasks.map((task) => task._id),
+            })
             return column
           } else {
             return column
@@ -162,18 +138,11 @@ const Board = () => {
     board?.columns && setColumns(board.columns)
   }, [board])
 
-  // useEffect(() => {
-  //   if (columns) {
-  //     const columnsString = JSON.stringify(columns)
-  //     const columnsLengthInBytes = new Blob([columnsString]).size
-  //     const columnsLengthInKb = (columnsLengthInBytes / 1024).toFixed(2)
-  //     console.log(console.log(columnsLengthInKb))
-  //   }
-  // })
-
-  // useEffect(() => {
-  //   localStorage.setItem('columns', JSON.stringify(columns))
-  // }, [columns])
+  useEffect(() => {
+    if (updateColumnSuccess) {
+      refetchBoard()
+    }
+  }, [updateColumnSuccess])
 
   return (
     <div className='py-6'>

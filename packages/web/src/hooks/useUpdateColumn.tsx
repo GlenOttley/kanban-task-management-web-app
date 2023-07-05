@@ -10,15 +10,17 @@ interface MutationData {
   tasks: string[]
   prevColumnId?: string
   taskToRemove?: string
+  status?: string
 }
 
 async function editColumn(data: MutationData) {
-  const { boardId, columnId, tasks, prevColumnId, taskToRemove } = data
+  const { boardId, columnId, tasks, prevColumnId, taskToRemove, status } = data
   return axios.patch(`/api/boards/${boardId}/update-column`, {
     columnId,
     tasks,
     prevColumnId,
     taskToRemove,
+    status,
   })
 }
 

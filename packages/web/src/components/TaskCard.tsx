@@ -10,7 +10,7 @@ interface ComponentProps {
 }
 
 const TaskCard = ({ task, id }: ComponentProps) => {
-  const { title, subtasks, status, columnId } = task
+  const { title, subtasks, columnId } = task
   const { setSelectedTask, setTaskDetailOpen } = useContext(AppContext)
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -64,8 +64,7 @@ const TaskCard = ({ task, id }: ComponentProps) => {
         className='mb-2 heading-md group-hover:text-purple dark:text-white'
         aria-describedby={`subtasks-complete-${id}`}
       >
-        <button className='text-left'>{id}</button>
-        <p className='text-xs'>columnId: {task.columnId}</p>
+        <button className='text-left'>{title}</button>
       </h3>
       <p className='body-md text-grey-medium' id={`subtasks-complete-${id}`}>
         {subtasks?.filter((subtask) => subtask.isCompleted).length} of {subtasks?.length}{' '}

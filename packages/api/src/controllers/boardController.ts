@@ -92,7 +92,8 @@ const deleteBoard = asyncHandler(async (req: Request, res: Response) => {
 // @access Private
 const updateColumn = asyncHandler(async (req: Request, res: Response) => {
   const boardId = req.params.id
-  const { columnId, prevColumnId, tasks, taskToRemove } = req.body
+  const { columnId, prevColumnId, tasks, taskToRemove, status } = req.body
+
   try {
     const updatedBoard = await Board.findOneAndUpdate(
       {
@@ -108,6 +109,11 @@ const updateColumn = asyncHandler(async (req: Request, res: Response) => {
     let prevBoard = null
     let updatedTask = null
     if (prevColumnId && taskToRemove) {
+      updatedTask = await Task.findByIdAndUpdate(
+        taskToRemove,
+        { $set: { columnId, status } },
+        { new: true }
+      )
       prevBoard = await Board.findOneAndUpdate(
         {
           _id: boardId,
@@ -118,16 +124,11 @@ const updateColumn = asyncHandler(async (req: Request, res: Response) => {
         },
         { new: true }
       )
-      updatedTask = await Task.findByIdAndUpdate(
-        taskToRemove,
-        { $set: { columnId: columnId } },
-        { new: true }
-      )
     }
 
     res.status(200).json({
-      updatedBoard: updatedBoard,
-      prevBoard: prevBoard,
+      updatedBoard,
+      prevBoard,
     })
   } catch (error) {
     res.json(error)

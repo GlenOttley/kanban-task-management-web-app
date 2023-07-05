@@ -5,10 +5,12 @@ import {
   deleteTask,
   editTask,
   createTask,
+  getTask,
 } from '../controllers/taskController'
 
 const router = Router()
 
+router.get('/:id', getTask)
 router.post('/', createTask)
 router.patch('/:id', editTask)
 router.patch('/:id/toggle-subtask', toggleSubtaskComplete)

@@ -25,7 +25,7 @@ const Column = ({ id, name, tasks, bgColor }: ComponentProps) => {
           <span
             className={` h-[15px] w-[15px] relative top-[3px] inline-block rounded-full mr-3 ${bgColor} `}
           ></span>
-          {id} ({tasks?.length})
+          {name} ({tasks?.length})
         </h2>
         <ul className='flex flex-col gap-5' aria-label={name} ref={setNodeRef}>
           {tasks.map((task) => (

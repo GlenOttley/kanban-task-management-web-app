@@ -3,6 +3,23 @@ import asyncHandler from 'express-async-handler'
 import Task, { SavedTaskDocument } from '../models/taskModel'
 import Board from '../models/boardModel'
 
+// @desc    Get single task by ID
+// @route   GET /api/tasks/:id
+// @access  Public
+const getTask = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  try {
+    const task = await Task.findById(req.params.id)
+
+    if (task) {
+      res.status(200).json(task)
+    } else {
+      res.status(404).json({ error: `Task with ID: ${req.params.id} not found` })
+    }
+  } catch (error) {
+    res.json(error)
+  }
+})
+
 // @desc    Create new task
 // @route   POST /api/tasks
 // @access  Private
@@ -123,4 +140,11 @@ const editTask = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-export { toggleSubtaskComplete, updateTaskStatus, deleteTask, editTask, createTask }
+export {
+  getTask,
+  toggleSubtaskComplete,
+  updateTaskStatus,
+  deleteTask,
+  editTask,
+  createTask,
+}
