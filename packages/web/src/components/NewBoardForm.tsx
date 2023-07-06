@@ -153,7 +153,8 @@ const NewBoardForm = (): JSX.Element | null => {
                       type='button'
                       className='p-3 -mr-3'
                       aria-label={`Remove ${column.name} column`}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         remove(index)
                         setFormFeedback(`${column.name} column removed`)
                       }}

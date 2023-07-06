@@ -4,6 +4,7 @@ import React, {
   Dispatch,
   SetStateAction,
   ReactNode,
+  MutableRefObject,
 } from 'react'
 import { type Toast } from './components/Toast'
 import { Task } from 'types'
@@ -31,8 +32,6 @@ export interface Context {
   setEditTaskFormOpen: Dispatch<SetStateAction<boolean>>
   taskDetailOpen: boolean
   setTaskDetailOpen: Dispatch<SetStateAction<boolean>>
-  boardDetailOpen: boolean
-  setBoardDetailOpen: Dispatch<SetStateAction<boolean>>
   editBoardFormOpen: boolean
   setEditBoardFormOpen: Dispatch<SetStateAction<boolean>>
   confirmDeleteTaskOpen: boolean
@@ -41,6 +40,10 @@ export interface Context {
   setConfirmDeleteBoardOpen: Dispatch<SetStateAction<boolean>>
   newTaskFormOpen: boolean
   setNewTaskFormOpen: Dispatch<SetStateAction<boolean>>
+  boardSelectMenuOpen: boolean
+  setBoardSelectMenuOpen: Dispatch<SetStateAction<boolean>>
+  modalTriggerElement: MutableRefObject<any> | null
+  setModalTriggerElement: Dispatch<SetStateAction<MutableRefObject<any> | null>>
 }
 
 export const AppContext = createContext<Context>({
@@ -62,8 +65,6 @@ export const AppContext = createContext<Context>({
   setEditTaskFormOpen: () => {},
   taskDetailOpen: false,
   setTaskDetailOpen: () => {},
-  boardDetailOpen: false,
-  setBoardDetailOpen: () => {},
   editBoardFormOpen: false,
   setEditBoardFormOpen: () => {},
   confirmDeleteTaskOpen: false,
@@ -72,6 +73,10 @@ export const AppContext = createContext<Context>({
   setConfirmDeleteBoardOpen: () => {},
   newTaskFormOpen: false,
   setNewTaskFormOpen: () => {},
+  boardSelectMenuOpen: false,
+  setBoardSelectMenuOpen: () => {},
+  modalTriggerElement: null,
+  setModalTriggerElement: () => {},
 })
 
 const Context = ({ children }: ComponentProps) => {
@@ -90,11 +95,13 @@ const Context = ({ children }: ComponentProps) => {
   const [newBoardFormOpen, setNewBoardFormOpen] = useState<boolean>(false)
   const [editTaskFormOpen, setEditTaskFormOpen] = useState<boolean>(false)
   const [taskDetailOpen, setTaskDetailOpen] = useState<boolean>(false)
-  const [boardDetailOpen, setBoardDetailOpen] = useState<boolean>(false)
   const [editBoardFormOpen, setEditBoardFormOpen] = useState<boolean>(false)
   const [confirmDeleteTaskOpen, setConfirmDeleteTaskOpen] = useState<boolean>(false)
   const [confirmDeleteBoardOpen, setConfirmDeleteBoardOpen] = useState<boolean>(false)
   const [newTaskFormOpen, setNewTaskFormOpen] = useState<boolean>(false)
+  const [boardSelectMenuOpen, setBoardSelectMenuOpen] = useState<boolean>(false)
+  const [modalTriggerElement, setModalTriggerElement] =
+    useState<MutableRefObject<any> | null>(null)
 
   return (
     <AppContext.Provider
@@ -117,8 +124,7 @@ const Context = ({ children }: ComponentProps) => {
         setEditTaskFormOpen,
         taskDetailOpen,
         setTaskDetailOpen,
-        boardDetailOpen,
-        setBoardDetailOpen,
+
         editBoardFormOpen,
         setEditBoardFormOpen,
         confirmDeleteTaskOpen,
@@ -127,6 +133,10 @@ const Context = ({ children }: ComponentProps) => {
         setConfirmDeleteBoardOpen,
         newTaskFormOpen,
         setNewTaskFormOpen,
+        boardSelectMenuOpen,
+        setBoardSelectMenuOpen,
+        modalTriggerElement,
+        setModalTriggerElement,
       }}
     >
       {children}

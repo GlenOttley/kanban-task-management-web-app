@@ -71,7 +71,6 @@ const NewTaskForm = (): JSX.Element => {
   const subtaskPlaceholders = ['e.g. Make coffee', 'e.g. Drink coffee & smile']
 
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
-    console.log(formData)
     mutate({ ...formData, boardId: selectedBoardId })
   }
 
@@ -80,6 +79,10 @@ const NewTaskForm = (): JSX.Element => {
       setNewTaskFormOpen(false)
     }
   }, [isSuccess])
+
+  useEffect(() => {
+    setFocus('title')
+  }, [])
 
   return (
     <div className='w-full p-6 bg-white rounded-md dark:bg-grey-dark'>
@@ -177,7 +180,8 @@ const NewTaskForm = (): JSX.Element => {
                       type='button'
                       className='p-3 -mr-3'
                       aria-label={`Remove ${subtask.title} subtask`}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         remove(index)
                         setFormFeedback(`${subtask.title} subtask removed`)
                       }}

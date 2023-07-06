@@ -22,6 +22,7 @@ const ConfirmDeleteBoard = () => {
     if (isSuccess) {
       refetchBoards()
       setSelectedBoardId(allBoards![0]._id)
+      localStorage.setItem('selectedBoardId', allBoards![0]._id)
       setConfirmDeleteBoardOpen(false)
     }
   }, [isSuccess])

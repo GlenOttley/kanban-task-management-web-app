@@ -15,21 +15,27 @@ interface ComponentProps {
   triggerElement: MutableRefObject<any>
 }
 
-const BoardDetailMenu = ({ setOpen, triggerElement }: ComponentProps) => {
-  const { setEditBoardFormOpen, setBoardDetailOpen, setConfirmDeleteBoardOpen } =
+const BoardOptionsMenu = ({ setOpen, triggerElement }: ComponentProps) => {
+  const { setEditBoardFormOpen, setConfirmDeleteBoardOpen, setModalTriggerElement } =
     useContext(AppContext)
   const menuRef = useRef<HTMLDivElement>(null)
   const editButtonRef = useRef<HTMLButtonElement>(null)
   const deleteButtonRef = useRef<HTMLButtonElement>(null)
 
-  function handleOpenEditBoard() {
-    setBoardDetailOpen(false)
-    setEditBoardFormOpen((open) => !open)
+  function handleOpenEditBoardForm() {
+    setModalTriggerElement(editButtonRef)
+    setEditBoardFormOpen(true)
+    setTimeout(() => {
+      setOpen(false)
+    }, 1)
   }
 
-  function handleDeleteBoard() {
-    setOpen(false)
+  function handleOpenDeleteBoardModal() {
+    setModalTriggerElement(deleteButtonRef)
     setConfirmDeleteBoardOpen(true)
+    setTimeout(() => {
+      setOpen(false)
+    }, 1)
   }
 
   useEffect(() => {
@@ -66,7 +72,7 @@ const BoardDetailMenu = ({ setOpen, triggerElement }: ComponentProps) => {
       }}
     >
       <button
-        onClick={handleOpenEditBoard}
+        onClick={handleOpenEditBoardForm}
         type='button'
         className='w-full text-left body-lg text-grey-medium'
         ref={editButtonRef}
@@ -80,7 +86,7 @@ const BoardDetailMenu = ({ setOpen, triggerElement }: ComponentProps) => {
         Edit Board
       </button>
       <button
-        onClick={handleDeleteBoard}
+        onClick={handleOpenDeleteBoardModal}
         type='button'
         className='w-full text-left body-lg text-red'
         ref={deleteButtonRef}
@@ -97,4 +103,4 @@ const BoardDetailMenu = ({ setOpen, triggerElement }: ComponentProps) => {
   )
 }
 
-export default BoardDetailMenu
+export default BoardOptionsMenu

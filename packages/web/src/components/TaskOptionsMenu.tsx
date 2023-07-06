@@ -13,22 +13,34 @@ interface ComponentProps {
   triggerElement: MutableRefObject<any>
 }
 
-const TaskDetailMenu = ({ setOpen, triggerElement }: ComponentProps) => {
-  const { setEditTaskFormOpen, setTaskDetailOpen, setConfirmDeleteTaskOpen } =
-    useContext(AppContext)
+const TaskOptionsMenu = ({ setOpen, triggerElement }: ComponentProps) => {
+  const {
+    setEditTaskFormOpen,
+    setTaskDetailOpen,
+    setConfirmDeleteTaskOpen,
+    setModalTriggerElement,
+  } = useContext(AppContext)
 
   const menuRef = useRef<HTMLDivElement>(null)
   const editButtonRef = useRef<HTMLButtonElement>(null)
   const deleteButtonRef = useRef<HTMLButtonElement>(null)
 
-  function handleDeleteTask() {
-    setTaskDetailOpen(false)
+  function handleOpenDeleteTaskModal() {
+    setModalTriggerElement(deleteButtonRef)
     setConfirmDeleteTaskOpen(true)
+    setTimeout(() => {
+      setOpen(false)
+      setTaskDetailOpen(false)
+    })
   }
 
-  function handleOpenEditTask() {
-    setTaskDetailOpen(false)
-    setEditTaskFormOpen((open) => !open)
+  function handleOpenEditTaskForm() {
+    setModalTriggerElement(editButtonRef)
+    setEditTaskFormOpen(true)
+    setTimeout(() => {
+      setOpen(false)
+      setTaskDetailOpen(false)
+    }, 1)
   }
 
   useEffect(() => {
@@ -64,7 +76,7 @@ const TaskDetailMenu = ({ setOpen, triggerElement }: ComponentProps) => {
       }}
     >
       <button
-        onClick={handleOpenEditTask}
+        onClick={handleOpenEditTaskForm}
         type='button'
         className='w-full text-left body-lg text-grey-medium'
         ref={editButtonRef}
@@ -78,7 +90,7 @@ const TaskDetailMenu = ({ setOpen, triggerElement }: ComponentProps) => {
         Edit Task
       </button>
       <button
-        onClick={handleDeleteTask}
+        onClick={handleOpenDeleteTaskModal}
         type='button'
         className='w-full text-left body-lg text-red'
         ref={deleteButtonRef}
@@ -95,4 +107,4 @@ const TaskDetailMenu = ({ setOpen, triggerElement }: ComponentProps) => {
   )
 }
 
-export default TaskDetailMenu
+export default TaskOptionsMenu

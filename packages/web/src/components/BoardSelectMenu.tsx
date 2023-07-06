@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { AppContext } from '../Context'
 import useBoard from '../hooks/useBoard'
 import useBoards from '../hooks/useBoards'
@@ -14,18 +7,15 @@ import iconBoardWhite from '../images/icon-board-white.svg'
 import iconBoardPurple from '../images/icon-board-purple.svg'
 import ThemeSwitch from './ThemeSwitch'
 
-interface ComponentProps {
-  setModalOpen?: Dispatch<SetStateAction<boolean>>
-}
-
-const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
+const BoardSelectMenu = (): JSX.Element => {
   const {
     selectedBoardId,
     setSelectedBoardId,
     setLiveFeedback,
-    sidebarOpen,
     setSidebarOpen,
     setNewBoardFormOpen,
+    setBoardSelectMenuOpen,
+    setModalTriggerElement,
   } = useContext(AppContext)
   const { data: allBoards } = useBoards()
   const { data: selectedBoard } = useBoard(selectedBoardId)
@@ -36,10 +26,11 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
   const menuRef = useRef<HTMLDivElement | null>(null)
   const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
   const themeSwitchRef = useRef<HTMLButtonElement>(null)
+  const newBoardButtonRef = useRef<HTMLButtonElement>(null)
 
   function closeMenu() {
-    setModalOpen && setModalOpen(false)
-    sidebarOpen && setSidebarOpen(false)
+    setBoardSelectMenuOpen(false)
+    setSidebarOpen(false)
   }
 
   function handleItemKeydown(e: React.KeyboardEvent<HTMLButtonElement>) {
@@ -48,9 +39,9 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
       handleItemSelect(e)
     } else if (key === 'ArrowDown' || key === 'ArrowUp') {
       moveFocus(e)
-    } else if (!e.shiftKey && key === 'Tab' && setModalOpen) {
+    } else if (!e.shiftKey && key === 'Tab') {
       setActiveIndex(0)
-    } else if (e.shiftKey && key === 'Tab' && setModalOpen) {
+    } else if (e.shiftKey && key === 'Tab') {
       e.preventDefault()
       themeSwitchRef.current?.focus()
     }
@@ -75,17 +66,16 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
     )
   }
 
-  function openNewBoardModal() {
-    setNewBoardFormOpen(true)
-    closeMenu()
-  }
-
   useEffect(() => {
     menuItemsRef.current[activeIndex]?.focus()
   }, [activeIndex])
 
   useEffect(() => {
-    setActiveIndex(Number(allBoards?.findIndex((board) => board._id === selectedBoardId)))
+    if (allBoards?.length) {
+      setActiveIndex(
+        Number(allBoards?.findIndex((board) => board._id === selectedBoardId))
+      )
+    }
   }, [selectedBoard, selectedBoardId, allBoards])
 
   return (
@@ -98,34 +88,42 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
         <h2 className='px-6 py-4 heading-sm text-grey-medium' aria-hidden='true'>
           ALL BOARDS ({allBoards?.length})
         </h2>
-        {allBoards?.map((board, index) => (
-          <button
-            key={index}
-            value={board._id}
-            ref={(el) => (menuItemsRef.current[index] = el)}
-            role='menuitem'
-            tabIndex={index === activeIndex ? 0 : -1}
-            onKeyDown={handleItemKeydown}
-            onClick={handleItemSelect}
-            className={`text-grey-medium text-left py-3 px-6 rounded-e-full ${
-              board._id === selectedBoard?._id && 'bg-purple text-white rounded-e-full'
-            }
+        {allBoards?.length &&
+          allBoards?.map((board, index) => (
+            <button
+              key={index}
+              value={board._id}
+              ref={(el) => (menuItemsRef.current[index] = el)}
+              role='menuitem'
+              tabIndex={index === activeIndex ? 0 : -1}
+              onKeyDown={handleItemKeydown}
+              onClick={handleItemSelect}
+              className={`text-grey-medium text-left py-3 px-6 rounded-e-full ${
+                board._id === selectedBoard?._id && 'bg-purple text-white rounded-e-full'
+              }
                 ${
                   board._id !== selectedBoard?._id &&
                   'group hover:bg-purple hover:bg-opacity-10 hover:text-purple dark:hover:bg-white focus:bg-purple focus:bg-opacity-10 focus:text-purple dark:focus:bg-white'
                 }`}
-          >
-            <img
-              src={board._id === selectedBoard?._id ? iconBoardWhite : iconBoard}
-              aria-hidden='true'
-              className='inline-block mr-3 group-hover:filter-purple group-focus:filter-purple'
-            />
-            {board.name}
-          </button>
-        ))}
+            >
+              <img
+                src={board._id === selectedBoard?._id ? iconBoardWhite : iconBoard}
+                aria-hidden='true'
+                className='inline-block mr-3 group-hover:filter-purple group-focus:filter-purple'
+              />
+              {board.name}
+            </button>
+          ))}
         <button
+          ref={newBoardButtonRef}
           className='px-6 py-3 mb-4 text-left text-purple rounded-e-full hover:bg-purple hover:bg-opacity-10 hover:text-purple dark:hover:bg-white focus:bg-purple focus:bg-opacity-10 focus:text-purple dark:focus:bg-white'
-          onClick={openNewBoardModal}
+          onClick={() => {
+            setModalTriggerElement(newBoardButtonRef)
+            setNewBoardFormOpen(true)
+            setTimeout(() => {
+              setBoardSelectMenuOpen(false)
+            }, 1)
+          }}
         >
           <img
             src={iconBoardPurple}
@@ -138,7 +136,7 @@ const BoardSelectMenu = ({ setModalOpen }: ComponentProps): JSX.Element => {
         <div
           className='w-full px-4 md:hidden'
           onKeyDown={(e) => {
-            if (!e.shiftKey && e.key === 'Tab' && setModalOpen) {
+            if (!e.shiftKey && e.key === 'Tab') {
               e.preventDefault()
               menuItemsRef.current[0]?.focus()
             }

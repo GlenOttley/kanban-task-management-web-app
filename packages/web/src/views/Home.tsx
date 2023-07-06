@@ -13,6 +13,7 @@ import useBoards from '../hooks/useBoards'
 import EditBoardForm from '../components/EditBoardForm'
 import ConfirmDeleteTask from '../components/ConfirmDeleteTask'
 import ConfirmDeleteBoard from '../components/ConfirmDeleteBoard'
+import BoardSelectMenu from '../components/BoardSelectMenu'
 import NewTaskForm from '../components/NewTaskForm'
 
 const App = (): JSX.Element => {
@@ -32,6 +33,8 @@ const App = (): JSX.Element => {
     setConfirmDeleteTaskOpen,
     confirmDeleteBoardOpen,
     setConfirmDeleteBoardOpen,
+    boardSelectMenuOpen,
+    setBoardSelectMenuOpen,
     newTaskFormOpen,
     setNewTaskFormOpen,
   } = useContext(AppContext)
@@ -65,12 +68,6 @@ const App = (): JSX.Element => {
           <LiveRegion />
           <Toast />
 
-          {newBoardFormOpen && (
-            <Modal open={newBoardFormOpen} setOpen={setNewBoardFormOpen}>
-              <NewBoardForm />
-            </Modal>
-          )}
-
           {taskDetailOpen && (
             <Modal open={taskDetailOpen} setOpen={setTaskDetailOpen}>
               <TaskDetail />
@@ -98,6 +95,23 @@ const App = (): JSX.Element => {
           {confirmDeleteBoardOpen && (
             <Modal open={confirmDeleteBoardOpen} setOpen={setConfirmDeleteBoardOpen}>
               <ConfirmDeleteBoard />
+            </Modal>
+          )}
+
+          {newBoardFormOpen && (
+            <Modal open={newBoardFormOpen} setOpen={setNewBoardFormOpen}>
+              <NewBoardForm />
+            </Modal>
+          )}
+
+          {boardSelectMenuOpen && (
+            <Modal
+              open={boardSelectMenuOpen}
+              setOpen={setBoardSelectMenuOpen}
+              backdropClass='top-[64px]'
+              dialogClass='min-w-[264px] top-4 translate-y-0 max-h-[450px] overflow-y-scroll no-scrollbar'
+            >
+              <BoardSelectMenu />
             </Modal>
           )}
 

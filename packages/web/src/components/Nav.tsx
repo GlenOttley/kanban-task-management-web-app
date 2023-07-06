@@ -5,26 +5,31 @@ import logoLight from '../images/logo-light.svg'
 import logoDark from '../images/logo-dark.svg'
 import iconPlus from '../images/icon-add-task-mobile.svg'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
-import Menu from './BoardSelectMenu'
 import useBoard from '../hooks/useBoard'
 import iconChevronDown from '../images/icon-chevron-down.svg'
 import iconChevronUp from '../images/icon-chevron-up.svg'
-import Modal from './Modal'
-import BoardDetailMenu from './BoardDetailMenu'
+import BoardOptionsMenu from './BoardOptionsMenu'
 
 const Nav = (): JSX.Element => {
-  const { selectedBoardId, sidebarOpen, setNewTaskFormOpen } = useContext(AppContext)
+  const {
+    selectedBoardId,
+    sidebarOpen,
+    setNewTaskFormOpen,
+    boardSelectMenuOpen,
+    setBoardSelectMenuOpen,
+    setModalTriggerElement,
+  } = useContext(AppContext)
   const {
     status: selectedBoardStatus,
     data: selectedBoard,
     error: selectedBoardError,
   } = useBoard(selectedBoardId)
 
-  const [boardSelectMenuOpen, setBoardSelectMenuOpen] = useState<boolean>(false)
-  const [boardDetailMenuOpen, setBoardDetailMenuOpen] = useState(false)
+  const [boardOptionsMenuOpen, setBoardOptionsMenuOpen] = useState<boolean>(false)
 
   const boardSelectMenuButtonRef = useRef<HTMLButtonElement | null>(null)
-  const boardDetailMenuButtonRef = useRef<HTMLButtonElement | null>(null)
+  const boardOptionsMenuButtonRef = useRef<HTMLButtonElement | null>(null)
+  const addTaskButtonRef = useRef<HTMLButtonElement | null>(null)
 
   function handleBoardSelectMenuKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
     const { key } = e
@@ -49,7 +54,10 @@ const Nav = (): JSX.Element => {
             aria-haspopup='true'
             aria-expanded={boardSelectMenuOpen}
             onKeyDown={handleBoardSelectMenuKeyDown}
-            onClick={() => setBoardSelectMenuOpen(!boardSelectMenuOpen)}
+            onClick={() => {
+              setModalTriggerElement(boardSelectMenuButtonRef)
+              setBoardSelectMenuOpen(!boardSelectMenuOpen)
+            }}
           >
             {selectedBoard.name}
             <img
@@ -70,21 +78,16 @@ const Nav = (): JSX.Element => {
       <div className='hidden md:block text-[20px] lg:heading-xl font-bold'>
         {selectedBoard?.name}
       </div>
-      <Modal
-        open={boardSelectMenuOpen}
-        setOpen={setBoardSelectMenuOpen}
-        triggerElement={boardSelectMenuButtonRef}
-        backdropClass='top-[64px]'
-        dialogClass='min-w-[264px] top-4 translate-y-0 max-h-[450px] overflow-y-scroll no-scrollbar'
-      >
-        <Menu setModalOpen={setBoardSelectMenuOpen} />
-      </Modal>
 
       <div className='relative flex'>
         <button
+          ref={addTaskButtonRef}
           className='btn btn-primary py-[10px] md:btn-lg'
           disabled={selectedBoard?.columns?.length === 0}
-          onClick={() => setNewTaskFormOpen(true)}
+          onClick={() => {
+            setModalTriggerElement(addTaskButtonRef)
+            setNewTaskFormOpen(true)
+          }}
         >
           <img src={iconPlus} aria-hidden='true' className='md:hidden' />
           <span className='sr-only md:not-sr-only'>+ Add new task</span>
@@ -92,17 +95,17 @@ const Nav = (): JSX.Element => {
 
         <button
           className='px-4'
-          ref={boardDetailMenuButtonRef}
-          onClick={() => setBoardDetailMenuOpen(!boardDetailMenuOpen)}
+          ref={boardOptionsMenuButtonRef}
+          onClick={() => setBoardOptionsMenuOpen(!boardOptionsMenuOpen)}
         >
           <img className='h-4' src={iconVerticalEllipsis} aria-hidden='true' />
           <span className='sr-only'>Open menu</span>
         </button>
-        {boardDetailMenuOpen && selectedBoard && (
-          <BoardDetailMenu
+        {boardOptionsMenuOpen && selectedBoard && (
+          <BoardOptionsMenu
             board={selectedBoard}
-            setOpen={setBoardDetailMenuOpen}
-            triggerElement={boardDetailMenuButtonRef}
+            setOpen={setBoardOptionsMenuOpen}
+            triggerElement={boardOptionsMenuButtonRef}
           />
         )}
       </div>

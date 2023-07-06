@@ -3,7 +3,7 @@ import { AppContext } from '../Context'
 import iconVerticalEllipsis from '../images/icon-vertical-ellipsis.svg'
 import useToggleComplete from '../hooks/useToggleComplete'
 import StatusMenu from './StatusMenu'
-import TaskDetailMenu from './TaskDetailMenu'
+import TaskOptionsMenu from './TaskOptionsMenu'
 
 const TaskDetail = () => {
   const { selectedTask } = useContext(AppContext)
@@ -14,7 +14,7 @@ const TaskDetail = () => {
     mutate({ columnId: columnId, taskId: _id, subtaskId })
   }
 
-  const [taskDetailMenuOpen, setTaskDetailMenuOpen] = useState(false)
+  const [taskOptionsMenuOpen, setTaskOptionsMenuOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const statusMenuRef = useRef<HTMLButtonElement>(null)
 
@@ -30,7 +30,7 @@ const TaskDetail = () => {
           <button
             className='px-4'
             ref={menuButtonRef}
-            onClick={() => setTaskDetailMenuOpen(!taskDetailMenuOpen)}
+            onClick={() => setTaskOptionsMenuOpen(!taskOptionsMenuOpen)}
             onKeyDown={(e) => {
               if (e.shiftKey && e.key === 'Tab') {
                 e.preventDefault()
@@ -45,9 +45,9 @@ const TaskDetail = () => {
             />
             <span className='sr-only'>Open menu</span>
           </button>
-          {taskDetailMenuOpen && (
-            <TaskDetailMenu
-              setOpen={setTaskDetailMenuOpen}
+          {taskOptionsMenuOpen && (
+            <TaskOptionsMenu
+              setOpen={setTaskOptionsMenuOpen}
               triggerElement={menuButtonRef}
             />
           )}

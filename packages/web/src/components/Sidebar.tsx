@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Menu from './BoardSelectMenu'
+import BoardSelectMenu from './BoardSelectMenu'
 import logoDark from '../images/logo-dark.svg'
 import logoLight from '../images/logo-light.svg'
 import iconShow from '../images/icon-show-sidebar.svg'
@@ -29,7 +29,7 @@ const Sidebar = (): JSX.Element | null => {
               alt='Kanban'
               className='hidden px-6 py-3 mb-5 dark:block'
             />
-            <Menu />
+            <BoardSelectMenu />
           </div>
           <div className='flex flex-col gap-4'>
             <div className={`${sidebarOpen ? 'block px-4' : 'hidden'}`}>
