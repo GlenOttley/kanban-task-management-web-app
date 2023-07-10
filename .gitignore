@@ -3,3 +3,4 @@ node_modules
 frontend-mentor
 build
 dist
+.env
