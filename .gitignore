@@ -1,6 +1,5 @@
 node_modules
 .vscode
-pnpm-lock.yaml
 frontend-mentor
 build
 dist
