@@ -15,6 +15,7 @@ function createServer() {
   app.use('/api/tasks', taskRoutes)
 
   if (process.env.NODE_ENV === 'production') {
+    console.log(path.join(serverRoot, 'packages/web/dist'))
     app.use(express.static(path.join(serverRoot, 'packages/web/dist')))
     app.get('*', (req: Request, res: Response) =>
       res.sendFile(path.resolve(serverRoot, 'packages', 'web', 'dist', 'index.html'))
