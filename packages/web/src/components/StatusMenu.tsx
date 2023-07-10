@@ -35,7 +35,6 @@ const StatusMenu = forwardRef<HTMLButtonElement, ComponentProps>(
         newColumnId: newColumnId,
         taskId: selectedTask._id,
         status: newColumnName,
-        eventType: 'select',
       })
     }
 

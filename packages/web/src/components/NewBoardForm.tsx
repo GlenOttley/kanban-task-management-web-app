@@ -143,7 +143,7 @@ const NewBoardForm = (): JSX.Element | null => {
                       id={column.id}
                       aria-label='Column name'
                       aria-describedby={`boardNameError-${index}`}
-                      className={`w-full dark:text-white px-4 py-2 bg-transparent border border-opacity-25 rounded-sm border-grey-medium body-lg placeholder:body-lg placeholder:text-black placeholder:opacity-25 
+                      className={`w-full dark:text-white px-4 py-2 bg-transparent border border-opacity-25 rounded-sm border-grey-medium body-lg placeholder:body-lg placeholder:text-black dark:placeholder:text-white placeholder:opacity-25 
                       ${
                         errors?.columns?.[index] && 'error border-red !border-opacity-100'
                       }`}

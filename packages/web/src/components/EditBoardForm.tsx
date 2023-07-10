@@ -128,7 +128,7 @@ const EditBoardForm = (): JSX.Element => {
                       placeholder={
                         index % 2 !== 0 ? columnPlaceholders[1] : columnPlaceholders[0]
                       }
-                      className={`w-full dark:text-white px-4 py-2 bg-transparent border border-opacity-25 rounded-sm border-grey-medium body-lg placeholder:body-lg placeholder:text-black placeholder:opacity-25
+                      className={`w-full dark:text-white px-4 py-2 bg-transparent border border-opacity-25 rounded-sm border-grey-medium body-lg placeholder:body-lg placeholder:text-black dark:placeholder:text-white placeholder:opacity-25
                         ${
                           errors?.columns?.[index] &&
                           'error border-red !border-opacity-100'

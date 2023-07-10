@@ -9,6 +9,7 @@ import {
   closestCorners,
   PointerSensor,
   KeyboardSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragOverEvent,
@@ -25,8 +26,15 @@ const Board = () => {
   const colors = ['bg-blue', 'bg-purple', 'bg-green']
   const sensors = useSensors(
     useSensor(PointerSensor),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 5000,
+        distance: 5,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
+      // keyboardCodes: { start: ['Space'], cancel: ['Escape'], end: ['Space'] },
     })
   )
 

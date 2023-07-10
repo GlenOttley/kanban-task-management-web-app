@@ -1,4 +1,4 @@
-import React, { useContext, MouseEvent, useRef, useEffect } from 'react'
+import React, { useContext, useRef } from 'react'
 import { AppContext } from '../Context'
 import { Task } from 'types'
 import { useSortable } from '@dnd-kit/sortable'
@@ -7,9 +7,10 @@ import { CSS } from '@dnd-kit/utilities'
 interface ComponentProps {
   task: Task
   id: string
+  onClick?: void
 }
 
-const TaskCard = ({ task, id }: ComponentProps) => {
+const SortableTaskCard = ({ task, id }: ComponentProps) => {
   const { title, subtasks, columnId } = task
   const { setSelectedTask, setTaskDetailOpen } = useContext(AppContext)
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -54,17 +55,28 @@ const TaskCard = ({ task, id }: ComponentProps) => {
       ref={setNodeRef}
       id={id}
       className='px-4 py-6 bg-white rounded-lg shadow-md cursor-pointer group dark:bg-grey-dark'
+      style={style}
       {...attributes}
       {...listeners}
-      style={style}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      role='button'
     >
       <h3
         className='mb-2 heading-md group-hover:text-purple dark:text-white'
         aria-describedby={`subtasks-complete-${id}`}
       >
-        <button className='text-left'>{title}</button>
+        <button
+          className='text-left'
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              openTaskDetail()
+            }
+          }}
+        >
+          {title}
+        </button>
       </h3>
       <p className='body-md text-grey-medium' id={`subtasks-complete-${id}`}>
         {subtasks?.filter((subtask) => subtask.isCompleted).length} of {subtasks?.length}{' '}
@@ -74,4 +86,4 @@ const TaskCard = ({ task, id }: ComponentProps) => {
   )
 }
 
-export default TaskCard
+export default SortableTaskCard
