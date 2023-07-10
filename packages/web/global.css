@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *:focus-visible {
+    @apply !outline-none !ring-1 !ring-purple;
+  }
+  #root {
+    @apply h-screen overflow-x-hidden bg-grey-light dark:bg-grey-very-dark;
+  }
+  html {
+    @apply text-black;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply rounded-[20px] font-bold px-[18px];
+  }
+  .btn-lg {
+    @apply heading-md py-[14px];
+  }
+  .btn-sm {
+    @apply text-[13px] leading-[23px] py-2;
+  }
+  .btn-primary {
+    @apply text-white bg-purple hover:bg-purple-hover focus:bg-purple-hover;
+  }
+  .btn-secondary {
+    @apply text-purple bg-purple bg-opacity-10 hover:bg-opacity-25 dark:bg-white dark:text-purple;
+  }
+  .btn-destructive {
+    @apply text-white bg-red hover:bg-red-hover;
+  }
+}
+
+@layer utilities {
+  .heading-xl {
+    @apply font-bold text-2xl leading-[30px];
+  }
+  .heading-lg {
+    @apply font-bold text-lg leading-[23px];
+  }
+  .heading-md {
+    @apply font-bold text-[15px] leading-[19px];
+  }
+  .heading-sm {
+    @apply font-bold text-xs leading-[15px] tracking-[2.4px];
+  }
+  .body-lg {
+    @apply font-medium text-[13px] leading-[23px];
+  }
+  .body-md {
+    @apply font-bold text-xs leading-[15px];
+  }
+
+  .filter-purple {
+    filter: brightness(0) saturate(100%) invert(38%) sepia(14%) saturate(3028%)
+      hue-rotate(206deg) brightness(98%) contrast(85%);
+  }
+
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}

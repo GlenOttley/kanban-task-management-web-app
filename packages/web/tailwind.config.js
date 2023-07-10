@@ -1,13 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
-    screens: {
-      sm: '480px',
-      md: '768px',
-      lg: '976px',
-      xl: '1440px',
-    },
     colors: {
       purple: 'hsl(242, 48%, 58%)',
       'purple-hover': 'hsl(243, 100%, 82%)',
@@ -21,16 +16,43 @@ module.exports = {
       white: 'hsl(0, 0%, 100%)',
       red: 'hsl(0, 78%, 63%)',
       'red-hover': 'hsl(0, 100%, 80%)',
+      blue: 'hsl(193, 75%, 59%)',
+      green: 'hsl(154, 68%, 64%)',
+      transparent: 'transparent',
     },
     fontFamily: {
       sans: ['Plus Jakarta Sans', 'sans-serif'],
     },
-    container: {
-      padding: {
-        DEFAULT: '16px',
+    extend: {
+      screens: {
+        // DEFAULT: '0px',
+        xs: '375px',
+        sm: '576px',
+        md: '768px',
+        lg: '976px',
+        xl: '1440px',
+      },
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: '16px',
+        },
+      },
+      borderRadius: {
+        xs: '2px',
+        sm: '4px',
+        md: '6px',
+        lg: '8px',
+      },
+      spacing: {
+        'sidebar-tablet': '260px',
+        'sidebar-desktop': '300px',
+      },
+      boxShadow: {
+        md: '0px 4px 6px rgba(54, 78, 126, 0.1)',
       },
     },
-    extend: {},
   },
-  plugins: [],
+
+  plugins: [require('@tailwindcss/forms')],
 }

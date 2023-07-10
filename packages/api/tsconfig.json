@@ -1,7 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../types/tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src",
     "types": ["jest", "supertest"]
   },
   "exclude": ["./jest.config.js", "./dist"]

@@ -1,5 +1,6 @@
 import express, { Application } from 'express'
 import boardRoutes from '../routes/boardRoutes'
+import taskRoutes from '../routes/taskRoutes'
 import cors from 'cors'
 
 function createServer() {
@@ -10,6 +11,7 @@ function createServer() {
 
   // routes
   app.use('/api/boards', boardRoutes)
+  app.use('/api/tasks', taskRoutes)
 
   return app
 }

@@ -4,27 +4,46 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "vite preview",
     "dev": "vite dev --port 3000",
     "build": "vite build",
-    "start": "vite preview",
+    "test": "vitest",
     "type-check": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
+    "@dnd-kit/utilities": "^3.2.1",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tanstack/react-query": "^4.29.7",
+    "@tanstack/react-query-devtools": "^4.29.7",
+    "axios": "^1.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.29.8",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.5.1",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
+    "@types/testing-library__jest-dom": "^5.14.5",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",
+    "data": "workspace:^",
+    "jsdom": "^22.0.0",
+    "nock": "^13.3.1",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2",
     "types": "workspace:^",
     "typescript": "^5.0.4",
-    "vite": "^4.3.6"
+    "vite": "^4.3.6",
+    "vitest": "^0.31.1"
   }
 }
