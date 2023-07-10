@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "dev": "concurrently \"pnpm run --filter api dev\" \"pnpm run --filter web dev\""
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.0.1"
+    "concurrently": "^8.0.1",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "tsc": "./node_modules/typescript/bin/tsc",
+    "dev": "concurrently \"pnpm run --filter api dev\" \"pnpm run --filter web dev\"",
+    "start": "node packages/api/dist/index.js",
+    "build": "tsc -p ./packages/api/tsconfig.json",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false pnpm build && pnpm --filter ./packages/web install && pnpm --filter ./packages/web run build"
   }
 }
