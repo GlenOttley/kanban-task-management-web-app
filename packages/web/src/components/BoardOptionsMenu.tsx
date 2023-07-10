@@ -7,7 +7,7 @@ import React, {
   useContext,
 } from 'react'
 import { AppContext } from '../Context'
-import { Board } from 'types'
+import { Board } from '@kanban/types'
 
 interface ComponentProps {
   board: Board

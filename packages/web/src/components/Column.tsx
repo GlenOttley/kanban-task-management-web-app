@@ -1,6 +1,6 @@
 import React from 'react'
 import TaskCard from './TaskCard'
-import { Task } from 'types'
+import { Task } from '@kanban/types'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useDroppable } from '@dnd-kit/core'
 

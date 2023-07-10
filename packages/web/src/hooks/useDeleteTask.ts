@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { AppContext } from '../Context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Board, Column, Task } from 'types'
+import { Board, Column, Task } from '@kanban/types'
 
 function deleteTask(task: Task) {
   return axios.delete(`/api/tasks/${task._id}`)

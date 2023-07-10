@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import createServer from '../utils/server'
-import { Task } from 'types'
+import { Task } from '@kanban/types'
 import { SavedTaskDocument } from '../models/taskModel'
 import { createTask, deleteTask, deleteAllTasks } from '../utils/taskUtils'
 import { Types } from 'mongoose'

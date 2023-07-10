@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { boardData, taskData } from 'data'
+import { boardData, taskData } from '@kanban/data'
 import connectDB from './db'
 import path from 'path'
 import Board from '../models/boardModel'

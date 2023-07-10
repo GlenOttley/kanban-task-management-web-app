@@ -1,5 +1,5 @@
 {
-  "name": "data",
+  "name": "@kanban/data",
   "type": "module",
   "version": "1.0.0",
   "description": "",
@@ -8,6 +8,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "types": "workspace:^"
+    "@kanban/types": "1.0.0"
   }
 }

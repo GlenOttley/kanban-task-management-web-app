@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '../utils/customRender'
 import Nav from './Nav'
 import nock from 'nock'
 import axios from 'axios'
-import { boardData } from 'data'
+import { boardData } from '@kanban/data'
 
 const baseURL = 'http://localhost:5000'
 axios.defaults.adapter = 'http'

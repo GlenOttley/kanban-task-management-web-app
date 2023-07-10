@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Board, Column, Task } from 'types'
+import { Board, Column, Task } from '@kanban/types'
 
 function updateStatus(data: {
   boardId: string

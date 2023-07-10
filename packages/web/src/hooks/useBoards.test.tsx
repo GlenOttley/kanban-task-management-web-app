@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import useBoards from './useBoards'
 import nock from 'nock'
 import axios from 'axios'
-import { boardData } from 'data'
+import { boardData } from '@kanban/data'
 
 const queryClient = new QueryClient()
 

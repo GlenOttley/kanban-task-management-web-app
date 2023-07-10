@@ -1,5 +1,5 @@
 import { Schema, model, Document } from 'mongoose'
-import { Board, Column } from 'types'
+import { Board, Column } from '@kanban/types'
 
 const columnSchema: Schema = new Schema({
   name: {

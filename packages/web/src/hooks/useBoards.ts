@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { Board } from 'types'
+import { Board } from '@kanban/types'
 
 const fetchBoards = () => {
   return axios.get('api/boards').then((res) => res.data)

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { AppContext } from '../Context'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Board } from 'types'
+import { Board } from '@kanban/types'
 
 interface FormData {
   name: string

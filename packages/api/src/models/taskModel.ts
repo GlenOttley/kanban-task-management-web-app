@@ -1,5 +1,5 @@
 import { Schema, model, Document, ObjectId } from 'mongoose'
-import { Task, Subtask } from 'types'
+import { Task, Subtask } from '@kanban/types'
 
 const subtaskSchema: Schema<Subtask> = new Schema({
   title: {

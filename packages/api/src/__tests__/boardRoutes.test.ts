@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import createServer from '../utils/server'
-import { Board, Task } from 'types'
+import { Board, Task } from '@kanban/types'
 import { createBoard, deleteBoard } from '../utils/boardUtils'
 import { Types } from 'mongoose'
 import { SavedBoardDocument } from '../models/boardModel'

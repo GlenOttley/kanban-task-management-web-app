@@ -1,9 +1,13 @@
 {
   "name": "kanban-task-management-web-app",
+  "private": "true",
   "version": "1.0.0",
   "engines": {
     "node": "18.x"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "description": "",
   "main": "index.js",
   "keywords": [],
@@ -15,9 +19,9 @@
   },
   "scripts": {
     "tsc": "./node_modules/typescript/bin/tsc",
-    "dev": "concurrently \"pnpm run --filter api dev\" \"pnpm run --filter web dev\"",
+    "dev": "concurrently \"yarn --cwd packages/api run dev\" \"yarn --cwd packages/web run dev\"",
     "start": "node packages/api/dist/index.js",
     "build": "tsc -p ./packages/api/tsconfig.json",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false pnpm build && pnpm --filter ./packages/web install && pnpm --filter ./packages/web run build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn build && yarn --cwd packages/web install && yarn --cwd packages/web run build"
   }
 }

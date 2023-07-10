@@ -1,4 +1,4 @@
-import { Task, Subtask } from 'types'
+import { Task, Subtask } from '@kanban/types'
 import TaskModel from '../models/taskModel'
 
 interface SubtaskPartial extends Partial<Subtask> {

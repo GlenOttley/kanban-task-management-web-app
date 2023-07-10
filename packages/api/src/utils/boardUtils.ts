@@ -1,4 +1,4 @@
-import { Board } from 'types'
+import { Board } from '@kanban/types'
 import BoardModel from '../models/boardModel'
 
 export async function createBoard(board: Board) {

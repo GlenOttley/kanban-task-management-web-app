@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react'
 import { AppContext } from '../Context'
-import { Task } from 'types'
+import { Task } from '@kanban/types'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 

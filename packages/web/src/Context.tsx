@@ -7,7 +7,7 @@ import React, {
   MutableRefObject,
 } from 'react'
 import { type Toast } from './components/Toast'
-import { Task } from 'types'
+import { Task } from '@kanban/types'
 
 interface ComponentProps {
   children: ReactNode
