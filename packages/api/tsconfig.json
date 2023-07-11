@@ -1,7 +1,9 @@
 {
-  "extends": "../types/tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "./dist",
     "types": ["jest", "supertest"]
   },
-  "exclude": ["./jest.config.js", "./dist"]
+  "exclude": ["./jest.config.js"]
 }

@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "vite": "./node_modules/vite/bin/vite.js",
     "start": "vite preview",
     "dev": "vite dev --port 3000",
     "build": "vite build",

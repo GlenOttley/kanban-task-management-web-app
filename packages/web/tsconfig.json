@@ -1,5 +1,5 @@
 {
-  "extends": "../types/tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "types": ["vite/client", "jest", "@testing-library/jest-dom"]
   },
