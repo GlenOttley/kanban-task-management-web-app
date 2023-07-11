@@ -21,7 +21,7 @@
     "tsc": "./node_modules/typescript/bin/tsc",
     "dev": "concurrently \"yarn --cwd packages/api run dev\" \"yarn --cwd packages/web run dev\"",
     "start": "node packages/api/dist/index.js",
-    "build": "tsc -p ./packages/api/tsconfig.json",
+    "build": "tsc -p ./packages/api/tsconfig.json && yarn --cwd packages/api build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn build && yarn --cwd packages/web install && yarn --cwd packages/web run build"
   }
 }
