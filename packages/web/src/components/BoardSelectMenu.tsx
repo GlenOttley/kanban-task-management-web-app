@@ -23,7 +23,7 @@ const BoardSelectMenu = (): JSX.Element => {
   const [activeIndex, setActiveIndex] = useState<number>(0)
   // const [menuFeedback, setMenuFeedback] = useState<string>('')
 
-  const menuRef = useRef<HTMLDivElement | null>(null)
+  // const menuRef = useRef<HTMLDivElement | null>(null)
   const menuItemsRef = useRef<Array<HTMLButtonElement | null>>([])
   const themeSwitchRef = useRef<HTMLButtonElement>(null)
   const newBoardButtonRef = useRef<HTMLButtonElement>(null)
@@ -79,15 +79,16 @@ const BoardSelectMenu = (): JSX.Element => {
   }, [selectedBoard, selectedBoardId, allBoards])
 
   return (
-    <>
+    <div className='pb-4 pr-4 bg-white rounded-md dark:bg-grey-dark md:pr-5'>
+      <h2 className='px-6 py-4 heading-sm text-grey-medium' id='boardSelectMenuHeading'>
+        ALL BOARDS ({allBoards?.length})
+      </h2>
       <div
-        ref={menuRef}
+        // ref={menuRef}'
         role='menu'
-        className='flex flex-col items-stretch pb-4 pr-4 bg-white rounded-md dark:bg-grey-dark whitespace-nowrap md:pr-5'
+        aria-labelledby='boardSelectMenuHeading'
+        className='flex flex-col items-stretch whitespace-nowrap '
       >
-        <h2 className='px-6 py-4 heading-sm text-grey-medium' aria-hidden='true'>
-          ALL BOARDS ({allBoards?.length})
-        </h2>
         {allBoards?.length &&
           allBoards?.map((board, index) => (
             <button
@@ -149,7 +150,7 @@ const BoardSelectMenu = (): JSX.Element => {
       {/* <div role='alert' aria-live='assertive' aria-atomic='true' className='sr-only'>
         {menuFeedback}
       </div> */}
-    </>
+    </div>
   )
 }
 
