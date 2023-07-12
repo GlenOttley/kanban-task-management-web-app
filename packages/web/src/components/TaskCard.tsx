@@ -60,7 +60,7 @@ const SortableTaskCard = ({ task, id }: ComponentProps) => {
       {...listeners}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      role='button'
+      role='listitem'
     >
       <h3
         className='mb-2 heading-md group-hover:text-purple dark:text-white'
