@@ -54,7 +54,7 @@ const SortableTaskCard = ({ task, id }: ComponentProps) => {
     <li
       ref={setNodeRef}
       id={id}
-      className='px-4 py-6 bg-white rounded-lg shadow-md cursor-pointer group dark:bg-grey-dark'
+      className='px-4 py-6 bg-white rounded-lg shadow-md cursor-pointer touch-none group dark:bg-grey-dark'
       style={style}
       {...attributes}
       {...listeners}

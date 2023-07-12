@@ -40,7 +40,7 @@ const Nav = (): JSX.Element => {
   }
 
   return (
-    <header className='top-0 z-20 flex items-center justify-between px-4 py-4 bg-white md:px-6 lg:py-6 dark:bg-grey-dark dark:text-white'>
+    <header className='top-0 z-20 flex items-center justify-between px-4 py-4 bg-white h-nav-mobile md:h-nav-tablet lg:h-nav-desktop md:px-6 lg:py-6 dark:bg-grey-dark dark:text-white'>
       <div className='flex items-center gap-4 md:hidden'>
         <img src={logoMobile} alt='Kanban' />
         {selectedBoardStatus === 'loading' ? (

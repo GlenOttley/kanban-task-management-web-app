@@ -13,7 +13,8 @@ interface Inputs {
 }
 
 const EditBoardForm = (): JSX.Element => {
-  const { selectedBoardId, setEditBoardFormOpen } = useContext(AppContext)
+  const { selectedBoardId, setEditBoardFormOpen, modalTriggerElement } =
+    useContext(AppContext)
   const { data: selectedBoard } = useBoard(selectedBoardId)
   const { mutate, isSuccess, isLoading } = useEditBoard()
 
@@ -26,7 +27,10 @@ const EditBoardForm = (): JSX.Element => {
     defaultValues: {
       _id: selectedBoard?._id,
       name: selectedBoard?.name,
-      columns: selectedBoard?.columns,
+      columns:
+        modalTriggerElement?.current?.id === 'newColumnButton'
+          ? [...(selectedBoard?.columns || []), {}]
+          : selectedBoard?.columns || [],
     },
     mode: 'onSubmit',
   })
@@ -54,7 +58,6 @@ const EditBoardForm = (): JSX.Element => {
   const columnPlaceholders = ['e.g. Todo', 'e.g. Doing']
 
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
-    // console.log(formData)
     mutate(formData)
   }
 
@@ -65,7 +68,9 @@ const EditBoardForm = (): JSX.Element => {
   }, [isSuccess])
 
   useEffect(() => {
-    setFocus('name')
+    modalTriggerElement?.current?.id === 'newColumnButton'
+      ? setFocus(`columns.${columns.length - 1}.name`)
+      : setFocus('name')
   }, [])
 
   return (
@@ -139,7 +144,8 @@ const EditBoardForm = (): JSX.Element => {
                       type='button'
                       className='p-3 -mr-3'
                       aria-label={`Remove ${column.name} column`}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         remove(index)
                         setFormFeedback(`${column.name} column removed`)
                       }}

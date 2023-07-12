@@ -78,7 +78,7 @@ const StatusMenuEdit = ({ nextItemRef }: ComponentProps) => {
           style={{
             backgroundImage: `url(${open ? iconChevronUp : iconChevronDown})`,
             backgroundRepeat: 'no-repeat',
-            backgroundPositionX: 'right 16px',
+            backgroundPositionX: '95%',
             backgroundPositionY: 'center',
           }}
           type='button'

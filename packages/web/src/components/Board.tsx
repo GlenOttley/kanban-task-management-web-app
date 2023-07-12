@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import useBoard from '../hooks/useBoard'
 import { AppContext } from '../Context'
 import Column from './Column'
@@ -8,6 +8,7 @@ import {
   DndContext,
   closestCorners,
   PointerSensor,
+  MouseSensor,
   KeyboardSensor,
   TouchSensor,
   useSensor,
@@ -19,19 +20,19 @@ import { sortableKeyboardCoordinates, arrayMove } from '@dnd-kit/sortable'
 import { Column as IColumn } from 'packages/types/src'
 
 const Board = () => {
-  const { selectedBoardId } = useContext(AppContext)
+  const {
+    selectedBoardId,
+    setEditBoardFormOpen,
+    editBoardFormOpen,
+    setModalTriggerElement,
+  } = useContext(AppContext)
   const { status, data: board, error, refetch: refetchBoard } = useBoard(selectedBoardId)
   const { mutate: updateColumn, isSuccess: updateColumnSuccess } = useUpdateColumn()
+  const addNewColumnButtonRef = useRef<HTMLButtonElement>(null)
 
   const colors = ['bg-blue', 'bg-purple', 'bg-green']
   const sensors = useSensors(
     useSensor(PointerSensor),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 5000,
-        distance: 5,
-      },
-    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
       // keyboardCodes: { start: ['Space'], cancel: ['Escape'], end: ['Space'] },
@@ -153,7 +154,7 @@ const Board = () => {
   }, [updateColumnSuccess])
 
   return (
-    <div className='py-6'>
+    <div className='py-6 '>
       {status === 'loading' ? (
         <span>Loading...</span>
       ) : status === 'error' ? (
@@ -165,7 +166,7 @@ const Board = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <ul className='flex gap-6'>
+          <ul className='inline-flex min-h-screen gap-6 px-4 md:px-6 '>
             {columns.map((column, index) => (
               <Column
                 key={column._id}
@@ -175,6 +176,42 @@ const Board = () => {
                 bgColor={getBgColor(index)}
               />
             ))}
+            {columns.length ? (
+              <li className='bg-[#E9EFFA] dark:bg-grey-dark min-w-[280px] max-w-[280px] rounded-md flex justify-center items-center mt-[42px] '>
+                <button
+                  type='button'
+                  ref={addNewColumnButtonRef}
+                  id='newColumnButton'
+                  onClick={() => {
+                    setModalTriggerElement(addNewColumnButtonRef)
+                    setEditBoardFormOpen(true)
+                  }}
+                  className='btn heading-xl text-grey-medium hover:text-purple'
+                >
+                  + New Column
+                </button>
+              </li>
+            ) : (
+              <li className='absolute w-full h-full px-4 md:px-6'>
+                <div className='relative flex flex-col items-center justify-center h-full gap-6 bottom-nav-mobile'>
+                  <h2 className='text-center heading-lg text-grey-medium'>
+                    This board is empty. Create a new column to get started.
+                  </h2>
+                  <button
+                    type='button'
+                    ref={addNewColumnButtonRef}
+                    id='newColumnButton'
+                    onClick={() => {
+                      setModalTriggerElement(addNewColumnButtonRef)
+                      setEditBoardFormOpen(true)
+                    }}
+                    className='btn btn-lg btn-primary'
+                  >
+                    + Add New Column
+                  </button>
+                </div>
+              </li>
+            )}
           </ul>
         </DndContext>
       )}

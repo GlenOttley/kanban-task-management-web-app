@@ -47,6 +47,9 @@ module.exports = {
       spacing: {
         'sidebar-tablet': '260px',
         'sidebar-desktop': '300px',
+        'nav-mobile': '64px',
+        'nav-tablet': '79px',
+        'nav-desktop': '95px',
       },
       boxShadow: {
         md: '0px 4px 6px rgba(54, 78, 126, 0.1)',

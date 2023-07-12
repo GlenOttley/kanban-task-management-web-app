@@ -8,7 +8,7 @@ import Task from '../models/taskModel'
 const serverRoot = path.resolve()
 
 // dev
-dotenv.config({ path: path.join(serverRoot, '.env') })
+dotenv.config({ path: path.join(serverRoot, '../../.env') })
 
 connectDB()
 

@@ -169,7 +169,8 @@ const EditTaskForm = (): JSX.Element => {
                       type='button'
                       className='p-3 -mr-3'
                       aria-label={`Remove ${subtask.title} subtask`}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         remove(index)
                         setFormFeedback(`${subtask.title} subtask removed`)
                       }}
