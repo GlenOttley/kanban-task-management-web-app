@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
-import BoardSelectMenu from './BoardSelectMenu'
+import { useContext } from 'react'
+import { AppContext } from '../Context'
+import iconHide from '../images/icon-hide-sidebar.svg'
+import iconShow from '../images/icon-show-sidebar.svg'
 import logoDark from '../images/logo-dark.svg'
 import logoLight from '../images/logo-light.svg'
-import iconShow from '../images/icon-show-sidebar.svg'
-import iconHide from '../images/icon-hide-sidebar.svg'
-import { AppContext } from '../Context'
+import BoardSelectMenu from './BoardSelectMenu'
 import ThemeSwitch from './ThemeSwitch'
 
 const Sidebar = (): JSX.Element | null => {
@@ -53,11 +53,7 @@ const Sidebar = (): JSX.Element | null => {
         aria-pressed={sidebarOpen}
       >
         <span className='sr-only'>Show sidebar</span>
-        <img
-          src={iconShow}
-          aria-hidden='true'
-          // className='relative inline-block w-4 h-[10px]'
-        ></img>
+        <img src={iconShow} aria-hidden='true' alt=''></img>
       </button>
     </aside>
   )

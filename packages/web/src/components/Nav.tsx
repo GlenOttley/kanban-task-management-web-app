@@ -64,6 +64,7 @@ const Nav = (): JSX.Element => {
               <img
                 src={boardSelectMenuOpen ? iconChevronUp : iconChevronDown}
                 aria-hidden='true'
+                alt=''
                 className='ml-[9px] inline-block'
               />
             </button>
@@ -91,7 +92,7 @@ const Nav = (): JSX.Element => {
             setNewTaskFormOpen(true)
           }}
         >
-          <img src={iconPlus} aria-hidden='true' className='md:hidden' />
+          <img src={iconPlus} aria-hidden='true' className='md:hidden' alt='' />
           <span className='sr-only md:not-sr-only'>+ Add new task</span>
         </button>
 
@@ -100,7 +101,7 @@ const Nav = (): JSX.Element => {
           ref={boardOptionsMenuButtonRef}
           onClick={() => setBoardOptionsMenuOpen(!boardOptionsMenuOpen)}
         >
-          <img className='h-4' src={iconVerticalEllipsis} aria-hidden='true' />
+          <img className='h-4' src={iconVerticalEllipsis} aria-hidden='true' alt='' />
           <span className='sr-only'>Open menu</span>
         </button>
         {boardOptionsMenuOpen && selectedBoard && (
