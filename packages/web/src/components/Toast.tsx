@@ -59,6 +59,7 @@ const Toast = (): JSX.Element | null => {
               : iconInfo
           }
           aria-hidden='true'
+          alt=''
           className='inline-block'
         />
         <span className='sr-only'>{status}</span>

@@ -87,10 +87,11 @@ const Context = ({ children }: ComponentProps) => {
   const [toastDetails, setToastDetails] = useState<Toast>({
     message: '',
   })
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
   const [liveFeedback, setLiveFeedback] = useState<string>('')
   const [darkMode, setDarkMode] = useState<boolean>(
-    localStorage.getItem('dark') === 'true'
+    // localStorage.getItem('dark') === 'true'
+    true
   )
   const [newBoardFormOpen, setNewBoardFormOpen] = useState<boolean>(false)
   const [editTaskFormOpen, setEditTaskFormOpen] = useState<boolean>(false)
