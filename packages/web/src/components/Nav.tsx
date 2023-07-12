@@ -48,24 +48,26 @@ const Nav = (): JSX.Element => {
         ) : selectedBoardStatus === 'error' ? (
           <span>Error: {selectedBoardError?.message}</span>
         ) : (
-          <button
-            ref={boardSelectMenuButtonRef}
-            className='heading-lg'
-            aria-haspopup='true'
-            aria-expanded={boardSelectMenuOpen}
-            onKeyDown={handleBoardSelectMenuKeyDown}
-            onClick={() => {
-              setModalTriggerElement(boardSelectMenuButtonRef)
-              setBoardSelectMenuOpen(!boardSelectMenuOpen)
-            }}
-          >
-            {selectedBoard.name}
-            <img
-              src={boardSelectMenuOpen ? iconChevronUp : iconChevronDown}
-              aria-hidden='true'
-              className='ml-[9px] inline-block'
-            />
-          </button>
+          <h1>
+            <button
+              ref={boardSelectMenuButtonRef}
+              className='heading-lg'
+              aria-haspopup='true'
+              aria-expanded={boardSelectMenuOpen}
+              onKeyDown={handleBoardSelectMenuKeyDown}
+              onClick={() => {
+                setModalTriggerElement(boardSelectMenuButtonRef)
+                setBoardSelectMenuOpen(!boardSelectMenuOpen)
+              }}
+            >
+              {selectedBoard.name}
+              <img
+                src={boardSelectMenuOpen ? iconChevronUp : iconChevronDown}
+                aria-hidden='true'
+                className='ml-[9px] inline-block'
+              />
+            </button>
+          </h1>
         )}
       </div>
       {!sidebarOpen && (
@@ -75,9 +77,9 @@ const Nav = (): JSX.Element => {
           <span className='w-px'></span>
         </div>
       )}
-      <div className='hidden md:block text-[20px] lg:heading-xl font-bold'>
+      <h1 className='hidden md:block text-[20px] lg:heading-xl font-bold'>
         {selectedBoard?.name}
-      </div>
+      </h1>
 
       <div className='relative flex'>
         <button
