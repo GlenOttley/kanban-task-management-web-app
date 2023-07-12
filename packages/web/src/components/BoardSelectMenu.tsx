@@ -87,7 +87,7 @@ const BoardSelectMenu = (): JSX.Element => {
         // ref={menuRef}'
         role='menu'
         aria-labelledby='boardSelectMenuHeading'
-        className='flex flex-col items-stretch whitespace-nowrap '
+        className='flex flex-col items-stretch whitespace-nowrap'
       >
         {allBoards?.length &&
           allBoards?.map((board, index) => (
@@ -110,41 +110,43 @@ const BoardSelectMenu = (): JSX.Element => {
               <img
                 src={board._id === selectedBoard?._id ? iconBoardWhite : iconBoard}
                 aria-hidden='true'
+                alt=''
                 className='inline-block mr-3 group-hover:filter-purple group-focus:filter-purple'
               />
               {board.name}
             </button>
           ))}
-        <button
-          ref={newBoardButtonRef}
-          className='px-6 py-3 mb-4 text-left text-purple rounded-e-full hover:bg-purple hover:bg-opacity-10 hover:text-purple dark:hover:bg-white focus:bg-purple focus:bg-opacity-10 focus:text-purple dark:focus:bg-white'
-          onClick={() => {
-            setModalTriggerElement(newBoardButtonRef)
-            setNewBoardFormOpen(true)
-            setTimeout(() => {
-              setBoardSelectMenuOpen(false)
-            }, 1)
-          }}
-        >
-          <img
-            src={iconBoardPurple}
-            aria-hidden='true'
-            className='inline-block mr-3 fill-purple'
-          />
-          <span aria-hidden='true'>+</span> Create New Board
-        </button>
+      </div>
+      <button
+        ref={newBoardButtonRef}
+        className='px-6 py-3 mb-4 text-left text-purple rounded-e-full hover:bg-purple hover:bg-opacity-10 hover:text-purple dark:hover:bg-white focus:bg-purple focus:bg-opacity-10 focus:text-purple dark:focus:bg-white'
+        onClick={() => {
+          setModalTriggerElement(newBoardButtonRef)
+          setNewBoardFormOpen(true)
+          setTimeout(() => {
+            setBoardSelectMenuOpen(false)
+          }, 1)
+        }}
+      >
+        <img
+          src={iconBoardPurple}
+          aria-hidden='true'
+          alt=''
+          className='inline-block mr-3 fill-purple'
+        />
+        <span aria-hidden='true'>+</span> Create New Board
+      </button>
 
-        <div
-          className='w-full px-4 md:hidden'
-          onKeyDown={(e) => {
-            if (!e.shiftKey && e.key === 'Tab') {
-              e.preventDefault()
-              menuItemsRef.current[0]?.focus()
-            }
-          }}
-        >
-          <ThemeSwitch ref={themeSwitchRef} />
-        </div>
+      <div
+        className='w-full px-4 md:hidden'
+        onKeyDown={(e) => {
+          if (!e.shiftKey && e.key === 'Tab') {
+            e.preventDefault()
+            menuItemsRef.current[0]?.focus()
+          }
+        }}
+      >
+        <ThemeSwitch ref={themeSwitchRef} />
       </div>
 
       {/* <div role='alert' aria-live='assertive' aria-atomic='true' className='sr-only'>
